@@ -9,7 +9,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.2.0",
+    "@pierre/highlights": "0.5.1",
+    "@pierre/words": "0.2.2",
     "clsx": "^2.1.1",
+    "gsap": "3.15.1",
     "lucide-react": "^1.20.0",
     "motion": "^12.40.0",
     "next": "16.2.9",
@@ -17,10 +21,11 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-use-measure": "^2.1.7",
-    "tailwind-merge": "^3.6.0",
-    "@fontsource-variable/dm-sans": "^5.2.0"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@earendil-works/pi-ai": "1.5.2",
+    "@earendil-works/pi-durable": "1.5.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

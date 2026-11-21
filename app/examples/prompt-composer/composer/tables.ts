@@ -1,5 +1,5 @@
-import type { EffortLevel, ModelCard } from "../shared/models";
-import { PERMISSION_MODE_IDS } from "../shared/permission";
+import type { EffortLevel, ModelCard } from "@/app/examples/_shared/models";
+import { PERMISSION_MODE_IDS } from "@/app/examples/_shared/permission";
 import type { PermissionMode, Strip, StripKind } from "./types";
 
 export const EFFORT_LABEL: Record<EffortLevel, string> = {

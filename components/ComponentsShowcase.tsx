@@ -19,7 +19,7 @@ export default function ComponentsShowcase({ catalog = false }: { catalog?: bool
           Interactive patterns for prompts and conversations.
         </p>
       </header>
-      <div className="mx-auto mt-9 grid w-full max-w-2xl grid-cols-1 gap-4 sm:mt-11">
+      <div className="mx-auto mt-9 grid w-full max-w-2xl grid-cols-1 gap-4 sm:mt-11 md:max-w-none md:grid-cols-2">
         {examples.map((example) => <ComponentCard key={example.href} item={example} />)}
       </div>
     </Container>

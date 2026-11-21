@@ -1,4 +1,4 @@
-import type { ModelCard } from "../../shared/models";
+import type { ModelCard } from "@/app/examples/_shared/models";
 import { costPosition, formatPrice, formatTokens } from "../tables";
 
 export type CostBarProps = {

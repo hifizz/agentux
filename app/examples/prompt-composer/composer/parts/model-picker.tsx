@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CheckIcon, ChevronDownIcon, SearchIcon } from "../../shared/ui/icons";
-import { cx } from "../../shared/ui/cx";
-import { findModel, selectModel, type ModelCard } from "../../shared/models";
+import { CheckIcon, ChevronDownIcon, SearchIcon } from "@/app/examples/_shared/ui/icons";
+import { cx } from "@/app/examples/_shared/ui/cx";
+import { findModel, selectModel, type ModelCard } from "@/app/examples/_shared/models";
 import type { ModelControl } from "../types";
 import { CHIP_TRIGGER, MenuPop } from "./menu-pop";
 import { CostBar, ModelDetail } from "./model-detail";

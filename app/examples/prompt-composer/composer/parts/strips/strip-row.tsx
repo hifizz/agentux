@@ -1,4 +1,4 @@
-import { cx } from "../../../shared/ui/cx";
+import { cx } from "@/app/examples/_shared/ui/cx";
 
 export type StripRowProps = {
   icon: React.ReactNode;

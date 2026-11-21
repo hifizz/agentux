@@ -1,7 +1,7 @@
-import { CloseIcon, InfoIcon } from "../../../shared/ui/icons";
-import { Button } from "../../../shared/ui/button";
-import { LinkButton } from "../../../shared/ui/link-button";
-import { Tooltip } from "../../../shared/ui/tooltip";
+import { CloseIcon, InfoIcon } from "@/app/examples/_shared/ui/icons";
+import { Button } from "@/app/examples/_shared/ui/button";
+import { LinkButton } from "@/app/examples/_shared/ui/link-button";
+import { Tooltip } from "@/app/examples/_shared/ui/tooltip";
 import type { UsageStrip } from "../../types";
 import { StripRow } from "./strip-row";
 

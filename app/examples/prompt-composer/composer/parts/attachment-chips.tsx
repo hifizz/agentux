@@ -1,4 +1,4 @@
-import { CloseIcon, PaperclipIcon } from "../../shared/ui/icons";
+import { CloseIcon, PaperclipIcon } from "@/app/examples/_shared/ui/icons";
 import type { Attachment } from "../types";
 
 export type AttachmentChipsProps = {

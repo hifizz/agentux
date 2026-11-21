@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { RotateCcw } from "lucide-react";
 import { AiStatus } from "./ai-status";
 import { PromptComposer, type PermissionMode, type QueuedMessage, type Strip, type Submission } from "./composer";
-import { DEFAULT_DEMO_SELECTION, DEMO_MODELS, type ModelSelection } from "./shared/models";
+import { DEFAULT_DEMO_SELECTION, DEMO_MODELS, type ModelSelection } from "@/app/examples/_shared/models";
 
 const THINK_MS = 1400;
 const WORD_MS = 40;
@@ -119,7 +119,7 @@ export default function Demo() {
   ];
 
   return (
-    <div className="tf-composer flex h-full flex-col bg-ch-page text-ch-ink">
+    <div className="tf-chat flex h-full flex-col bg-ch-page text-ch-ink">
       <div className="flex items-center justify-between px-5 pt-4">
         <p className="text-sm font-medium text-ch-ink-muted">Agent session</p>
         <button

@@ -1,8 +1,8 @@
 "use client";
 
-import { ChevronDownIcon } from "../../shared/ui/icons";
-import { MenuItem } from "../../shared/ui/menu";
-import type { EffortLevel, ModelCard } from "../../shared/models";
+import { ChevronDownIcon } from "@/app/examples/_shared/ui/icons";
+import { MenuItem } from "@/app/examples/_shared/ui/menu";
+import type { EffortLevel, ModelCard } from "@/app/examples/_shared/models";
 import { EFFORT_LABEL } from "../tables";
 import { CHIP_TRIGGER, MenuPop } from "./menu-pop";
 

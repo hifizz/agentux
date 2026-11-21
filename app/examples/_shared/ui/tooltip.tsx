@@ -23,7 +23,7 @@ export function Tooltip({ label, disabled, children }: { label: string; disabled
       const el = host.current?.firstElementChild;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      setAnchor({ x: r.left + r.width / 2, y: r.top, root: host.current?.closest(".ab-root") ?? document.body });
+      setAnchor({ x: r.left + r.width / 2, y: r.top, root: host.current?.closest(".tf-chat") ?? document.body });
     }, 300);
   };
 

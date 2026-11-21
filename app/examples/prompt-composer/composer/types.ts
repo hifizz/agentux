@@ -1,5 +1,5 @@
-import type { EffortLevel, ModelCard, ModelSelection } from "../shared/models";
-import type { PermissionMode } from "../shared/permission";
+import type { EffortLevel, ModelCard, ModelSelection } from "@/app/examples/_shared/models";
+import type { PermissionMode } from "@/app/examples/_shared/permission";
 
 
 export type { PermissionMode };

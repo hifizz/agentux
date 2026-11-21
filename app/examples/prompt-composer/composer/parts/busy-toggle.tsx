@@ -1,5 +1,5 @@
-import { cx } from "../../shared/ui/cx";
-import { Tooltip } from "../../shared/ui/tooltip";
+import { cx } from "@/app/examples/_shared/ui/cx";
+import { Tooltip } from "@/app/examples/_shared/ui/tooltip";
 import type { BusyMode } from "../types";
 
 export type BusyToggleProps = {

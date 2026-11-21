@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { findModel } from "../shared/models";
-import { cx } from "../shared/ui/cx";
+import { findModel } from "@/app/examples/_shared/models";
+import { cx } from "@/app/examples/_shared/ui/cx";
 import { activeStrip } from "./tables";
 import type { Attachment, AttachControl, BusyMode, BusyPolicy, ModelControl, PermissionControl, Strip, Submission, TrayControl } from "./types";
 import { AttachButton } from "./parts/attach-button";

@@ -1,6 +1,6 @@
-import { CloseIcon } from "../../../shared/ui/icons";
-import { Button } from "../../../shared/ui/button";
-import { Tooltip } from "../../../shared/ui/tooltip";
+import { CloseIcon } from "@/app/examples/_shared/ui/icons";
+import { Button } from "@/app/examples/_shared/ui/button";
+import { Tooltip } from "@/app/examples/_shared/ui/tooltip";
 import type { GoalStrip } from "../../types";
 import { TargetIcon } from "../icons";
 import { StripRow } from "./strip-row";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { EASE_MORPH } from "../../../shared/ui/motion";
+import { EASE_MORPH } from "@/app/examples/_shared/ui/motion";
 import type { Strip } from "../../types";
 import { ChangesStripView } from "./changes-strip";
 import { GoalStripView } from "./goal-strip";

@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckIcon, ChevronDownIcon } from "../../shared/ui/icons";
-import { cx } from "../../shared/ui/cx";
+import { CheckIcon, ChevronDownIcon } from "@/app/examples/_shared/ui/icons";
+import { cx } from "@/app/examples/_shared/ui/cx";
 import { ALL_PERMISSION_MODES, PERMISSION_MODES } from "../tables";
 import type { PermissionControl } from "../types";
 import { CHIP_TRIGGER, MenuPop } from "./menu-pop";

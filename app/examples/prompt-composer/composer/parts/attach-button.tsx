@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { PaperclipIcon } from "../../shared/ui/icons";
-import { Button } from "../../shared/ui/button";
-import { Tooltip } from "../../shared/ui/tooltip";
+import { PaperclipIcon } from "@/app/examples/_shared/ui/icons";
+import { Button } from "@/app/examples/_shared/ui/button";
+import { Tooltip } from "@/app/examples/_shared/ui/tooltip";
 import type { Attachment, AttachControl } from "../types";
 
 export type AttachButtonProps = AttachControl & {

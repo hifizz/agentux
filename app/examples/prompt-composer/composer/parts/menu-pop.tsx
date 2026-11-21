@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { cx } from "../../shared/ui/cx";
-import { useDismiss } from "../../shared/ui/use-dismiss";
+import { cx } from "@/app/examples/_shared/ui/cx";
+import { useDismiss } from "@/app/examples/_shared/ui/use-dismiss";
 
 type TriggerState = { open: boolean; toggle: () => void };
 

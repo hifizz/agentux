@@ -1,7 +1,7 @@
-import { ArrowUpIcon, StopIcon } from "../../shared/ui/icons";
-import { Button } from "../../shared/ui/button";
-import { cx } from "../../shared/ui/cx";
-import { Tooltip } from "../../shared/ui/tooltip";
+import { ArrowUpIcon, StopIcon } from "@/app/examples/_shared/ui/icons";
+import { Button } from "@/app/examples/_shared/ui/button";
+import { cx } from "@/app/examples/_shared/ui/cx";
+import { Tooltip } from "@/app/examples/_shared/ui/tooltip";
 
 export type SendButtonProps = {
   canSend: boolean;

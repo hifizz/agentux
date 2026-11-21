@@ -1,6 +1,6 @@
 "use client";
 
-import { cx } from "../../shared/ui/cx";
+import { cx } from "@/app/examples/_shared/ui/cx";
 import { focusInput } from "./focus-input";
 
 export type ComposerCardProps = {

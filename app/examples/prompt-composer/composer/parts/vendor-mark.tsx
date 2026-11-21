@@ -1,6 +1,6 @@
-import { AnthropicMark, OpenAIMark } from "../../shared/ui/icons";
-import { cx } from "../../shared/ui/cx";
-import type { ModelVendor } from "../../shared/models";
+import { AnthropicMark, OpenAIMark } from "@/app/examples/_shared/ui/icons";
+import { cx } from "@/app/examples/_shared/ui/cx";
+import type { ModelVendor } from "@/app/examples/_shared/models";
 
 export function VendorMark({ vendor, className }: { vendor: ModelVendor; className?: string }) {
   return (

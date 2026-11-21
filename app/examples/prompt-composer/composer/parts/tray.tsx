@@ -1,8 +1,8 @@
 "use client";
 
-import { ChevronDownIcon, CheckIcon } from "../../shared/ui/icons";
-import { FolderIcon, GitBranchIcon } from "../../shared/ui/code-icons";
-import { cx } from "../../shared/ui/cx";
+import { ChevronDownIcon, CheckIcon } from "@/app/examples/_shared/ui/icons";
+import { FolderIcon, GitBranchIcon } from "@/app/examples/_shared/ui/code-icons";
+import { cx } from "@/app/examples/_shared/ui/cx";
 import type { Host, HostControl, HostStatus, TrayControl, WorkspaceInfo } from "../types";
 import { CloudIcon, LaptopIcon } from "./icons";
 import { CHIP_TRIGGER, MenuPop } from "./menu-pop";

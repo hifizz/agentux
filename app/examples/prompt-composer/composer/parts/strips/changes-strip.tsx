@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDownIcon } from "../../../shared/ui/icons";
-import { DiffIcon } from "../../../shared/ui/code-icons";
-import { DiffStat } from "../../../shared/ui/diff-stat";
-import { cx } from "../../../shared/ui/cx";
+import { ChevronDownIcon } from "@/app/examples/_shared/ui/icons";
+import { DiffIcon } from "@/app/examples/_shared/ui/code-icons";
+import { DiffStat } from "@/app/examples/_shared/ui/diff-stat";
+import { cx } from "@/app/examples/_shared/ui/cx";
 import type { ChangesStrip } from "../../types";
 import { StripRow } from "./strip-row";
 
