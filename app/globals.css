@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./examples/prompt-composer/composer.css";
 
 @custom-variant dark (&:is(.dark *));
 

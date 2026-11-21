@@ -8,7 +8,7 @@ export default function ComposerPreview() {
       </div>
       <div className="mt-3 flex items-center justify-between gap-4">
         <span className="flex min-w-0 items-center gap-2 text-xs font-medium text-muted-foreground">
-          <AudioLines size={15} className="shrink-0" /> <span className="truncate">Hold to think harder</span>
+          <AudioLines size={15} className="shrink-0" /> <span className="truncate">Opus 5 · Medium · Edit</span>
         </span>
         <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#ff6b35] text-[#22120c] sm:size-8">
           <ArrowUp size={16} />
