@@ -1,15 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, GitBranch, Lock, Plus } from "lucide-react";
+import { GitBranch, Lock, Plus } from "lucide-react";
 import { CHIP, Combobox, ComboboxContent, ComboboxEmpty, ComboboxItem, ComboboxList, ComboboxSearch, ComboboxTrigger } from "@/components/ui/base";
 import { cx } from "@/app/examples/_shared/ui/cx";
 import { shortName, type GithubRepo } from "@/app/examples/_shared/github";
 import type { RepoControl } from "../types";
 
-function GithubMark({ className }: { className?: string }) {
+function GithubMark({ className, ...props }: React.ComponentProps<"svg">) {
   return (
-    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden className={className}>
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden className={className} {...props}>
       <path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.66 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z" />
     </svg>
   );
@@ -28,10 +28,9 @@ export function RepoSelect({ repos, value, onChange, disabled }: RepoSelectProps
       itemToStringLabel={(r: GithubRepo) => r.fullName}
       isItemEqualToValue={(a: GithubRepo, b: GithubRepo) => a.fullName === b.fullName}
     >
-      <ComboboxTrigger disabled={disabled} aria-label={`Repository: ${value}`} className={CHIP}>
-        <GithubMark className="size-3.5 shrink-0" />
+      <ComboboxTrigger disabled={disabled} aria-label={`Repository: ${value}`} className={`${CHIP} max-w-28 shrink-0`}>
+        <GithubMark data-tray-compact className="size-3.5 shrink-0" />
         <span className="truncate">{shortName(value)}</span>
-        <ChevronDown aria-hidden className="size-3.5 shrink-0" />
       </ComboboxTrigger>
       <ComboboxContent className="w-[320px]">
         <ComboboxSearch placeholder="Search repositories" aria-label="Search repositories" />
@@ -57,9 +56,9 @@ export function RepoSelect({ repos, value, onChange, disabled }: RepoSelectProps
 
 type BranchItem = { name: string; create?: boolean };
 
-export type BranchSelectProps = { branches: readonly string[]; defaultBranch?: string; value: string; onChange: (branch: string) => void; onCreate?: (branch: string) => void; disabled?: boolean };
+export type BranchSelectProps = { branches: readonly string[]; defaultBranch?: string; value: string; onChange: (branch: string) => void; onCreate?: (branch: string) => void; disabled?: boolean; icon?: boolean };
 
-export function BranchSelect({ branches, defaultBranch, value, onChange, onCreate, disabled }: BranchSelectProps) {
+export function BranchSelect({ branches, defaultBranch, value, onChange, onCreate, disabled, icon = true }: BranchSelectProps) {
   const [query, setQuery] = useState("");
   const items = useMemo<BranchItem[]>(() => {
     const q = query.trim();
@@ -84,9 +83,8 @@ export function BranchSelect({ branches, defaultBranch, value, onChange, onCreat
       onOpenChange={(open) => !open && setQuery("")}
     >
       <ComboboxTrigger disabled={disabled} aria-label={`Branch: ${value}`} className={CHIP}>
-        <GitBranch className="size-3.5 shrink-0" />
+        {icon && <GitBranch className="size-3.5 shrink-0" />}
         <span className="ch-mono truncate text-ch-caption">{value}</span>
-        <ChevronDown aria-hidden className="size-3.5 shrink-0" />
       </ComboboxTrigger>
       <ComboboxContent className="w-[280px]">
         <ComboboxSearch placeholder={onCreate ? "Find or create a branch" : "Find a branch"} aria-label="Search branches" />
@@ -118,6 +116,7 @@ export function RepoBranchPicker({ repos, value, onChange, branchesOf, onCreateB
         defaultBranch={repo?.defaultBranch}
         value={value.branch}
         disabled={disabled}
+        icon={false}
         onChange={(branch) => onChange({ ...value, branch })}
         onCreate={onCreateBranch ? (branch) => onCreateBranch(value.repo, branch) : undefined}
       />

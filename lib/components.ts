@@ -385,7 +385,7 @@ export const bottomTray = {
   category: "Composer · Tray",
   description: "The tray under the input with directory, repo, branch and the host the agent runs on.",
   preview: BottomTrayPreview,
-  interaction: "Each chip opens a Base UI popup. Change the host status above to see the dot.",
+  interaction: "Each chip opens a Base UI popup. Change the host status above to see the dot. Turn on Mobile and the GitHub mark and host name drop out.",
   parts: [
     { name: "BottomTray", file: "composer/parts/bottom-tray.tsx", description: "Start and end slots under the card." },
     { name: "DirectoryPicker", file: "composer/parts/directory-picker.tsx", description: "Folder or Scratch." },

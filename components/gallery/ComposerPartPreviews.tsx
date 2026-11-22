@@ -1,4 +1,4 @@
-import { AtSign, ChevronDown, CornerDownRight, Pencil, X, Folder, GitBranch, Laptop, Lock, Paperclip, Shield } from "lucide-react";
+import { AtSign, CornerDownRight, Pencil, X, Folder, GitBranch, Laptop, Lock, Paperclip, Shield } from "lucide-react";
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const CHIP = "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-muted-foreground";
@@ -84,7 +84,7 @@ export const DirectoryPreview = () => <MenuPreview title="Recent" rows={["~/code
 export function RepoPreview() {
   return (
     <div className={`${CARD} flex flex-col gap-2`}>
-      <p className="flex items-center gap-1 text-xs"><span className={CHIP}>acme/web <Lock size={10} /> <ChevronDown size={12} /></span>/<span className={CHIP}><GitBranch size={12} /> feat/composer <ChevronDown size={12} /></span></p>
+      <p className="flex items-center gap-1 text-xs"><span className={CHIP}>acme/web <Lock size={10} /></span>/<span className={CHIP}><GitBranch size={12} /> feat/composer</span></p>
       <div className={MENU}><p className={`${ROW} ${ON}`}>+ Create branch fix/tray</p><p className={ROW}>main</p></div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, Folder, FolderPlus, Sparkles } from "lucide-react";
+import { Folder, FolderPlus, Sparkles } from "lucide-react";
 import { CHIP, Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxSearch, ComboboxTrigger } from "@/components/ui/base";
 import type { DirectoryControl } from "../types";
 
@@ -43,12 +43,11 @@ export function DirectoryPicker({ value, onChange, recent = [], directories, all
       filter={(i: DirItem, q: string) => i.open === true || `${i.path ?? ""} ${i.label}`.toLowerCase().includes(q.trim().toLowerCase())}
       onOpenChange={(open) => !open && setQuery("")}
     >
-      <ComboboxTrigger disabled={disabled} aria-label={`Directory: ${value ?? "Scratch"}`} className={CHIP}>
+      <ComboboxTrigger disabled={disabled} aria-label={`Directory: ${value ?? "Scratch"}`} className={`${CHIP} max-w-32 shrink-0`}>
         {value ? <Folder className="size-3.5 shrink-0" /> : <Sparkles className="size-3.5 shrink-0" />}
         <span className="truncate" title={value ?? undefined}>
           {value ? baseName(value) : "Scratch"}
         </span>
-        <ChevronDown aria-hidden className="size-3.5 shrink-0" />
       </ComboboxTrigger>
       <ComboboxContent className="w-[300px]">
         <ComboboxSearch placeholder="Search or type a path" aria-label="Search folders" />

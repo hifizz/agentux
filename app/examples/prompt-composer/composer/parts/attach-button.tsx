@@ -26,7 +26,7 @@ export function AttachButton({ accept, onAttach }: AttachButtonProps) {
         }}
       />
       <Tooltip label="Attach a file">
-        <Button variant="iconRaised" aria-label="Attach a file" onClick={() => input.current?.click()}>
+        <Button variant="icon" aria-label="Attach a file" onClick={() => input.current?.click()}>
           <PaperclipIcon className="size-3.5" />
         </Button>
       </Tooltip>

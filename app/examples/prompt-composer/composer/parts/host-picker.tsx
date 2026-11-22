@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import { CHIP, Menu, MenuContent, MenuGroup, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/ui/base";
 import { cx } from "@/app/examples/_shared/ui/cx";
 import type { Host, HostControl, HostStatus } from "../types";
@@ -24,7 +23,7 @@ export function HostPicker({ hosts, value, status, onChange, disabled }: HostPic
   const body = (
     <>
       <HostIcon kind={current.kind} className="size-3.5 shrink-0" />
-      <span className="truncate">{current.name}</span>
+      <span data-tray-compact className="truncate">{current.name}</span>
       <span aria-hidden className={cx("size-1.5 shrink-0 rounded-full", STATUS_DOT[status])} />
       <span className="hidden text-ch-caption @min-[400px]:inline">{STATUS_LABEL[status]}</span>
     </>
@@ -34,7 +33,6 @@ export function HostPicker({ hosts, value, status, onChange, disabled }: HostPic
     <Menu>
       <MenuTrigger disabled={disabled} aria-label={`Run on ${current.name}, ${STATUS_LABEL[status]}`} className={CHIP}>
         {body}
-        <ChevronDown aria-hidden className="size-3.5 shrink-0" />
       </MenuTrigger>
       <MenuContent align="end" className="w-[220px]">
         <MenuGroup>
