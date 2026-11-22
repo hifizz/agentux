@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
+import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
@@ -71,6 +72,7 @@ export const promptComposer = {
 const COMPOSER = "Ported from the agent-builder prompt composer, popups rebuilt on Base UI.";
 const PI = "Ported from the agent-builder Pi chat components.";
 const CONVERSATION = "Ported from the agent-builder conversation module.";
+const MESSAGE = "Generalized from the agent-builder message renderer. No Pi types, plain props in and out.";
 
 export const chatMessage = {
   name: "Message",
@@ -482,4 +484,182 @@ export const composerStates = {
   source: COMPOSER,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions];
+export const agentMessage = {
+  name: "Agent Message",
+  href: "/examples/agent-message/",
+  category: "Message · Rendering",
+  description: "One assistant turn assembled from the message parts: thinking, tools, search, streamed Markdown, sources and actions.",
+  preview: AgentMessagePreview,
+  interaction: "The turn plays on its own inside a following scroll area. Turn on Fail to see the error with Retry. Hover the footer to copy, rate or regenerate.",
+  parts: [
+    { name: "Message", file: "_message/message.tsx", description: "Shell for user, assistant and system rows, with avatar, name, time, attachments and footer slots." },
+    { name: "MessageAttachments", file: "_message/message.tsx", description: "File chips above a user message." },
+    { name: "MessageError", file: "_message/message.tsx", description: "Inline failure with an optional Retry." },
+    { name: "TypingDots", file: "_message/message.tsx", description: "Status before the first token." },
+    { name: "DisclosureRow", file: "_message/disclosure-row.tsx", description: "The shared row behind thinking, tools, search and swarm." },
+  ],
+  props: [
+    { name: "role", type: '"user" | "assistant" | "system"', description: "Layout of the row.", required: true },
+    { name: "name / avatar / time", type: "string / ReactNode / string", description: "Optional header of an assistant message." },
+    { name: "attachments", type: "ReactNode", description: "Rendered above a user bubble." },
+    { name: "footer", type: "ReactNode", description: "Usually MessageActions, sources or both." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const markdownRenderer = {
+  name: "Markdown",
+  href: "/examples/markdown/",
+  category: "Message · Rendering",
+  description: "Model output as Markdown: headings, emphasis, lists, task lists, tables, quotes, code with copy, footnotes and CJK text.",
+  preview: MarkdownPreview,
+  interaction: "Static shows every format at once. Streaming replays the same text and closes unfinished syntax while it grows.",
+  parts: [
+    { name: "Markdown", file: "_message/markdown.tsx", description: "Wraps @pierre/words with highlighting, safe links and blocked images." },
+    { name: "message.css", file: "_message/message.css", description: "Neutral overrides for task lists, strikethrough, mark and kbd." },
+  ],
+  props: [
+    { name: "children", type: "string", description: "Markdown source.", required: true },
+    { name: "streaming", type: "boolean", description: "Repairs open syntax and fades in new text. Defaults to false." },
+    { name: "images", type: "boolean", description: "Allow remote images. Off by default so output cannot leak data through image URLs." },
+    { name: "size", type: '"body" | "small"', description: "Small is used inside thinking and tool details." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const smoothStreaming = {
+  name: "Smooth Streaming",
+  href: "/examples/smooth-streaming/",
+  category: "Message · Rendering",
+  description: "A hook that turns bursty token chunks into a steady reveal, side by side with the raw stream.",
+  preview: StreamingPreview,
+  interaction: "Both columns read the same bursty stream. The right one drains a buffer on every frame and speeds up when a burst lands. Replay to run it again.",
+  parts: [{ name: "useSmoothStream", file: "_message/use-smooth-stream.ts", description: "Returns the visible slice and whether it has caught up." }],
+  props: [
+    { name: "target", type: "string", description: "Everything received so far.", required: true },
+    { name: "minRate", type: "number", description: "Floor speed in characters per second. Defaults to 60." },
+    { name: "lag", type: "number", description: "Seconds a burst takes to drain. Defaults to 0.6." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const shadowScroll = {
+  name: "Shadow Scroll",
+  href: "/examples/shadow-scroll/",
+  category: "Message · Layout",
+  description: "A scroll area that fades its edges only where content hides, and can follow new content to the bottom.",
+  preview: ShadowScrollPreview,
+  interaction: "The left list grows every second and stays pinned. Scroll up to stop following, then press Jump to latest. The right list only fades.",
+  parts: [{ name: "ShadowScroll", file: "_message/shadow-scroll.tsx", description: "Mask fades, pin to bottom and the jump button." }],
+  props: [
+    { name: "follow", type: "boolean", description: "Pin to the bottom while content grows." },
+    { name: "fade", type: "number", description: "Fade size in pixels. Defaults to 32." },
+    { name: "jumpLabel", type: "string", description: "Label of the jump button." },
+    { name: "contentClassName", type: "string", description: "Class of the inner content box." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const messageActions = {
+  name: "Message Actions",
+  href: "/examples/message-actions/",
+  category: "Message · Footer",
+  description: "A footer toolbar for any message: copy, feedback, regenerate, a more menu and model or token meta.",
+  preview: ActionsPreview,
+  interaction: "Click copy, the thumbs or regenerate. Open the more menu for branch, read aloud, share and delete. The second and third rows only show on hover or focus.",
+  parts: [
+    { name: "MessageActions", file: "_message/message-actions.tsx", description: "Toolbar with tooltips, a Base UI menu and a meta slot." },
+    { name: "useCopyAction / feedbackActions / retryAction", file: "_message/message-actions.tsx", description: "Ready made actions." },
+  ],
+  props: [
+    { name: "actions", type: "MessageAction[]", description: "Id, label, icon, pressed and onSelect.", required: true },
+    { name: "menu", type: "MessageMenuItem[]", description: "Items in the more menu. Use danger and separated for delete." },
+    { name: "meta", type: "ReactNode", description: "Trailing text such as model, tokens and time." },
+    { name: "reveal", type: '"always" | "hover"', description: "Hover hides it until the message is hovered or focused." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const thinkingBlock = {
+  name: "Thinking",
+  href: "/examples/thinking/",
+  category: "Message · Blocks",
+  description: "A thinking row that shimmers while it streams, reports the time and folds away.",
+  preview: ThinkingBlockPreview,
+  interaction: "The live row opens while streaming and closes one second after it ends. Click any row to open or close it.",
+  parts: [{ name: "Thinking", file: "_message/thinking.tsx", description: "Timer, auto close and the Markdown body." }],
+  props: [
+    { name: "children", type: "string", description: "Thinking text as Markdown." },
+    { name: "streaming", type: "boolean", description: "Whether text is still arriving.", required: true },
+    { name: "seconds", type: "number", description: "Known duration for history items." },
+    { name: "autoClose / defaultOpen", type: "boolean", description: "Folding behavior." },
+    { name: "labels / icon", type: "object / ReactNode", description: "Rename the row for planning or other steps." },
+    { name: "redacted", type: "boolean", description: "Shows a hidden notice instead of text." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const toolOutput = {
+  name: "Tool Output",
+  href: "/examples/tool-output/",
+  category: "Message · Blocks",
+  description: "A generic tool call row with waiting, running, done and failed states, and details for input, output and terminal runs.",
+  preview: ToolOutputPreview,
+  interaction: "Three tools run in order inside a group. Click a row to see its input and output, or copy them. The failed and waiting rows show the other states.",
+  parts: [
+    { name: "ToolCall", file: "_message/tool-call.tsx", description: "Row with verb, summary, duration and status." },
+    { name: "ToolGroup", file: "_message/tool-call.tsx", description: "Folds several calls under one line." },
+    { name: "ToolInput / ToolOutput / ToolTerminal", file: "_message/tool-call.tsx", description: "Detail sections with copy." },
+  ],
+  props: [
+    { name: "name", type: "string", description: "Tool name, used when no verb is given.", required: true },
+    { name: "status", type: '"pending" | "running" | "done" | "error"', description: "Current state.", required: true },
+    { name: "verb", type: "{ active, done }", description: "Reading and Read, Running and Ran." },
+    { name: "summary / icon / duration", type: "ReactNode / ReactNode / number", description: "Row content." },
+    { name: "children", type: "ReactNode", description: "Details shown when the row opens." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const webSearch = {
+  name: "Web Search",
+  href: "/examples/web-search/",
+  category: "Message · Blocks",
+  description: "Search progress, results, inline citations with previews and a numbered source list.",
+  preview: SearchPreview,
+  interaction: "Sites appear as they are read. Open the row for queries and results. Hover a number in the answer to preview its source.",
+  parts: [
+    { name: "WebSearch", file: "_message/web-search.tsx", description: "Searching and searched states with a site stack." },
+    { name: "Citation", file: "_message/web-search.tsx", description: "Inline number with a Base UI hover popover." },
+    { name: "SourceList", file: "_message/web-search.tsx", description: "Numbered chips for the footer." },
+  ],
+  props: [
+    { name: "queries", type: "string[]", description: "Queries sent so far.", required: true },
+    { name: "sources", type: "SearchSource[]", description: "Title, url, snippet and date.", required: true },
+    { name: "status", type: '"searching" | "done"', description: "Current state.", required: true },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const subagentSwarm = {
+  name: "Subagent Swarm",
+  href: "/examples/subagent-swarm/",
+  category: "Message · Blocks",
+  description: "Several subagents working in parallel, each with a live step, progress and result.",
+  preview: SwarmPreview,
+  interaction: "Three slots run at once and the reviewer waits until the others finish. One agent fails on purpose. Replay to start again.",
+  parts: [
+    { name: "Swarm", file: "_message/swarm.tsx", description: "Header with counts and a grid of agent tiles." },
+    { name: "AgentOrb", file: "_message/swarm.tsx", description: "Status mark with a spinning ring while working." },
+    { name: "SwarmSummary", file: "_message/swarm.tsx", description: "Working, done and failed counts." },
+  ],
+  props: [
+    { name: "title", type: "string", description: "Header text.", required: true },
+    { name: "agents", type: "SwarmAgent[]", description: "Name, role, task, status, step and progress.", required: true },
+    { name: "lead", type: "ReactNode", description: "Optional content between header and grid." },
+    { name: "columns", type: "1 | 2 | 3", description: "Grid columns at wide sizes. Defaults to 2." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm];
