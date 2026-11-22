@@ -1,4 +1,4 @@
-import { ArrowDown, Brain, Check, Copy, FileText, Globe, LoaderCircle, RotateCcw, SquareTerminal, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowDown, Brain, ChevronDown, Check, Copy, FileText, Globe, LoaderCircle, RotateCcw, SquareTerminal, ThumbsDown, ThumbsUp } from "lucide-react";
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const ROW = "flex items-center gap-2 text-xs text-muted-foreground";
@@ -90,6 +90,19 @@ export function AgentMessagePreview() {
       <p className={ROW}><Brain size={14} /> Thought for 3 seconds</p>
       <p className={ROW}><Globe size={14} /> Searched 2 sites</p>
       <p className="text-xs font-medium">The streaming section changed in three places.</p>
+    </div>
+  );
+}
+
+export function WorkLogPreview() {
+  return (
+    <div className={`${CARD} flex flex-col gap-1.5`}>
+      <p className={ROW}><ChevronDown size={14} /> Worked for 13m 30s <span className="text-emerald-600">+2023</span><span className="text-red-500">−2</span></p>
+      <div className="ml-1.5 flex flex-col gap-1.5 border-l border-foreground/10 pl-3 text-xs text-muted-foreground">
+        <p>Read <span className="text-foreground underline decoration-dotted underline-offset-2">components.ts:6-40</span></p>
+        <p>Searched tokens.css for shimmer</p>
+        <p>Thought for 42s</p>
+      </div>
     </div>
   );
 }

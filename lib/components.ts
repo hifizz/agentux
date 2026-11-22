@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
-import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview } from "@/components/gallery/MessagePreviews";
+import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
@@ -662,4 +662,30 @@ export const subagentSwarm = {
   source: MESSAGE,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm];
+export const workLog = {
+  name: "Work Log",
+  href: "/examples/work-log/",
+  category: "Message · Blocks",
+  description: "A folding log of what the agent did while it worked: reads, searches, commands, edits and thinking, with time and lines changed.",
+  preview: WorkLogPreview,
+  interaction:
+    "Steps stream in and the newest one shimmers. Pick Rail, Timeline or Ticker on top, and Group to merge runs of reads or searches. Click the header to fold the log. Thinking, commands with output and notes open on click.",
+  parts: [
+    { name: "WorkLog", file: "_message/work-log.tsx", description: "Header with timer and diff stat, and the scrolling step list." },
+    { name: "Ticker", file: "_message/work-log.tsx", description: "One line that rolls to the newest step while folded." },
+    { name: "DiffStat", file: "_message/work-log.tsx", description: "Added and removed line counts." },
+    { name: "ShadowScroll", file: "_message/shadow-scroll.tsx", description: "Caps the height, fades the edges and follows new steps." },
+  ],
+  props: [
+    { name: "steps", type: "WorkStep[]", description: "read, search, list, run, edit, think, web or note.", required: true },
+    { name: "status", type: '"working" | "done" | "stopped" | "failed"', description: "Sets the header text. Working counts time by itself.", required: true },
+    { name: "seconds", type: "number", description: "Known duration for history items." },
+    { name: "added / removed", type: "number", description: "Lines changed, shown next to the time." },
+    { name: "variant", type: '"rail" | "timeline" | "ticker"', description: "Visual style. Defaults to rail." },
+    { name: "group", type: "boolean", description: "Merges runs of the same read, search or list step." },
+    { name: "defaultOpen / maxHeight", type: "boolean / number", description: "Starting fold and the list height cap." },
+  ],
+  source: MESSAGE,
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm, workLog];
