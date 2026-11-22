@@ -17,7 +17,7 @@ const CASES: readonly Case[] = [
   { id: "idle", label: "Idle", note: "Empty input, send is disabled", props: {} },
   { id: "draft", label: "Draft", note: "Text in the input, ready to send", props: { defaultValue: "Split the composer into Base UI parts" } },
   { id: "busy-queue", label: "Busy · queue", note: "Running, a new message waits in the queue", props: { busy: true, busyPolicy: "queue", strips: [{ kind: "queue", messages: QUEUED, onRemove: () => {} }] } },
-  { id: "busy-steer", label: "Busy · steerable", note: "Running, the toggle sends into the current turn", props: { busy: true, busyPolicy: "steerable", defaultValue: "Use neutral colors" } },
+  { id: "busy-steer", label: "Busy · steerable", note: "Running, the toggle sends into the current turn", props: { busy: true, busyPolicy: "steerable", defaultValue: "Use neutral colors", strips: [{ kind: "queue", messages: [{ id: "s1", text: "Keep the tray compact", mode: "steer" }, ...QUEUED], onRemove: () => {}, onSteer: () => {}, onEdit: () => {} }] } },
   { id: "busy-block", label: "Busy · stop", note: "Running with an empty input, send turns into Stop", props: { busy: true, busyPolicy: "block", onStop: () => {} } },
   { id: "error", label: "Error", note: "Press Enter, the send fails and the text stays", props: { defaultValue: "Deploy the preview", onSubmit: fail } },
   { id: "usage", label: "Near the limit", note: "Usage strip with a nearly full context", props: { strips: [{ kind: "usage", percent: 92 }], context: { ...CONTEXT, segments: CONTEXT.segments.map((s) => (s.id === "messages" ? { ...s, tokens: 140_000 } : s)) } } },

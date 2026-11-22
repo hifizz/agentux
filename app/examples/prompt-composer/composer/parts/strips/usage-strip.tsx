@@ -13,7 +13,7 @@ export function UsageStripView({ strip, onDismiss }: UsageStripViewProps) {
       icon={<InfoIcon className="size-3.5" />}
       actions={
         <Tooltip label="Dismiss">
-          <Button variant="icon" aria-label="Dismiss" onClick={onDismiss} className="-mr-1">
+          <Button variant="icon" aria-label="Dismiss" onClick={onDismiss} className="-mr-1 size-5">
             <CloseIcon className="size-3" />
           </Button>
         </Tooltip>

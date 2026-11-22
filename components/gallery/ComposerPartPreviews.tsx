@@ -1,4 +1,4 @@
-import { AtSign, ChevronDown, Folder, GitBranch, Laptop, Lock, Paperclip, Shield } from "lucide-react";
+import { AtSign, ChevronDown, CornerDownRight, Pencil, X, Folder, GitBranch, Laptop, Lock, Paperclip, Shield } from "lucide-react";
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const CHIP = "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-muted-foreground";
@@ -96,6 +96,18 @@ export function StatesPreview() {
       {["Idle", "Busy · queue", "Steer", "Error", "Disabled", "Compact"].map((s, i) => (
         <span key={s} className={`flex items-center gap-1.5 rounded-lg border border-foreground/10 px-2 py-1.5 ${i === 3 ? "border-foreground/30 text-foreground" : ""}`}><Shield size={11} />{s}</span>
       ))}
+    </div>
+  );
+}
+
+export function QueueSteerPreview() {
+  return (
+    <div className={`${CARD} flex flex-col p-0!`}>
+      <div className="flex flex-col gap-1 rounded-t-[20px] bg-foreground/[0.04] px-3 pt-2 pb-5 text-xs text-muted-foreground">
+        <span className="flex items-center gap-1.5"><span className="flex-1 truncate">Use a pencil icon for edit</span><Pencil size={11} /><CornerDownRight size={11} /><X size={11} /></span>
+        <span className="flex items-center gap-1.5"><span className="rounded border border-foreground/10 px-1 text-[10px]">steer</span><span className="flex-1 truncate">Keep the tray compact</span><Pencil size={11} /><X size={11} /></span>
+      </div>
+      <p className="-mt-3 rounded-[16px] border border-foreground/10 bg-card px-3 py-3 text-sm text-muted-foreground">Queue or steer a follow-up</p>
     </div>
   );
 }

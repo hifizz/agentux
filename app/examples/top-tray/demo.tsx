@@ -17,7 +17,7 @@ export default function Demo() {
     kind === "usage"
       ? { kind, percent: 82 }
       : kind === "queue" && queue.length
-        ? { kind, messages: queue, onRemove: (id) => setQueue((q) => q.filter((m) => m.id !== id)), onSteer: (id) => setQueue((q) => q.map((m) => (m.id === id ? { ...m, mode: "steer" } : m))) }
+        ? { kind, messages: queue, onRemove: (id) => setQueue((q) => q.filter((m) => m.id !== id)), onEdit: (id, text) => setQueue((q) => q.map((m) => (m.id === id ? { ...m, text } : m))), onSteer: (id) => setQueue((q) => q.map((m) => (m.id === id ? { ...m, mode: "steer" } : m))) }
         : kind === "goal"
           ? { kind, text: "Split the composer into Base UI parts", status: "active", onClear: () => setKind(null) }
           : kind === "changes"

@@ -42,6 +42,7 @@ export type QueueStrip = {
   kind: "queue";
   messages: readonly QueuedMessage[];
   onSteer?: (id: string) => void;
+  onEdit?: (id: string, text: string) => void;
   onRemove: (id: string) => void;
 };
 export type GoalStrip = { kind: "goal"; text: string; status: "active" | "paused" | "done"; onClear?: () => void };

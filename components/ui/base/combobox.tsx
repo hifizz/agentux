@@ -25,9 +25,9 @@ export function ComboboxContent({ className, align = "start", alignOffset = 0, s
 
 export function ComboboxSearch({ className, ...props }: ComboboxPrimitive.Input.Props) {
   return (
-    <label className="flex h-9 shrink-0 items-center gap-2 border-b border-ch-line-soft px-3">
-      <Search aria-hidden className="size-3.5 shrink-0 text-ch-ink-subtle" />
-      <ComboboxPrimitive.Input className={cn("min-w-0 flex-1 bg-transparent text-ch-body text-ch-ink outline-none placeholder:text-ch-ink-subtle", className)} {...props} />
+    <label className="flex h-8 shrink-0 items-center gap-1.5 border-b border-ch-line-soft px-2.5">
+      <Search aria-hidden className="size-3 shrink-0 text-ch-ink-subtle" />
+      <ComboboxPrimitive.Input className={cn("min-w-0 flex-1 bg-transparent text-ch-caption text-ch-ink outline-none placeholder:text-ch-ink-subtle", className)} {...props} />
     </label>
   );
 }

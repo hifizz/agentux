@@ -118,6 +118,7 @@ export default function Demo() {
             kind: "queue",
             messages: queue,
             onSteer: (id: string) => setQueue((list) => list.map((m) => (m.id === id ? { ...m, mode: "steer" } : m))),
+            onEdit: (id: string, text: string) => setQueue((list) => list.map((m) => (m.id === id ? { ...m, text } : m))),
             onRemove: (id: string) => setQueue((list) => list.filter((m) => m.id !== id)),
           } as const,
         ]

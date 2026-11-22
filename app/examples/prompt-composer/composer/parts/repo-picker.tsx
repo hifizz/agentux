@@ -94,7 +94,7 @@ export function BranchSelect({ branches, defaultBranch, value, onChange, onCreat
         <ComboboxList>
           {(b: BranchItem) => (
             <ComboboxItem key={b.create ? `create:${b.name}` : b.name} value={b} indicator={!b.create}>
-              {b.create ? <Plus className="size-3.5 shrink-0" /> : <GitBranch className="size-3.5 shrink-0" />}
+              {b.create && <Plus className="size-3.5 shrink-0" />}
               <span className={cx("min-w-0 flex-1 truncate", !b.create && "ch-mono text-ch-caption")}>{b.create ? `Create branch ${b.name}` : b.name}</span>
               {b.name === defaultBranch && !b.create && <span className="rounded-full border border-ch-line px-1.5 text-[10px] leading-4 text-ch-ink-subtle">default</span>}
             </ComboboxItem>

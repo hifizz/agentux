@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
-import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
+import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
   name: string;
@@ -441,6 +441,27 @@ export const repoBranchPicker = {
   source: COMPOSER,
 } satisfies Example;
 
+export const queueSteer = {
+  name: "Queue & Steer",
+  href: "/examples/queue-steer/",
+  category: "Composer · States",
+  description: "Follow-ups sent during a run: queued for later, edited in place, or steered into the current run.",
+  preview: QueueSteerPreview,
+  interaction: "Send while the run is going and the message is queued. Turn on Steer or press the arrow on a queued item to join after the current step. Press the pencil to edit, Enter saves and Escape cancels. Stop keeps the queue.",
+  parts: [
+    { name: "QueueStrip", file: "composer/parts/strips/queue-strip.tsx", description: "Queued items with edit, steer and remove." },
+    { name: "BusyToggle", file: "composer/parts/busy-toggle.tsx", description: "Queue or steer for the next send." },
+    { name: "PromptComposer", file: "composer/prompt-composer.tsx", description: "The assembled composer in its busy state." },
+  ],
+  props: [
+    { name: "messages", type: "QueuedMessage[]", description: "Queued items with text and mode.", required: true },
+    { name: "onEdit", type: "(id, text) => void", description: "Save an edited item. Hides the pencil when missing." },
+    { name: "onSteer", type: "(id) => void", description: "Move a queued item into the current run." },
+    { name: "onRemove", type: "(id) => void", description: "Drop an item from the queue.", required: true },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
 export const composerStates = {
   name: "Composer States",
   href: "/examples/composer-states/",
@@ -461,4 +482,4 @@ export const composerStates = {
   source: COMPOSER,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions];
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions];

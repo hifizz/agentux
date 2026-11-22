@@ -16,7 +16,7 @@ export function GoalStripView({ strip }: GoalStripViewProps) {
       actions={
         strip.onClear && (
           <Tooltip label="Clear goal">
-            <Button variant="icon" aria-label="Clear goal" onClick={strip.onClear} className="-mr-1">
+            <Button variant="icon" aria-label="Clear goal" onClick={strip.onClear} className="-mr-1 size-5">
               <CloseIcon className="size-3" />
             </Button>
           </Tooltip>
