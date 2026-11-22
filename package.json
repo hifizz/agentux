@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@fontsource-variable/dm-sans": "^5.2.0",
     "@pierre/highlights": "0.5.1",
     "@pierre/words": "0.2.2",

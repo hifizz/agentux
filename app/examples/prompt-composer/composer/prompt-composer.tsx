@@ -4,17 +4,21 @@ import { useRef, useState } from "react";
 import { findModel } from "@/app/examples/_shared/models";
 import { cx } from "@/app/examples/_shared/ui/cx";
 import { activeStrip } from "./tables";
-import type { Attachment, AttachControl, BusyMode, BusyPolicy, ModelControl, PermissionControl, Strip, Submission, TrayControl } from "./types";
+import type { Attachment, AttachControl, BusyMode, BusyPolicy, ContextControl, ModelControl, PermissionControl, Strip, Submission, TrayControl } from "./types";
 import { AttachButton } from "./parts/attach-button";
 import { AttachmentChips } from "./parts/attachment-chips";
 import { BusyToggle } from "./parts/busy-toggle";
-import { ComposerCard } from "./parts/composer-card";
+import { BottomTray } from "./parts/bottom-tray";
+import { ContextUsage } from "./parts/context-usage";
+import { DirectoryPicker } from "./parts/directory-picker";
+import { HostPicker } from "./parts/host-picker";
+import { PromptInput } from "./parts/prompt-input";
+import { RepoBranchPicker } from "./parts/repo-picker";
 import { EffortPicker } from "./parts/effort-picker";
 import { ModelPicker } from "./parts/model-picker";
 import { PermissionPicker } from "./parts/permission-picker";
 import { SendButton } from "./parts/send-button";
-import { StripHost } from "./parts/strips/strip-host";
-import { Tray } from "./parts/tray";
+import { TopTray } from "./parts/strips/top-tray";
 
 export type PromptComposerProps = {
   value?: string;
@@ -30,6 +34,7 @@ export type PromptComposerProps = {
   attach?: AttachControl;
   model?: ModelControl;
   permission?: PermissionControl;
+  context?: ContextControl;
 
   strips?: readonly Strip[];
   tray?: TrayControl;
@@ -58,6 +63,7 @@ export function PromptComposer({
   attach,
   model,
   permission,
+  context,
   strips = [],
   tray,
   density = "regular",
@@ -106,14 +112,14 @@ export function PromptComposer({
 
   return (
     <div className={cx("@container relative z-30 flex flex-col", className)}>
-      <StripHost strip={strip} collapsed={stripCollapsed} onDismissUsage={() => setUsageDismissed(true)} />
+      <TopTray strip={strip} collapsed={stripCollapsed} onDismissUsage={() => setUsageDismissed(true)} />
       {error && (
         <p role="alert" className="pb-2 text-ch-caption text-ch-diff-del-ink">
           {error}
         </p>
       )}
       <div className={cx(strip && "-mt-4", "flex flex-col")}>
-        <ComposerCard
+        <PromptInput
           value={text}
           onChange={setText}
           placeholder={placeholder}
@@ -124,24 +130,36 @@ export function PromptComposer({
           }}
           autoFocus={autoFocus}
           disabled={disabled}
+          invalid={!!error}
           density={density}
-          above={<AttachmentChips attachments={attachments} onRemove={(id) => setAttachments((a) => a.filter((x) => x.id !== id))} />}
-          toolbar={
+          header={<AttachmentChips attachments={attachments} onRemove={(id) => setAttachments((a) => a.filter((x) => x.id !== id))} />}
+          start={
             <>
-              <div className="flex min-w-0 items-center gap-1.5">
-                {attach && <AttachButton {...attach} onAttach={(files) => setAttachments((a) => [...a, ...files])} />}
-                {permission && <PermissionPicker {...permission} />}
-                {busy && busyPolicy === "steerable" && <BusyToggle mode={busyMode} onChange={setBusyMode} />}
-              </div>
-              <div className="flex min-w-0 items-center gap-1.5">
-                {model && <ModelPicker {...model} />}
-                {model && card && <EffortPicker model={card} value={model.value.effort} onChange={(effort) => model.onChange({ ...model.value, effort })} />}
-                <SendButton canSend={canSend} onSend={() => void send()} label={sendLabel} onStop={busy && !hasContent ? onStop : undefined} />
-              </div>
+              {attach && <AttachButton {...attach} onAttach={(files) => setAttachments((a) => [...a, ...files])} />}
+              {permission && <PermissionPicker {...permission} disabled={disabled} />}
+              {busy && busyPolicy === "steerable" && <BusyToggle mode={busyMode} onChange={setBusyMode} />}
+            </>
+          }
+          end={
+            <>
+              {context && <ContextUsage {...context} disabled={disabled} />}
+              {model && <ModelPicker {...model} disabled={disabled} />}
+              {model && card && <EffortPicker model={card} value={model.value.effort} disabled={disabled} onChange={(effort) => model.onChange({ ...model.value, effort })} />}
+              <SendButton canSend={canSend} onSend={() => void send()} label={sendLabel} onStop={busy && !hasContent ? onStop : undefined} />
             </>
           }
         />
-        {tray && <Tray {...tray} />}
+        {tray && (
+          <BottomTray
+            start={
+              <>
+                {tray.directory && <DirectoryPicker {...tray.directory} disabled={disabled} />}
+                {tray.repo && <RepoBranchPicker {...tray.repo} disabled={disabled} />}
+              </>
+            }
+            end={tray.host && <HostPicker {...tray.host} disabled={disabled} />}
+          />
+        )}
       </div>
     </div>
   );

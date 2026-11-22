@@ -1,4 +1,5 @@
 import type { EffortLevel, ModelCard, ModelSelection } from "@/app/examples/_shared/models";
+import type { GithubRepo } from "@/app/examples/_shared/github";
 import type { PermissionMode } from "@/app/examples/_shared/permission";
 
 
@@ -53,8 +54,29 @@ export type HostKind = "local" | "cloud" | "remote";
 export type Host = { id: string; name: string; kind: HostKind };
 export type HostStatus = "ready" | "starting" | "running" | "offline";
 
-export type WorkspaceInfo = { path: string; branch?: string; onPick?: () => void };
 export type HostControl = { hosts: readonly Host[]; value: string; status: HostStatus; onChange: (id: string) => void };
-export type TrayControl = { workspace?: WorkspaceInfo; host?: HostControl };
+export type DirectoryControl = {
+  value: string | null;
+  onChange: (path: string | null) => void;
+  directories: readonly string[];
+  recent?: readonly string[];
+  allowScratch?: boolean;
+};
+
+export type RepoRef = { repo: string; branch: string };
+
+export type RepoControl = {
+  repos: readonly GithubRepo[];
+  value: RepoRef;
+  onChange: (next: RepoRef) => void;
+  branchesOf: (repo: string) => readonly string[];
+  onCreateBranch?: (repo: string, branch: string) => void;
+};
+
+export type TrayControl = { directory?: DirectoryControl; repo?: RepoControl; host?: HostControl };
+
+export type ContextSegment = { id: string; label: string; tokens: number };
+
+export type ContextControl = { window: number; segments: readonly ContextSegment[]; reserved?: number };
 
 export type { EffortLevel, ModelCard, ModelSelection };

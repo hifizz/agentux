@@ -11,13 +11,13 @@ import { UsageStripView } from "./usage-strip";
 
 const PEEK = 16;
 
-export type StripHostProps = {
+export type TopTrayProps = {
   strip: Strip | undefined;
   collapsed: boolean;
   onDismissUsage: () => void;
 };
 
-export function StripHost({ strip, collapsed, onDismissUsage }: StripHostProps) {
+export function TopTray({ strip, collapsed, onDismissUsage }: TopTrayProps) {
   const reduced = useReducedMotion();
   const [settled, setSettled] = useState(true);
   const move = reduced ? { duration: 0 } : { duration: 0.24, ease: EASE_MORPH };

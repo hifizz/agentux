@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { RotateCcw } from "lucide-react";
 import { AiStatus } from "./ai-status";
 import { PromptComposer, type PermissionMode, type QueuedMessage, type Strip, type Submission } from "./composer";
+import { CONTEXT, useDirectory, useHost, useRepo } from "./fixtures";
 import { DEFAULT_DEMO_SELECTION, DEMO_MODELS, type ModelSelection } from "@/app/examples/_shared/models";
 
 const THINK_MS = 1400;
@@ -51,6 +52,11 @@ export default function Demo() {
   const scroller = useRef<HTMLDivElement>(null);
   const live = messages.at(-1);
   const busy = live?.phase === "thinking" || live?.phase === "writing";
+  const directory = useDirectory();
+  const repo = useRepo();
+  const host = useHost(busy ? "running" : "ready");
+  const spent = messages.reduce((n, m) => n + 600 + m.shown * 2, 0);
+  const context = { ...CONTEXT, segments: CONTEXT.segments.map((s) => (s.id === "messages" ? { ...s, tokens: s.tokens + spent } : s)) };
 
   const start = (prompt: string, meta: string) => {
     const id = ++turn.current;
@@ -167,10 +173,8 @@ export default function Demo() {
           model={{ catalog: DEMO_MODELS, value: model, onChange: setModel }}
           permission={{ value: permission, onChange: setPermission }}
           strips={strips}
-          tray={{
-            workspace: { path: "~/code/turnframe", branch: "feat/composer" },
-            host: { hosts: [{ id: "local", name: "This Mac", kind: "local" }], value: "local", status: busy ? "running" : "ready", onChange: () => {} },
-          }}
+          context={context}
+          tray={{ directory, repo, host }}
         />
       </div>
     </div>

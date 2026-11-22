@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
+import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
   name: string;
@@ -31,22 +32,23 @@ export const promptComposer = {
   name: "Prompt Composer",
   href: "/examples/prompt-composer/",
   category: "Composer · Chat",
-  description: "One composer built from small parts: model, effort, permission, attachments, status strips and a workspace tray.",
+  description: "One composer built from small parts: input, model, effort, permission, context, top tray and bottom tray.",
   preview: ComposerPreview,
   interaction:
     "Type and press Enter to send, Shift + Enter for a new line. While the agent writes, a new message waits in the queue strip. Turn on Steer to send it into the current run. With an empty input the send button becomes Stop.",
   parts: [
     { name: "PromptComposer", file: "composer/prompt-composer.tsx", description: "Assembles the parts. Holds text, attachments, busy mode and errors, and builds one submission." },
-    { name: "ComposerCard", file: "composer/parts/composer-card.tsx", description: "Card frame, auto-growing textarea and the Enter rule." },
+    { name: "PromptInput", file: "composer/parts/prompt-input.tsx", description: "Card frame, auto-growing textarea, the Enter rule and header, start and end slots." },
     { name: "SendButton", file: "composer/parts/send-button.tsx", description: "Send, queue or steer. Turns into Stop when the run is busy and the input is empty." },
     { name: "AttachButton · AttachmentChips", file: "composer/parts/attach-button.tsx", description: "Picks files and lists them above the input." },
     { name: "PermissionPicker", file: "composer/parts/permission-picker.tsx", description: "Ask, Edit, Auto or Bypass for tool calls." },
     { name: "ModelPicker · ModelDetail", file: "composer/parts/model-picker.tsx", description: "Searchable model list with context, price bar and a detail footer." },
     { name: "EffortPicker", file: "composer/parts/effort-picker.tsx", description: "Effort levels the chosen model supports. Hidden when there is only one." },
     { name: "BusyToggle", file: "composer/parts/busy-toggle.tsx", description: "Switches a busy send between queue and steer." },
-    { name: "StripHost", file: "composer/parts/strips/strip-host.tsx", description: "Shows the top strip by priority: queue, goal, changes, usage." },
-    { name: "Tray", file: "composer/parts/tray.tsx", description: "Workspace and branch on the left, host and status on the right." },
-    { name: "MenuPop", file: "composer/parts/menu-pop.tsx", description: "Shared shell for every menu that opens upward." },
+    { name: "ContextUsage", file: "composer/parts/context-usage.tsx", description: "Token ring that opens the context breakdown on hover." },
+    { name: "TopTray", file: "composer/parts/strips/top-tray.tsx", description: "Shows the top strip by priority: queue, goal, changes, usage." },
+    { name: "BottomTray", file: "composer/parts/bottom-tray.tsx", description: "Directory, repo and branch on the left, host and status on the right." },
+    { name: "Base UI primitives", file: "components/ui/base/", description: "Popover, Menu, Combobox and Tooltip adapted from shadcn Base UI sources." },
   ],
   props: [
     { name: "placeholder", type: "string", description: "Hint shown in the empty input.", required: true },
@@ -59,12 +61,14 @@ export const promptComposer = {
     { name: "permission", type: "PermissionControl", description: "Current mode, change handler and allowed modes." },
     { name: "attach", type: "AttachControl", description: "Shows the attach button. Accepts an accept filter." },
     { name: "strips", type: "Strip[]", description: "Queue, goal, changes or usage strips above the card." },
-    { name: "tray", type: "TrayControl", description: "Workspace and host chips below the card." },
+    { name: "context", type: "ContextControl", description: "Window size and token segments. Shows the token ring and breakdown." },
+    { name: "tray", type: "TrayControl", description: "Directory, repo, branch and host pickers below the card." },
     { name: "density", type: '"regular" | "compact"', description: "Compact fits side panels." },
   ],
   source: "Ported from the agent-builder prompt composer.",
 } satisfies Example;
 
+const COMPOSER = "Ported from the agent-builder prompt composer, popups rebuilt on Base UI.";
 const PI = "Ported from the agent-builder Pi chat components.";
 const CONVERSATION = "Ported from the agent-builder conversation module.";
 
@@ -248,4 +252,213 @@ export const suggestions = {
   source: CONVERSATION,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions];
+export const promptInput = {
+  name: "Prompt Input",
+  href: "/examples/prompt-input/",
+  category: "Composer · Input",
+  description: "The composer card on its own: an auto-growing textarea with header, start and end slots.",
+  preview: PromptInputPreview,
+  interaction: "Type and press Enter to send, Shift + Enter for a new line. Use the toggles to see compact, invalid and disabled.",
+  parts: [
+    { name: "PromptInput", file: "composer/parts/prompt-input.tsx", description: "Frame, textarea, Enter rule and three slots." },
+    { name: "AttachButton · AttachmentChips", file: "composer/parts/attach-button.tsx", description: "Fill the start and header slots." },
+    { name: "SendButton", file: "composer/parts/send-button.tsx", description: "Fills the end slot." },
+  ],
+  props: [
+    { name: "value", type: "string", description: "Current text.", required: true },
+    { name: "onChange", type: "(value: string) => void", description: "Called on every keystroke.", required: true },
+    { name: "placeholder", type: "string", description: "Hint in the empty input.", required: true },
+    { name: "onEnter", type: "() => void", description: "Enter without Shift and outside IME composition." },
+    { name: "header", type: "ReactNode", description: "Slot above the textarea." },
+    { name: "start", type: "ReactNode", description: "Left side of the toolbar." },
+    { name: "end", type: "ReactNode", description: "Right side of the toolbar." },
+    { name: "invalid", type: "boolean", description: "Red border and aria-invalid." },
+    { name: "disabled", type: "boolean", description: "Dims the card and blocks typing." },
+    { name: "density", type: '"regular" | "compact"', description: "Compact fits side panels." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const permissionPicker = {
+  name: "Permission Picker",
+  href: "/examples/permission-picker/",
+  category: "Composer · Settings",
+  description: "How much the agent may do without asking, from Ask to Bypass.",
+  preview: PermissionPreview,
+  interaction: "Click the shield to open a Base UI menu. Arrow keys move, Enter picks. Bypass is shown in red.",
+  parts: [
+    { name: "PermissionPicker", file: "composer/parts/permission-picker.tsx", description: "Trigger chip and a radio menu." },
+    { name: "Menu", file: "components/ui/base/menu.tsx", description: "Base UI Menu with radio items." },
+  ],
+  props: [
+    { name: "value", type: "PermissionMode", description: "Current mode.", required: true },
+    { name: "onChange", type: "(next: PermissionMode) => void", description: "Called when a mode is picked.", required: true },
+    { name: "modes", type: "PermissionMode[]", description: "Modes to offer. Defaults to all four." },
+    { name: "disabled", type: "boolean", description: "Blocks the trigger." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const modelPicker = {
+  name: "Model Picker",
+  href: "/examples/model-picker/",
+  category: "Composer · Settings",
+  description: "A searchable model list with price bars and a detail footer for the highlighted model.",
+  preview: ModelPreview,
+  interaction: "Click the model to open a Base UI combobox. Type to filter. Arrow keys move the highlight and the footer follows it. With one model it shows a static label.",
+  parts: [
+    { name: "ModelPicker", file: "composer/parts/model-picker.tsx", description: "Trigger, search, list and footer." },
+    { name: "ModelDetail · CostBar", file: "composer/parts/model-detail.tsx", description: "Context, output and price of one model." },
+    { name: "Combobox", file: "components/ui/base/combobox.tsx", description: "Base UI Combobox with the search inside the popup." },
+  ],
+  props: [
+    { name: "catalog", type: "ModelCard[]", description: "Models to offer.", required: true },
+    { name: "value", type: "ModelSelection", description: "Selected model key and effort.", required: true },
+    { name: "onChange", type: "(next: ModelSelection) => void", description: "Keeps the effort when the new model supports it.", required: true },
+    { name: "disabled", type: "boolean", description: "Blocks the trigger." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const effortPicker = {
+  name: "Effort Picker",
+  href: "/examples/effort-picker/",
+  category: "Composer · Settings",
+  description: "Reasoning effort for the selected model, drawn as a small meter.",
+  preview: EffortPreview,
+  interaction: "Click the meter to pick a level. Levels come from the model. A model with no levels hides the picker.",
+  parts: [
+    { name: "EffortPicker", file: "composer/parts/effort-picker.tsx", description: "Trigger and radio menu." },
+    { name: "EffortMeter", file: "composer/parts/effort-picker.tsx", description: "Bars filled up to the level." },
+  ],
+  props: [
+    { name: "model", type: "ModelCard", description: "Supplies the levels.", required: true },
+    { name: "value", type: "EffortLevel", description: "Current level.", required: true },
+    { name: "onChange", type: "(next: EffortLevel) => void", description: "Called when a level is picked.", required: true },
+    { name: "disabled", type: "boolean", description: "Blocks the trigger." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const contextUsage = {
+  name: "Context Usage",
+  href: "/examples/context-usage/",
+  category: "Composer · Context",
+  description: "A token ring for the toolbar and the breakdown of what fills the context window.",
+  preview: ContextPreview,
+  interaction: "Hover or focus the ring to open the breakdown in a Base UI popover. Add turns or files to fill it. The ring turns amber at 80% and red at 95%.",
+  parts: [
+    { name: "TokenCount", file: "composer/parts/context-usage.tsx", description: "Ring and used / window label." },
+    { name: "ContextBreakdown", file: "composer/parts/context-usage.tsx", description: "Stacked bar, one row per segment, reserved and free space." },
+    { name: "ContextUsage", file: "composer/parts/context-usage.tsx", description: "The ring as a hover trigger for the breakdown." },
+  ],
+  props: [
+    { name: "window", type: "number", description: "Context window in tokens.", required: true },
+    { name: "segments", type: "ContextSegment[]", description: "Id, label and tokens for each part.", required: true },
+    { name: "reserved", type: "number", description: "Tokens kept free for output." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const topTray = {
+  name: "Top Tray",
+  href: "/examples/top-tray/",
+  category: "Composer · Tray",
+  description: "Strips that sit above the input: usage, queued messages, the current goal and changed files.",
+  preview: TopTrayPreview,
+  interaction: "Pick a strip above. Only one shows at a time, by priority queue, goal, changes, usage. It slides in and out and respects reduced motion.",
+  parts: [
+    { name: "TopTray", file: "composer/parts/strips/top-tray.tsx", description: "Animated host for one strip." },
+    { name: "QueueStrip · GoalStrip · ChangesStrip · UsageStrip", file: "composer/parts/strips/", description: "One view per strip kind." },
+  ],
+  props: [
+    { name: "strip", type: "Strip", description: "Strip to show, or undefined to fold away." },
+    { name: "collapsed", type: "boolean", description: "Fold to a thin peek.", required: true },
+    { name: "onDismissUsage", type: "() => void", description: "Called when the usage strip is dismissed.", required: true },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const bottomTray = {
+  name: "Bottom Tray",
+  href: "/examples/bottom-tray/",
+  category: "Composer · Tray",
+  description: "The tray under the input with directory, repo, branch and the host the agent runs on.",
+  preview: BottomTrayPreview,
+  interaction: "Each chip opens a Base UI popup. Change the host status above to see the dot.",
+  parts: [
+    { name: "BottomTray", file: "composer/parts/bottom-tray.tsx", description: "Start and end slots under the card." },
+    { name: "DirectoryPicker", file: "composer/parts/directory-picker.tsx", description: "Folder or Scratch." },
+    { name: "RepoBranchPicker", file: "composer/parts/repo-picker.tsx", description: "Repository and branch." },
+    { name: "HostPicker", file: "composer/parts/host-picker.tsx", description: "Host and status dot." },
+  ],
+  props: [
+    { name: "start", type: "ReactNode", description: "Left slot." },
+    { name: "end", type: "ReactNode", description: "Right slot." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const directoryPicker = {
+  name: "Directory Picker",
+  href: "/examples/directory-picker/",
+  category: "Composer · Workspace",
+  description: "Pick the folder the agent works in, or a Scratch sandbox.",
+  preview: DirectoryPreview,
+  interaction: "Click the chip and type to filter recent and known folders. Type a path that starts with / or ~ to open it.",
+  parts: [
+    { name: "DirectoryPicker", file: "composer/parts/directory-picker.tsx", description: "Grouped Base UI combobox with an Open row." },
+  ],
+  props: [
+    { name: "value", type: "string | null", description: "Folder path, null for Scratch.", required: true },
+    { name: "onChange", type: "(path: string | null) => void", description: "Called when a folder is picked.", required: true },
+    { name: "directories", type: "string[]", description: "Known folders.", required: true },
+    { name: "recent", type: "string[]", description: "Shown first." },
+    { name: "allowScratch", type: "boolean", description: "Offer Scratch. Defaults to true." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const repoBranchPicker = {
+  name: "Repo & Branch",
+  href: "/examples/repo-branch-picker/",
+  category: "Composer · Workspace",
+  description: "A repository picker and a branch picker that can create a branch, used alone or as one pair.",
+  preview: RepoPreview,
+  interaction: "Pick a repo and the branch resets to its default. Type a branch name that does not exist to create it.",
+  parts: [
+    { name: "RepoBranchPicker", file: "composer/parts/repo-picker.tsx", description: "Repo and branch as one control." },
+    { name: "RepoSelect", file: "composer/parts/repo-picker.tsx", description: "Searchable repo list with private marks." },
+    { name: "BranchSelect", file: "composer/parts/repo-picker.tsx", description: "Searchable branches with a create row." },
+  ],
+  props: [
+    { name: "repos", type: "GithubRepo[]", description: "Repositories to offer.", required: true },
+    { name: "value", type: "RepoRef", description: "Repo and branch.", required: true },
+    { name: "onChange", type: "(next: RepoRef) => void", description: "Called on any change.", required: true },
+    { name: "branchesOf", type: "(repo: string) => string[]", description: "Branches of a repo.", required: true },
+    { name: "onCreateBranch", type: "(repo: string, branch: string) => void", description: "Shows the create row." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const composerStates = {
+  name: "Composer States",
+  href: "/examples/composer-states/",
+  category: "Composer · States",
+  description: "The full composer in every state it can be in, next to the run status line.",
+  preview: StatesPreview,
+  interaction: "Every sample is live. Open the pickers, send in the error sample, or stop the busy one.",
+  parts: [
+    { name: "PromptComposer", file: "composer/prompt-composer.tsx", description: "The assembled composer." },
+    { name: "AiStatus", file: "ai-status.tsx", description: "Run status for thinking, researching, analyzing, writing, done and error." },
+  ],
+  props: [
+    { name: "busy", type: "boolean", description: "The agent run is still going." },
+    { name: "busyPolicy", type: '"block" | "queue" | "steerable"', description: "What Enter does while busy." },
+    { name: "disabled", type: "boolean", description: "Turns every control off." },
+    { name: "density", type: '"regular" | "compact"', description: "Compact fits side panels." },
+  ],
+  source: COMPOSER,
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions];
