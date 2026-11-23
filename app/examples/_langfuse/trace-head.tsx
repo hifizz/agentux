@@ -13,7 +13,7 @@ export type TraceHeadProps = {
 };
 
 export function statsOf(trace: Trace): Stat[] {
-  const { tokens, cost, errors, failedNodes, generations, tools } = trace.totals;
+  const { tokens, cost, errors, failedNodes, generations, tools, unpriced } = trace.totals;
   const share = cachedShare(tokens);
   const propagated = failedNodes - errors;
   return [
@@ -23,7 +23,7 @@ export function statsOf(trace: Trace): Stat[] {
     tokens
       ? { label: "Tokens", value: formatTokens(tokens.total), caption: share === null ? undefined : `${Math.round(share * 100)}% cached`, footer: <TokenBreakdown tokens={tokens} size="sm" /> }
       : { label: "Tokens", value: "—", muted: true },
-    cost === null ? { label: "Cost", value: "—", muted: true, caption: "no pricing" } : { label: "Cost", value: formatCost(cost) },
+    cost === null ? { label: "Cost", value: "—", muted: true, caption: "no pricing" } : { label: "Cost", value: formatCost(cost), caption: unpriced > 0 ? `${unpriced} unpriced` : undefined },
     { label: "Errors", value: String(errors), tone: errors > 0 ? "bad" : undefined, caption: propagated > 0 ? `+${propagated} propagated` : undefined },
   ];
 }

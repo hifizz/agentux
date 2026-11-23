@@ -29,7 +29,7 @@ export function SessionStrip({ items, open, onPick }: SessionStripProps) {
             title={`#${item.turn.index + 1} ${item.turn.trace.name} · ${formatDuration(item.turn.trace.duration)}`}
             onClick={() => onPick(item.turn)}
           >
-            {item.turn.index + 1}
+            <span className="sv-num">{item.turn.index + 1}</span>
           </button>
         ),
       )}

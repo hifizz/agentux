@@ -100,6 +100,8 @@ function buildTrace(rows: LangfuseObservation[], { asOf }: BuildOptions): Trace 
     const status: NodeStatus = level === "ERROR" ? "error" : !row.endTime ? "running" : level === "WARNING" ? "warning" : "ok";
     return {
       id: row.id,
+      traceId: row.traceId,
+      at: start,
       parentId: treeParent.get(row.id) ?? null,
       childIds: childIds.get(row.id) ?? [],
       depth,
@@ -122,9 +124,11 @@ function buildTrace(rows: LangfuseObservation[], { asOf }: BuildOptions): Trace 
 
   let tokens: Tokens | null = null;
   let cost: number | null = null;
+  let unpriced = 0;
   for (const node of nodes) {
     if (node.tokens && !usageBelow.has(node.id)) tokens = addTokens(tokens, node.tokens);
     if (node.cost !== null && !costBelow.has(node.id)) cost = addCost(cost, node.cost);
+    if (node.tokens && node.cost === null && !usageBelow.has(node.id)) unpriced += 1;
   }
 
   const totals: TraceTotals = {
@@ -136,6 +140,7 @@ function buildTrace(rows: LangfuseObservation[], { asOf }: BuildOptions): Trace 
     warnings: nodes.filter((node) => node.status === "warning").length,
     tokens,
     cost,
+    unpriced,
     models: [...new Set(nodes.flatMap((node) => (node.model ? [node.model] : [])))],
   };
 
@@ -163,7 +168,7 @@ export function toTraces(rows: LangfuseObservation[], options: BuildOptions = {}
   return [...groups.values()].map((group) => buildTrace(group, options)).sort((a, b) => a.startedAt - b.startedAt || a.id.localeCompare(b.id));
 }
 
-const NO_TOTALS: TraceTotals = { nodes: 0, generations: 0, tools: 0, errors: 0, failedNodes: 0, warnings: 0, tokens: null, cost: null, models: [] };
+const NO_TOTALS: TraceTotals = { nodes: 0, generations: 0, tools: 0, errors: 0, failedNodes: 0, unpriced: 0, warnings: 0, tokens: null, cost: null, models: [] };
 
 export function toSession(rows: LangfuseObservation[], options: BuildOptions = {}): Session {
   const traces = toTraces(rows, options);
@@ -180,6 +185,7 @@ export function toSession(rows: LangfuseObservation[], options: BuildOptions = {
       warnings: sum.warnings + trace.totals.warnings,
       tokens: addTokens(sum.tokens, trace.totals.tokens),
       cost: addCost(sum.cost, trace.totals.cost),
+      unpriced: sum.unpriced + trace.totals.unpriced,
       models: [...new Set([...sum.models, ...trace.totals.models])],
     }),
     NO_TOTALS,

@@ -8,7 +8,7 @@ import { TokenBreakdown } from "./token-legend";
 import { cachedShare } from "./view-model";
 
 export function sessionStatsOf(session: Session, turns: Turn[]): Stat[] {
-  const { tokens, cost, errors, generations } = session.totals;
+  const { tokens, cost, errors, generations, unpriced } = session.totals;
   const share = cachedShare(tokens);
   const idle = idleOf(session);
   const withIssues = turns.filter(hasIssues).length;
@@ -19,7 +19,7 @@ export function sessionStatsOf(session: Session, turns: Turn[]): Stat[] {
     tokens
       ? { label: "Tokens", value: formatTokens(tokens.total), caption: share === null ? undefined : `${Math.round(share * 100)}% cached`, footer: <TokenBreakdown tokens={tokens} size="sm" /> }
       : { label: "Tokens", value: "—", muted: true },
-    cost === null ? { label: "Cost", value: "—", muted: true, caption: "no pricing" } : { label: "Cost", value: formatCost(cost) },
+    cost === null ? { label: "Cost", value: "—", muted: true, caption: "no pricing" } : { label: "Cost", value: formatCost(cost), caption: unpriced > 0 ? `${unpriced} unpriced` : undefined },
     { label: "Errors", value: String(errors), tone: errors > 0 ? "bad" : undefined, caption: withIssues > 0 ? `in ${withIssues} turn${withIssues > 1 ? "s" : ""}` : undefined },
   ];
 }

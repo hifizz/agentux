@@ -7,6 +7,8 @@ export type Tokens = { input: number; output: number; total: number; cached?: nu
 
 export type TraceNode = {
   id: string;
+  traceId: string;
+  at: number;
   parentId: string | null;
   childIds: string[];
   depth: number;
@@ -32,6 +34,7 @@ export type TraceTotals = {
   tools: number;
   errors: number;
   failedNodes: number;
+  unpriced: number;
   warnings: number;
   tokens: Tokens | null;
   cost: number | null;
