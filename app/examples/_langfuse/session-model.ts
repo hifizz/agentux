@@ -1,5 +1,5 @@
-import type { Session, Trace } from "./model";
-import { isFailed } from "./view-model";
+import type { Session, Trace, TraceNode } from "./model";
+import { failureOrigins, isFailed, slowest } from "./view-model";
 
 export type TurnState = "running" | "failed" | "partial" | "ok";
 
@@ -56,3 +56,13 @@ export function idleOf(session: Session) {
   const active = session.traces.reduce((sum, trace) => sum + trace.duration, 0);
   return Math.max(0, session.duration - active);
 }
+
+export type TurnNode = { turn: Turn; node: TraceNode };
+
+export const failuresOf = (turns: Turn[]): TurnNode[] => turns.flatMap((turn) => failureOrigins(turn.trace).map((node) => ({ turn, node })));
+
+export const slowestOf = (turns: Turn[], count = 3): TurnNode[] =>
+  turns
+    .flatMap((turn) => slowest(turn.trace, count).map((node) => ({ turn, node })))
+    .sort((a, b) => b.node.duration - a.node.duration || a.turn.index - b.turn.index)
+    .slice(0, count);

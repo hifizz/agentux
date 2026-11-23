@@ -20,14 +20,16 @@ export type TraceViewProps = {
   selectedId?: string | null;
   onSelect?: (id: string | null) => void;
   loadIo?: LoadIo;
+  detail?: "dock" | "none";
   className?: string;
 };
 
-export function TraceView({ trace, selectedId, onSelect, loadIo, className }: TraceViewProps) {
+export function TraceView({ trace, selectedId, onSelect, loadIo, detail = "dock", className }: TraceViewProps) {
   const [filter, setFilter] = useState<TraceFilter>("all");
   const [hideInstant, setHideInstant] = useState(false);
   const [inner, setInner] = useState<string | null>(null);
   const [jump, setJump] = useState(0);
+  const [seen, setSeen] = useState<string | null>(null);
   const selected = selectedId === undefined ? inner : selectedId;
 
   const keep = useMemo(() => visibleIds(trace, filter, hideInstant), [trace, filter, hideInstant]);
@@ -69,14 +71,18 @@ export function TraceView({ trace, selectedId, onSelect, loadIo, className }: Tr
     onSelect?.(id);
   };
 
-  const reveal = (id: string) => {
-    if (!keep.has(id)) {
-      setFilter("all");
-      setHideInstant(false);
+  if (selected !== seen) {
+    setSeen(selected);
+    if (selected && trace.nodes.some((node) => node.id === selected)) {
+      if (!keep.has(selected)) {
+        setFilter("all");
+        setHideInstant(false);
+      }
+      nav.setFolded(pathTo(trace, selected).slice(0, -1).map((node) => node.id), false);
     }
-    nav.setFolded(pathTo(trace, id).slice(0, -1).map((node) => node.id), false);
-    select(id);
-  };
+  }
+
+  const reveal = select;
 
   const refilter = (next: TraceFilter, nextHide: boolean) => {
     setFilter(next);
@@ -143,11 +149,13 @@ export function TraceView({ trace, selectedId, onSelect, loadIo, className }: Tr
             })}
           </div>
         </div>
-        <aside className="tv-panel" aria-label="Details" data-selected={selectedNode ? "" : undefined}>
-          <div className="tv-panel-in">
-            {selectedNode ? <NodePanel trace={trace} node={selectedNode} loadIo={loadIo} onClose={() => select(null)} onNavigate={reveal} /> : <TraceSummary trace={trace} onSelect={reveal} />}
-          </div>
-        </aside>
+        {detail === "dock" && (
+          <aside className="tv-panel" aria-label="Details" data-selected={selectedNode ? "" : undefined}>
+            <div className="tv-panel-in">
+              {selectedNode ? <NodePanel trace={trace} node={selectedNode} loadIo={loadIo} onClose={() => select(null)} onNavigate={reveal} /> : <TraceSummary trace={trace} onSelect={reveal} />}
+            </div>
+          </aside>
+        )}
       </div>
     </section>
   );

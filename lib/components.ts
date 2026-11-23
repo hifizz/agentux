@@ -852,6 +852,7 @@ export const langfuseTrace = {
   props: [
     { name: "trace", type: "Trace", description: "A trace from toTraces or toSession.", required: true },
     { name: "loadIo", type: "(node: TraceNode) => Promise<{ input?: string; output?: string }>", description: "Loads input and output when a step opens. Keep the function stable." },
+    { name: "detail", type: '"dock" | "none"', description: "Dock shows details under the timeline. None leaves them to the host, for example a pane next to a whole session. Defaults to dock." },
     { name: "selectedId / onSelect", type: "string | null / (id) => void", description: "Controlled selection. Omit to let the view keep it." },
   ],
   source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
@@ -865,19 +866,21 @@ export const langfuseSession = {
   category: "Message · Blocks",
   description: "A Langfuse session as a strip of turns and a list that opens each turn into its trace.",
   interaction:
-    "The strip shows every turn in time order. Each block is as wide as the square root of its duration, red when the turn failed and amber when only some steps did, and long idle gaps collapse into a marker with the time between turns. Click a block or a row to open its trace in place. The first failing turn starts open. Jump to failure walks through the failed turns, and With errors keeps only those.",
+    "The strip shows every turn in time order. Each block is as wide as the square root of its duration, red when the turn failed and amber when only some steps did, and long idle gaps collapse into a marker with the time between turns. Click a block or a row to open its trace in place. The first failing turn starts open. Click any step of any open turn and its details show in a pane on the right of the whole session, which stays in view while the turns scroll. With nothing selected the pane summarizes the session, and a failure listed there opens its turn and selects the step. Jump to failure selects the failing step, and With errors keeps only the turns with errors. Below 980px the pane goes away and each trace docks its details at the bottom.",
   parts: [
     { name: "SessionView", file: "_langfuse/session-view.tsx", description: "Holds which turns are open, the filter and the jump, and lays out the head, strip and turn list." },
     { name: "SessionHead", file: "_langfuse/session-head.tsx", description: "Session id, status and six totals. Duration also shows the idle time between turns." },
     { name: "SessionStrip", file: "_langfuse/session-strip.tsx", description: "One block per turn with idle gaps compressed." },
+    { name: "SessionSummary", file: "_langfuse/session-summary.tsx", description: "What the right pane shows with no step selected: tokens, models, failures and the slowest steps of the whole session." },
     { name: "TurnRow", file: "_langfuse/turn-row.tsx", description: "A collapsible turn: number, name, offset, summary, tokens with cached share, duration and state." },
     { name: "Session model", file: "_langfuse/session-model.ts", description: "Turn states, the strip layout, the turn to open first and the one line summary." },
     { name: "TraceView", file: "_langfuse/trace-view.tsx", description: "The full trace of an open turn." },
   ],
   props: [
     { name: "session", type: "Session", description: "A session from toSession.", required: true },
-    { name: "loadIo", type: "(node: TraceNode) => Promise<{ input?: string; output?: string }>", description: "Passed to every open trace. Keep the function stable." },
+    { name: "loadIo", type: "(node: TraceNode) => Promise<{ input?: string; output?: string }>", description: "Used for the step shown in the pane or the dock. Keep the function stable." },
     { name: "defaultOpenId", type: "string | null", description: "Trace id to open first. Defaults to the first failing turn, then the longest. Null opens none." },
+    { name: "detail", type: '"side" | "dock"', description: "Where step details go. Side puts one pane on the right of the session. Dock keeps them under each trace. Side falls back to dock below 980px. Defaults to side." },
   ],
   source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
 } satisfies Example;

@@ -80,3 +80,17 @@
   .sv-gap[data-long] { flex-basis: 30px; }
   .sv-meta { display: none; }
 }
+
+.sv-layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--sv-side, 360px); }
+.sv-main { min-width: 0; }
+.sv-side { min-width: 0; border-left: 0.5px solid var(--tk-line); }
+.sv-side-in { position: sticky; top: 0; box-sizing: border-box; max-height: var(--sv-pane-h, 100vh); overflow: auto; padding: 14px 16px; overscroll-behavior: contain; }
+.sv-turnref { display: flex; align-items: center; gap: 8px; width: 100%; margin-bottom: 12px; padding: 4px 6px; border-radius: 6px; font-size: 12px; color: var(--tk-text); text-align: left; transition: background-color 140ms; }
+.sv-turnref:hover { background: var(--tk-fill); }
+.sv-turnref b, .sv-ref b { flex: 0 0 auto; min-width: 20px; height: 18px; padding: 0 5px; border-radius: 5px; background: var(--tk-fill); font-size: 11px; font-weight: 500; line-height: 18px; text-align: center; color: var(--tk-text); font-variant-numeric: tabular-nums; }
+.sv-turnref em { margin-left: auto; font-style: normal; color: var(--tk-muted); font-variant-numeric: tabular-nums; }
+.sv-ref { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+@container sv (max-width: 1180px) {
+  .sv[data-side] .sv-sum { display: none; }
+}
