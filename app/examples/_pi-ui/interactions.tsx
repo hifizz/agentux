@@ -95,16 +95,18 @@ function ApprovalCard({ item, who, respond }: { item: PiInteraction; who: string
           {error}
         </p>
       )}
-      <div className="flex flex-wrap items-center justify-end gap-1.5">
-        <Button variant="primary" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: false })}>
-          Allow
-        </Button>
-        <Button variant="secondary" disabled={busy} onClick={() => void send({ kind: "approval", allow: false, always: false })}>
-          Deny
-        </Button>
+      <div className="flex flex-wrap items-center gap-1.5">
         <Button variant="ghost" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: true })} title="Skip this question for every later call of this tool, until the server restarts">
           Always allow {tool}
         </Button>
+        <div className="ml-auto flex items-center gap-1.5">
+          <Button variant="secondary" disabled={busy} onClick={() => void send({ kind: "approval", allow: false, always: false })}>
+            Deny
+          </Button>
+          <Button variant="primary" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: false })}>
+            Allow
+          </Button>
+        </div>
       </div>
     </Card>
   );
