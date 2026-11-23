@@ -157,7 +157,7 @@ export function ContextViz({ prompt, look, onSelectItem }: VizProps) {
           onPointerLeave={clear}
         >
           {cells.map((cell, i) => {
-            const on = focus?.f === "item" && cell?.kind === focus.kind && cell.item === focus.index;
+            const on = focus?.f === "item" && !!cell && cell.kind === focus.kind && cell.item === focus.index;
             return (
               <i
                 key={i}
