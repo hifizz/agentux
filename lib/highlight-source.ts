@@ -1,6 +1,6 @@
 import { codeToHtml, isSupportedLanguage } from "@pierre/highlights";
-import dark from "@pierre/highlights/themes/pierre-dark";
-import light from "@pierre/highlights/themes/pierre-light";
+import dark from "@pierre/highlights/themes/vitesse-dark";
+import light from "@pierre/highlights/themes/vitesse-light";
 
 const decoder = new TextDecoder();
 
