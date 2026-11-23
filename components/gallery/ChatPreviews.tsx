@@ -38,7 +38,7 @@ export function ApprovalsPreview() {
     <div className={`${CARD} flex flex-col gap-2.5`}>
       <p className="flex items-center gap-2 text-sm font-medium"><ShieldQuestion size={15} /> Allow bash?</p>
       <p className="truncate rounded-lg bg-foreground/[0.05] px-2.5 py-1.5 font-mono text-xs">$ git push origin feat/composer</p>
-      <div className="flex gap-1.5">
+      <div className="flex flex-wrap justify-end gap-1.5">
         <span className={`${CHIP} bg-[#ff6b35] text-[#22120c]`}>Allow</span>
         <span className={`${CHIP} border border-foreground/10`}>Deny</span>
       </div>

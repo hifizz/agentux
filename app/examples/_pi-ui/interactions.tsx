@@ -95,14 +95,14 @@ function ApprovalCard({ item, who, respond }: { item: PiInteraction; who: string
           {error}
         </p>
       )}
-      <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-end gap-1.5">
         <Button variant="primary" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: false })}>
           Allow
         </Button>
         <Button variant="secondary" disabled={busy} onClick={() => void send({ kind: "approval", allow: false, always: false })}>
           Deny
         </Button>
-        <Button variant="ghost" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: true })} className="ml-auto" title="Skip this question for every later call of this tool, until the server restarts">
+        <Button variant="ghost" disabled={busy} onClick={() => void send({ kind: "approval", allow: true, always: true })} title="Skip this question for every later call of this tool, until the server restarts">
           Always allow {tool}
         </Button>
       </div>
@@ -118,7 +118,7 @@ function QuestionCard({ item, who, respond }: { item: PiInteraction; who: string
   return (
     <Card icon={MessageCircleQuestion} title={question} who={who}>
       {options.length > 0 ? (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap justify-end gap-1.5">
           {options.map((option) => (
             <Button key={option} variant="secondary" disabled={busy} onClick={() => void send({ kind: "question", text: option })}>
               {option}
@@ -145,7 +145,7 @@ function QuestionCard({ item, who, respond }: { item: PiInteraction; who: string
                 e.currentTarget.form?.requestSubmit();
               }
             }}
-            className="ch-focus max-h-32 min-h-8 flex-1 resize-none rounded-ch-field border border-ch-line bg-ch-page px-2.5 py-1.5 text-ch-body text-ch-ink [field-sizing:content] outline-none placeholder:text-ch-ink-subtle"
+            className="ch-focus max-h-32 min-h-8 min-w-0 flex-1 resize-none rounded-ch-field border border-ch-line bg-ch-page px-2.5 py-1.5 text-ch-body text-ch-ink [field-sizing:content] outline-none placeholder:text-ch-ink-subtle"
           />
           <Button type="submit" variant="primary" disabled={busy || !text.trim()}>
             Answer

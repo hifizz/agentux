@@ -96,7 +96,7 @@ export function AskBeat({ questions, answer, locked, onAnswer }: Props) {
         </div>
       </AutoHeight>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant={ready ? "solid" : "tonal"} disabled={!ready} onClick={advance} className={cx("border px-2", ready && "border-transparent")}>
           Continue
         </Button>
