@@ -643,7 +643,7 @@ export const plan = {
   category: "Message · Tools",
   description: "The model’s ordered plan with a status for each step and a running completion count.",
   preview: PlanPreview,
-  interaction: "Switch between Proposed, Working and Finished. Click the header to collapse the list. New steps and status updates appear in the order supplied by the model.",
+  interaction: "Watch each step start and finish, or select a state to pause there. Replay starts the sequence again. Collapse the list to follow the completion count in the header.",
   parts: [
     { name: "Plan", file: "_message/plan.tsx", description: "Collapsible message card with a completed step count." },
     { name: "PlanList", file: "_message/plan.tsx", description: "Ordered steps for embedding in a tool result." },

@@ -29,7 +29,7 @@ export const displayFiles = {
   "message-actions": ["_message/message-actions.tsx"],
   "thinking": ["_message/thinking.tsx"],
   "tool-output": ["_message/tool-call.tsx"],
-  "plan": ["_message/plan.tsx"],
+  "plan": ["_message/plan.tsx", "_message/plan.css"],
   "web-search": ["_message/web-search.tsx"],
   "subagent-swarm": ["_message/swarm.tsx"],
   "work-log": ["_message/work-log.tsx"],
