@@ -144,7 +144,9 @@ export function TraceView({ trace, selectedId, onSelect, loadIo, className }: Tr
           </div>
         </div>
         <aside className="tv-panel" aria-label="Details">
-          {selectedNode ? <NodePanel trace={trace} node={selectedNode} loadIo={loadIo} onClose={() => select(null)} onNavigate={reveal} /> : <TraceSummary trace={trace} onSelect={reveal} />}
+          <div className="tv-panel-in">
+            {selectedNode ? <NodePanel trace={trace} node={selectedNode} loadIo={loadIo} onClose={() => select(null)} onNavigate={reveal} /> : <TraceSummary trace={trace} onSelect={reveal} />}
+          </div>
         </aside>
       </div>
     </section>
