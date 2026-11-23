@@ -43,11 +43,11 @@ export function CloseButton({ label, onClick }: { label: string; onClick: () => 
   );
 }
 
-export function FactGrid({ items }: { items: [label: string, value: string][] }) {
+export function FactGrid({ items }: { items: [label: string, value: string, hint?: string][] }) {
   return (
     <dl className="tk-facts">
-      {items.map(([label, value]) => (
-        <div key={label}>
+      {items.map(([label, value, hint]) => (
+        <div key={label} title={hint}>
           <dt>{label}</dt>
           <dd>{value}</dd>
         </div>

@@ -833,7 +833,31 @@ export const contextWindow = {
   source: "Recreated from the behavior of a reference routing page. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow];
+export const langfuseTrace = {
+  name: "Langfuse Trace",
+  href: "/examples/langfuse-trace/",
+  category: "Message · Blocks",
+  description: "One Langfuse trace as a waterfall of steps, with totals, filters, failure tracking and a details panel.",
+  interaction:
+    "Click a step to open its details on the right: timing, first token and speed, the token split between new, cached and output, the failure path and its input and output, which load on demand. With nothing selected the panel summarizes the trace. Filter by generations, tools or errors, hide instant steps, fold branches with the chevrons or the arrow keys, and jump to the failing step. Traces above 60 steps start folded below the second level.",
+  parts: [
+    { name: "TraceView", file: "_langfuse/trace-view.tsx", description: "Holds the filter, folds and selection, and lays out the head, toolbar, waterfall and panel." },
+    { name: "TraceHead", file: "_langfuse/trace-head.tsx", description: "Title, status, jump to failure and the six totals. Tokens show the cached share and a split bar." },
+    { name: "NodeRow", file: "_langfuse/node-row.tsx", description: "One step: a bar for work, a bracket for wrapper spans, a diamond for instant steps, and a hatched wait before the first token." },
+    { name: "NodePanel · TraceSummary", file: "_langfuse/node-panel.tsx", description: "Details of the selected step, or a summary of the trace when none is selected." },
+    { name: "toSession · toTraces", file: "_langfuse/to-trace.ts", description: "Turns Langfuse observation rows into traces with a tree, totals and failure origins." },
+    { name: "readObservations", file: "_langfuse/observation.ts", description: "Validates a Langfuse v2 observations response at the boundary." },
+    { name: "View model", file: "_langfuse/view-model.ts", description: "Filters, default folds, the axis, slowest steps, failure path and output speed." },
+  ],
+  props: [
+    { name: "trace", type: "Trace", description: "A trace from toTraces or toSession.", required: true },
+    { name: "loadIo", type: "(node: TraceNode) => Promise<{ input?: string; output?: string }>", description: "Loads input and output when a step opens. Keep the function stable." },
+    { name: "selectedId / onSelect", type: "string | null / (id) => void", description: "Controlled selection. Omit to let the view keep it." },
+  ],
+  source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
