@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { SpanPopover, type SpanPopoverProps } from "./span-popover";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
+import type { CardPosition } from "../_trace-kit/floating-card";
+import { useTreeNav } from "../_trace-kit/use-tree-nav";
+import { SpanPopover } from "./span-popover";
 import { TraceAxisHead, TraceLayer } from "./trace-axis";
 import { TraceHeader } from "./trace-header";
 import { buildTree, viewAt } from "./trace-model";
 import { TraceRow } from "./trace-row";
 import type { Span } from "./types";
+import "../_trace-kit/trace-kit.css";
 import "./trace-waterfall.css";
 
 export type TraceWaterfallProps = {
@@ -18,37 +21,25 @@ export type TraceWaterfallProps = {
   className?: string;
 };
 
-type Selected = { id: string; position: SpanPopoverProps["position"] };
+type Selected = { id: string; position: CardPosition };
 
-const NO_FOLDS: ReadonlySet<string> = new Set();
 const POP_WIDTH = 320;
 const POP_GUESS = 190;
 
-export function TraceWaterfall({ spans, now, title = "Trace", task, defaultFolded = NO_FOLDS, className }: TraceWaterfallProps) {
+const isParent = (span: Span) => span.kind === "agent" || span.kind === "subagent";
+
+export function TraceWaterfall({ spans, now, title = "Trace", task, defaultFolded, className }: TraceWaterfallProps) {
   const tree = useMemo(() => buildTree(spans), [spans]);
   const view = useMemo(() => viewAt(tree, now), [tree, now]);
-  const [folds, setFolds] = useState<Record<string, boolean>>({});
   const [selected, setSelected] = useState<Selected | null>(null);
-  const [focusId, setFocusId] = useState<string | null>(null);
-  const rowRefs = useRef(new Map<string, HTMLDivElement>());
   const rowsRef = useRef<HTMLDivElement>(null);
 
-  const parentOf = useMemo(() => new Map(spans.map((span) => [span.id, span.parentId])), [spans]);
-  const isFolded = (id: string) => folds[id] ?? defaultFolded.has(id);
-  const isHidden = (id: string) => {
-    for (let parent = parentOf.get(id); parent; parent = parentOf.get(parent)) if (isFolded(parent)) return true;
-    return false;
-  };
-
-  const visible = view.rows.filter((row) => !isHidden(row.span.id));
-  const roving = visible.find((row) => row.span.id === focusId)?.span.id ?? visible[0]?.span.id;
+  const nav = useTreeNav({ nodes: view.rows.map((row) => ({ id: row.span.id, parentId: row.span.parentId, expandable: isParent(row.span) })), defaultFolded });
   const selectedRow = selected ? view.rows.find((row) => row.span.id === selected.id) : undefined;
-
-  const toggle = (id: string) => setFolds((current) => ({ ...current, [id]: !(current[id] ?? defaultFolded.has(id)) }));
 
   const select = (id: string) => {
     if (selected?.id === id) return setSelected(null);
-    const row = rowRefs.current.get(id);
+    const row = nav.elements.current.get(id);
     const rows = rowsRef.current;
     if (!row || !rows) return;
     const track = row.querySelector<HTMLElement>(".wf__track");
@@ -62,32 +53,8 @@ export function TraceWaterfall({ spans, now, title = "Trace", task, defaultFolde
     });
   };
 
-  const focusRow = (id: string | undefined) => {
-    if (!id) return;
-    setFocusId(id);
-    rowRefs.current.get(id)?.focus();
-  };
-
-  const onKeyDown = (id: string, parent: boolean) => (event: KeyboardEvent<HTMLDivElement>) => {
-    const index = visible.findIndex((row) => row.span.id === id);
-    const key = event.key;
-    if (key === "ArrowDown") focusRow(visible[index + 1]?.span.id);
-    else if (key === "ArrowUp") focusRow(visible[index - 1]?.span.id);
-    else if (key === "Home") focusRow(visible[0]?.span.id);
-    else if (key === "End") focusRow(visible.at(-1)?.span.id);
-    else if (key === "ArrowRight" && parent) {
-      if (isFolded(id)) toggle(id);
-      else focusRow(visible[index + 1]?.span.id);
-    } else if (key === "ArrowLeft") {
-      if (parent && !isFolded(id)) toggle(id);
-      else focusRow(visible.find((row) => row.span.id === parentOf.get(id))?.span.id);
-    } else if (key === "Enter" || key === " ") select(id);
-    else return;
-    event.preventDefault();
-  };
-
   return (
-    <section className={className ? `wf ${className}` : "wf"} aria-label="Trace waterfall" data-live={view.done ? undefined : ""}>
+    <section className={className ? `tk wf ${className}` : "tk wf"} aria-label="Trace waterfall" data-live={view.done ? undefined : ""}>
       <TraceHeader title={title} task={task} live={!view.done} totals={view.totals} />
       <div className="wf__body" style={{ "--wf-range": view.axis.range } as CSSProperties}>
         <TraceLayer axis={view.axis} now={view.now} />
@@ -95,23 +62,25 @@ export function TraceWaterfall({ spans, now, title = "Trace", task, defaultFolde
         <div ref={rowsRef} className="wf__rows" role="tree" aria-label="Trace">
           {view.rows.map((row, index) => {
             const id = row.span.id;
-            const parent = row.span.kind === "agent" || row.span.kind === "subagent";
             return (
               <TraceRow
                 key={id}
                 view={row}
+                range={view.axis.range}
                 index={index}
-                hidden={isHidden(id)}
-                folded={isFolded(id)}
+                hidden={nav.isHidden(id)}
+                folded={nav.isFolded(id)}
                 open={selected?.id === id}
-                focusable={roving === id}
-                rowRef={(el) => {
-                  if (el) rowRefs.current.set(id, el);
-                  else rowRefs.current.delete(id);
-                }}
+                focusable={nav.rovingId === id}
+                rowRef={(element) => nav.register(id, element)}
                 onSelect={() => select(id)}
-                onToggle={() => toggle(id)}
-                onKeyDown={onKeyDown(id, parent)}
+                onToggle={() => nav.toggle(id)}
+                onKeyDown={(event) => {
+                  if (nav.handleKey(event, id)) return;
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  select(id);
+                }}
               />
             );
           })}

@@ -1,0 +1,173 @@
+.tk {
+  --tk-card: #ffffff;
+  --tk-strong: #000000;
+  --tk-ink: rgba(0, 0, 0, 0.88);
+  --tk-text: rgba(0, 0, 0, 0.61);
+  --tk-muted: rgba(0, 0, 0, 0.45);
+  --tk-faint: rgba(0, 0, 0, 0.27);
+  --tk-line: rgba(0, 0, 0, 0.06);
+  --tk-fill: rgba(0, 0, 0, 0.06);
+  --tk-wash: rgba(0, 0, 0, 0.025);
+  --tk-accent: rgba(0, 96, 226, 0.765);
+  --tk-focus: rgba(0, 96, 226, 0.7);
+  --tk-shine: rgba(255, 255, 255, 0.82);
+  --tk-agent-bg: rgba(0, 0, 0, 0.045);
+  --tk-agent-edge: rgba(0, 0, 0, 0.1);
+  --tk-agent-ink: rgba(0, 0, 0, 0.61);
+  --tk-agent-mark: rgba(0, 0, 0, 0.3);
+  --tk-llm-bg: color-mix(in srgb, #a651f0 10%, transparent);
+  --tk-llm-edge: color-mix(in srgb, #a651f0 30%, transparent);
+  --tk-llm-ink: #8a35d6;
+  --tk-llm-mark: color-mix(in srgb, #a651f0 72%, transparent);
+  --tk-tool-bg: color-mix(in srgb, #14b3f0 8.5%, transparent);
+  --tk-tool-edge: color-mix(in srgb, #14b3f0 28%, transparent);
+  --tk-tool-ink: #08658c;
+  --tk-tool-mark: color-mix(in srgb, #14b3f0 62%, transparent);
+  --tk-error-bg: #f52b0018;
+  --tk-error-ink: #d72400da;
+  --tk-error-edge: color-mix(in srgb, #f04438 34%, transparent);
+  --tk-error-mark: color-mix(in srgb, #f04438 62%, transparent);
+  --tk-brand-bg: #008ff519;
+  --tk-brand-fg: #006dcbf2;
+  --tk-ok-bg: #00a43319;
+  --tk-ok-fg: #007d2ee0;
+  --tk-slow-bg: #ff9c0029;
+  --tk-slow-fg: #b25e00;
+  --tk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 1px -1px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --tk-pop: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 12px 28px -10px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --tk-ease: cubic-bezier(0.32, 0.72, 0.24, 1);
+  --tk-radius-sm: 5px;
+  --tk-radius-lg: 10px;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  font-family: Inter, "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(.dark, [data-theme="dark"]) .tk {
+  --tk-card: #1c1c1f;
+  --tk-strong: #ffffff;
+  --tk-ink: rgba(255, 255, 255, 0.9);
+  --tk-text: rgba(255, 255, 255, 0.62);
+  --tk-muted: rgba(255, 255, 255, 0.45);
+  --tk-faint: rgba(255, 255, 255, 0.28);
+  --tk-line: rgba(255, 255, 255, 0.08);
+  --tk-fill: rgba(255, 255, 255, 0.08);
+  --tk-wash: rgba(255, 255, 255, 0.03);
+  --tk-accent: #4fb0fe;
+  --tk-focus: rgba(77, 141, 255, 0.8);
+  --tk-shine: rgba(255, 255, 255, 0.35);
+  --tk-agent-bg: rgba(255, 255, 255, 0.07);
+  --tk-agent-edge: rgba(255, 255, 255, 0.14);
+  --tk-agent-ink: rgba(255, 255, 255, 0.7);
+  --tk-agent-mark: rgba(255, 255, 255, 0.4);
+  --tk-llm-bg: color-mix(in srgb, #b98af0 16%, transparent);
+  --tk-llm-edge: color-mix(in srgb, #b98af0 38%, transparent);
+  --tk-llm-ink: #d1b3f5;
+  --tk-llm-mark: color-mix(in srgb, #b98af0 80%, transparent);
+  --tk-tool-bg: color-mix(in srgb, #5cc6ee 13%, transparent);
+  --tk-tool-edge: color-mix(in srgb, #5cc6ee 34%, transparent);
+  --tk-tool-ink: #5cc6ee;
+  --tk-tool-mark: color-mix(in srgb, #5cc6ee 75%, transparent);
+  --tk-error-bg: #ff35232b;
+  --tk-error-ink: #ff8a7a;
+  --tk-error-edge: color-mix(in srgb, #ff6b5f 40%, transparent);
+  --tk-error-mark: color-mix(in srgb, #ff6b5f 75%, transparent);
+  --tk-brand-bg: #0077ff3a;
+  --tk-brand-fg: #70b8ff;
+  --tk-ok-bg: #00f04a1f;
+  --tk-ok-fg: #5fc88a;
+  --tk-slow-bg: #fb6a0025;
+  --tk-slow-fg: #ffb35c;
+  --tk-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --tk-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 12px 28px -10px rgba(0, 0, 0, 0.6);
+}
+
+.tk *, .tk ::before, .tk ::after { box-sizing: border-box; }
+:where(.tk) button { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tk button:focus-visible { outline: 2px solid var(--tk-focus); outline-offset: var(--tk-focus-offset, 2px); }
+:where(.tk) :is(p, dl, dd, ul) { margin: 0; }
+:where(.tk) ul { padding: 0; list-style: none; }
+.tk svg { display: block; flex: 0 0 auto; }
+
+.tk [data-kind] { --k-bg: var(--tk-agent-bg); --k-edge: var(--tk-agent-edge); --k-ink: var(--tk-agent-ink); --k-mark: var(--tk-agent-mark); }
+.tk [data-kind="llm"] { --k-bg: var(--tk-llm-bg); --k-edge: var(--tk-llm-edge); --k-ink: var(--tk-llm-ink); --k-mark: var(--tk-llm-mark); }
+.tk [data-kind="tool"] { --k-bg: var(--tk-tool-bg); --k-edge: var(--tk-tool-edge); --k-ink: var(--tk-tool-ink); --k-mark: var(--tk-tool-mark); }
+.tk [data-kind="error"], .tk [data-kind][data-status="failed"] { --k-bg: var(--tk-error-bg); --k-edge: var(--tk-error-edge); --k-ink: var(--tk-error-ink); --k-mark: var(--tk-error-mark); }
+
+.tk-pill { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 5px; height: 20px; padding: 0 7px; border-radius: var(--tk-radius-sm); background: var(--tk-fill); font-size: 12px; font-weight: 500; line-height: 16px; color: var(--tk-text); white-space: nowrap; }
+.tk-pill[data-status="running"] { background: var(--tk-brand-bg); color: var(--tk-brand-fg); }
+.tk-pill[data-status="done"] { background: var(--tk-ok-bg); color: var(--tk-ok-fg); }
+.tk-pill[data-status="failed"] { background: var(--tk-error-bg); color: var(--tk-error-ink); }
+.tk-pulse { width: 6px; height: 6px; border-radius: 50%; background: currentcolor; animation: tk-pulse 1400ms ease-in-out infinite; }
+.tk-spin { animation: tk-spin 900ms linear infinite; }
+
+.tk-stats { display: grid; grid-template-columns: repeat(var(--tk-stat-cols, 6), minmax(0, 1fr)); padding: 12px 0; border-bottom: 0.5px solid var(--tk-line); }
+.tk-stat { display: grid; gap: 2px; min-width: 0; padding: 0 16px; }
+.tk-stat:first-child { padding-left: 22px; }
+.tk-stat:last-child { padding-right: 10px; }
+.tk-stat + .tk-stat { border-left: 0.5px solid var(--tk-line); }
+.tk-stat dt { overflow: hidden; font-size: 10px; font-weight: 500; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--tk-muted); white-space: nowrap; text-overflow: ellipsis; }
+.tk-stat dd { overflow: hidden; font-size: 15px; font-weight: 500; line-height: 24px; color: var(--tk-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tk-stat[data-tone="bad"] dd { color: var(--tk-error-ink); }
+
+.tk-tile { display: grid; flex: 0 0 auto; place-items: center; width: var(--tk-tile-size, 20px); height: var(--tk-tile-size, 20px); border-radius: 5px; background: var(--tk-card); box-shadow: var(--tk-tile-shadow, var(--tk-shadow)); color: var(--tk-text); }
+.tk-tile > svg { width: var(--tk-tile-icon, 12px); height: var(--tk-tile-icon, 12px); }
+.tk-tile .tk-mark { transform: scale(0.82); }
+.tk-tile[data-agent] .tk-mark { transform: none; }
+
+.tk-mark { display: grid; flex: 0 0 auto; grid-template-columns: repeat(3, 3px); grid-auto-rows: 3px; gap: 1.5px; place-content: center; width: 16px; height: 16px; }
+.tk-mark i { border-radius: 0.75px; background: var(--tk-mark-color); opacity: 0; }
+.tk-mark i[data-on] { opacity: 1; }
+.tk-mark[data-busy] i { animation: tk-pixel 1.2s ease-in-out infinite both; }
+.tk-mark[data-busy] i:not([data-on]) { opacity: 0.16; }
+
+.tk-bar { position: absolute; top: calc(50% - var(--tk-bar-h, 14px) / 2); height: var(--tk-bar-h, 14px); overflow: hidden; border-radius: 4px; background: var(--k-bg); box-shadow: inset 0 0 0 0.5px var(--k-edge); transition: box-shadow 160ms, background-color 240ms, opacity 240ms; animation: tk-grow 560ms var(--tk-ease) backwards; }
+.tk-bar[data-status="running"]::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--tk-card), transparent) -60px 0 / 60px 100% no-repeat; opacity: 0.7; animation: tk-sweep 1500ms linear infinite; }
+.tk-bar[data-status="running"]::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: min(28px, 100%); background: linear-gradient(90deg, transparent, var(--k-edge)); animation: tk-glow 1100ms ease-in-out infinite alternate; }
+.tk-span-mark { position: absolute; top: calc(50% - 2.5px); height: 5px; border-radius: 1.5px; background: var(--k-mark); opacity: 0; transform: scaleY(0.2); transition: opacity 200ms ease, transform 200ms var(--tk-ease); pointer-events: none; }
+
+.tk-tag { position: absolute; top: calc(50% - 9px); display: flex; align-items: center; gap: 6px; height: 18px; padding: 0 4px; border-radius: 4px; background: var(--tk-card); font-size: 12px; line-height: 16px; color: var(--tk-text); white-space: nowrap; font-variant-numeric: tabular-nums; pointer-events: none; }
+.tk-tag[data-side="inside"] { flex-direction: row-reverse; background: none; color: var(--k-ink); }
+.tk-tag[data-side="before"] { flex-direction: row-reverse; }
+
+.tk-card { position: absolute; z-index: 5; display: grid; gap: 10px; width: min(320px, 100% - 16px); padding: 12px; border-radius: var(--tk-radius-lg); background: var(--tk-card); box-shadow: var(--tk-pop); cursor: auto; transform-origin: 24px top; animation: tk-open 220ms var(--tk-ease) both; }
+.tk-card[data-side="above"] { transform-origin: 24px bottom; }
+.tk-card[data-closing] { animation: tk-close 160ms ease forwards; pointer-events: none; }
+.tk-card-head { display: flex; align-items: center; min-width: 0; }
+.tk-card-head .tk-tile { --tk-tile-size: 28px; --tk-tile-icon: 15px; margin-right: 10px; border-radius: 6px; }
+.tk-card-head .tk-pill { height: 18px; margin-left: 8px; padding: 0 6px; font-size: 11px; border-radius: calc(var(--tk-radius-sm) - 1px); }
+.tk-card-who { display: grid; flex: 1 1 0; min-width: 0; }
+.tk-card-name { overflow: hidden; font-weight: 500; line-height: 18px; color: var(--tk-strong); overflow-wrap: anywhere; }
+.tk-card-sub { overflow: hidden; font-size: 12px; line-height: 16px; color: var(--tk-muted); overflow-wrap: anywhere; }
+.tk-close { display: grid; flex: 0 0 auto; place-items: center; width: 28px; height: 28px; margin: -2px -4px 0 4px; border-radius: calc(var(--tk-radius-sm) + 1px); color: var(--tk-muted); transition: background-color 140ms, color 140ms; }
+.tk-close:hover { background: var(--tk-fill); color: var(--tk-ink); }
+.tk-facts { display: grid; grid-template-columns: repeat(var(--tk-facts-cols, 3), minmax(0, 1fr)); gap: 8px; padding: 8px 10px; border-radius: calc(var(--tk-radius-sm) + 3px); background: var(--tk-wash); box-shadow: inset 0 0 0 0.5px var(--tk-line); }
+.tk-facts dt { font-size: 10px; font-weight: 500; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--tk-muted); }
+.tk-facts dd { font-weight: 500; line-height: 20px; color: var(--tk-ink); font-variant-numeric: tabular-nums; }
+.tk-note { display: flex; gap: 8px; padding: 8px 10px; border-radius: calc(var(--tk-radius-sm) + 3px); background: var(--tk-error-bg); font-size: 12px; line-height: 16px; color: var(--tk-error-ink); }
+.tk-note > svg { margin-top: 2px; }
+.tk-note-text { min-width: 0; overflow-wrap: anywhere; }
+.tk-field { display: grid; gap: 2px; }
+.tk-field > span { font-size: 10px; font-weight: 500; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--tk-muted); }
+.tk-field > p { display: -webkit-box; overflow: hidden; overflow-wrap: anywhere; font-size: 12px; line-height: 16px; color: var(--tk-text); -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+
+@keyframes tk-grow { 0% { clip-path: inset(0 100% 0 0 round 4px); } 100% { clip-path: inset(0 round 4px); } }
+@keyframes tk-sweep { 100% { background-position: calc(100% + 60px) 0; } }
+@keyframes tk-glow { 0% { opacity: 0.45; } 100% { opacity: 1; } }
+@keyframes tk-pixel { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes tk-pulse { 50% { opacity: 0.35; } }
+@keyframes tk-spin { 100% { transform: rotate(360deg); } }
+@keyframes tk-fade { 0% { opacity: 0; } }
+@keyframes tk-pop { 0% { opacity: 0; transform: scale(0.9); } }
+@keyframes tk-open { 0% { opacity: 0; transform: translateY(-4px) scale(0.96); } }
+@keyframes tk-close { 100% { opacity: 0; transform: translateY(-3px) scale(0.97); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tk *, .tk ::before, .tk ::after { animation: none !important; transition: none !important; }
+}

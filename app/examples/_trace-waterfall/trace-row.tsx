@@ -1,11 +1,14 @@
 import type { KeyboardEvent, Ref } from "react";
 import { ChevronDown, LoaderCircle, TriangleAlert } from "lucide-react";
+import { SpanBar, SpanMark } from "../_trace-kit/span-bar";
+import { SpanTag } from "../_trace-kit/span-tag";
 import { formatCost, formatDuration } from "./format";
 import { SpanIcon } from "./span-icon";
 import type { SpanView } from "./types";
 
 export type TraceRowProps = {
   view: SpanView;
+  range: number;
   index: number;
   hidden: boolean;
   folded: boolean;
@@ -23,7 +26,7 @@ const label = (view: SpanView, amount: string) => {
   return `${view.span.title}, ${kind}, ${status}, ${amount}`;
 };
 
-export function TraceRow({ view, index, hidden, folded, open, focusable, rowRef, onSelect, onToggle, onKeyDown }: TraceRowProps) {
+export function TraceRow({ view, range, index, hidden, folded, open, focusable, rowRef, onSelect, onToggle, onKeyDown }: TraceRowProps) {
   const { span, status, elapsed } = view;
   const parent = view.childCount > 0 || span.kind === "agent" || span.kind === "subagent";
   const live = status === "running";
@@ -75,7 +78,7 @@ export function TraceRow({ view, index, hidden, folded, open, focusable, rowRef,
         </span>
         {parent && folded && view.childCount > 0 && <span className="wf__more">+{view.childCount}</span>}
         <span className="wf__state" data-status={status}>
-          {live && span.kind !== "agent" && span.kind !== "subagent" && <LoaderCircle className="wf__spin" size={12} aria-hidden="true" />}
+          {live && span.kind !== "agent" && span.kind !== "subagent" && <LoaderCircle className="tk-spin" size={12} aria-hidden="true" />}
           {status === "failed" && <TriangleAlert size={12} aria-hidden="true" />}
         </span>
         <span className="wf__meta">
@@ -87,17 +90,17 @@ export function TraceRow({ view, index, hidden, folded, open, focusable, rowRef,
         </span>
       </div>
       <div className="wf__track">
-        <span className="wf__bar" data-status={status} style={{ "--s": span.start, "--d": elapsed } as React.CSSProperties} />
+        <SpanBar status={status} start={span.start} duration={elapsed} range={range} />
         {view.marks.map((mark) => (
-          <span key={mark.id} className="wf__mark" data-kind={mark.kind} style={{ "--s": mark.start, "--d": mark.duration } as React.CSSProperties} />
+          <SpanMark key={mark.id} kind={mark.kind} start={mark.start} duration={mark.duration} range={range} />
         ))}
-        <span className="wf__tag" data-side={view.side} style={{ "--s": span.start, "--d": elapsed } as React.CSSProperties}>
+        <SpanTag side={view.side} start={span.start} duration={elapsed} range={range}>
           <span className="wf__amount" data-live={live ? "" : undefined}>
             {amount}
             {cost}
           </span>
           {view.slowest && <span className="wf__slow">Slowest</span>}
-        </span>
+        </SpanTag>
       </div>
     </div>
   );

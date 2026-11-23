@@ -1,4 +1,6 @@
 import { Sparkle } from "lucide-react";
+import { StatStrip, type Stat } from "../_trace-kit/stat-strip";
+import { StatusPill } from "../_trace-kit/status-pill";
 import { formatCost, formatDuration, formatTokens } from "./format";
 import type { TraceTotals } from "./types";
 
@@ -11,13 +13,13 @@ export type TraceHeaderProps = {
 
 export function TraceHeader({ title, task, live, totals }: TraceHeaderProps) {
   const failed = !live && totals.errors > 0;
-  const stats: [string, string, boolean?][] = [
-    ["Duration", formatDuration(totals.duration)],
-    ["Cost", formatCost(totals.cost)],
-    ["Tokens", formatTokens(totals.tokens)],
-    ["LLM calls", String(totals.llmCalls)],
-    ["Tool calls", String(totals.toolCalls)],
-    ["Errors", String(totals.errors), totals.errors > 0],
+  const stats: Stat[] = [
+    { label: "Duration", value: formatDuration(totals.duration) },
+    { label: "Cost", value: formatCost(totals.cost) },
+    { label: "Tokens", value: formatTokens(totals.tokens) },
+    { label: "LLM calls", value: String(totals.llmCalls) },
+    { label: "Tool calls", value: String(totals.toolCalls) },
+    { label: "Errors", value: String(totals.errors), tone: totals.errors > 0 ? "bad" : undefined },
   ];
   return (
     <>
@@ -25,19 +27,11 @@ export function TraceHeader({ title, task, live, totals }: TraceHeaderProps) {
         <span className="wf__spark"><Sparkle size={14} fill="currentColor" aria-hidden="true" /></span>
         <span className="wf__heading">{title}</span>
         <span className="wf__task">{task}</span>
-        <span className="wf__pill" data-status={live ? "running" : failed ? "failed" : "done"}>
-          {live && <span className="wf__pulse" />}
+        <StatusPill status={live ? "running" : failed ? "failed" : "done"} pulse={live}>
           {live ? "Live" : "Done"}
-        </span>
+        </StatusPill>
       </div>
-      <dl className="wf__stats">
-        {stats.map(([label, value, bad]) => (
-          <div key={label} className="wf__stat" data-kind={bad ? "failed" : undefined}>
-            <dt>{label}</dt>
-            <dd>{value}</dd>
-          </div>
-        ))}
-      </dl>
+      <StatStrip items={stats} />
     </>
   );
 }

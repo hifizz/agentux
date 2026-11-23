@@ -1,3 +1,5 @@
+import type { Axis, TagSide } from "../_trace-kit/axis";
+
 export type SpanKind = "agent" | "subagent" | "llm" | "tool";
 
 export type SpanStatus = "running" | "done" | "failed";
@@ -28,8 +30,6 @@ export type SpanMark = {
   duration: number;
 };
 
-export type TagSide = "after" | "inside" | "before";
-
 export type SpanView = {
   span: Span;
   depth: number;
@@ -53,15 +53,10 @@ export type TraceTotals = {
   errors: number;
 };
 
-export type TraceAxis = {
-  range: number;
-  ticks: number[];
-};
-
 export type TraceView = {
   rows: SpanView[];
   totals: TraceTotals;
-  axis: TraceAxis;
+  axis: Axis;
   now: number;
   done: boolean;
 };

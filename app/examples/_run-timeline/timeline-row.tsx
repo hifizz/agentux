@@ -1,3 +1,5 @@
+import { SpanBar } from "../_trace-kit/span-bar";
+import { SpanTag } from "../_trace-kit/span-tag";
 import { formatSeconds } from "./format";
 import { StepTile } from "./step-tile";
 import type { StepView } from "./types";
@@ -14,8 +16,6 @@ export type TimelineRowProps = {
 export function TimelineRow({ view, range, open, onSelect }: TimelineRowProps) {
   const { step, status } = view;
   const tag = status === "failed" ? "failed" : formatSeconds(view.status === "running" ? view.elapsed : step.duration);
-  const left = (step.start / range) * 100;
-  const width = (view.elapsed / range) * 100;
   const label = [`${step.label} – ${KIND_LABEL[step.kind]}`, step.tool, status === "running" ? "running" : tag].filter(Boolean).join(", ");
 
   return (
@@ -26,8 +26,8 @@ export function TimelineRow({ view, range, open, onSelect }: TimelineRowProps) {
           <span className="rt-row__name" dir="auto" title={step.label}>{step.label}</span>
         </span>
         <span className="rt-row__track">
-          <span className="rt-bar" data-kind={view.bar} data-running={status === "running" ? "" : undefined} style={{ left: `${left}%`, width: `max(3px, ${width}%)` }} />
-          <span className="rt-tag" data-kind={view.bar} style={{ left: `calc(${left + width}% + 4px)` }}>{tag}</span>
+          <SpanBar kind={view.bar} status={status === "running" ? "running" : undefined} start={step.start} duration={view.elapsed} range={range} />
+          <SpanTag kind={view.bar} start={step.start} duration={view.elapsed} range={range} gap={4}>{tag}</SpanTag>
         </span>
       </button>
     </li>

@@ -1,4 +1,5 @@
-import type { Span, SpanMark, SpanStatus, SpanView, TagSide, TraceAxis, TraceTotals, TraceView } from "./types";
+import { autoAxis, tagSide } from "../_trace-kit/axis";
+import type { Span, SpanMark, SpanStatus, SpanView, TraceTotals, TraceView } from "./types";
 
 export type TraceTree = {
   order: Span[];
@@ -6,8 +7,6 @@ export type TraceTree = {
   kids: Map<string, string[]>;
   total: number;
 };
-
-const NICE_STEPS = [1, 2, 5, 10, 15, 20, 30, 60, 120, 300, 600];
 
 export function buildTree(spans: Span[]): TraceTree {
   const byParent = new Map<string | null, Span[]>();
@@ -27,21 +26,7 @@ export function buildTree(spans: Span[]): TraceTree {
   return { order, depth, kids, total: Math.max(...spans.map((span) => span.start + span.duration)) };
 }
 
-export function axisFor(duration: number): TraceAxis {
-  const raw = Math.max(duration * 1.25, 10_000) / 1000;
-  const step = NICE_STEPS.find((s) => raw / s <= 5.5) ?? 600;
-  const range = Math.ceil(raw / step) * step;
-  const ticks: number[] = [];
-  for (let v = 0; v < range; v += step) ticks.push(v * 1000);
-  return { range: range * 1000, ticks };
-}
-
 const progressOf = (span: Span, now: number) => Math.min(1, Math.max(0, (now - span.start) / span.duration));
-
-function sideFor(start: number, elapsed: number, range: number): TagSide {
-  if ((start + elapsed) / range < 0.8) return "after";
-  return elapsed / range > 0.28 ? "inside" : "before";
-}
 
 export function viewAt(tree: TraceTree, now: number): TraceView {
   const started = tree.order.filter((span) => span.start <= now);
@@ -54,7 +39,7 @@ export function viewAt(tree: TraceTree, now: number): TraceView {
 
   const finishedLeaves = started.filter((span) => !(tree.kids.get(span.id)?.length) && now >= span.start + span.duration);
   const slowestId = finishedLeaves.length ? finishedLeaves.reduce((a, b) => (b.duration > a.duration ? b : a)).id : null;
-  const axis = axisFor(Math.min(now, tree.total));
+  const axis = autoAxis(Math.min(now, tree.total));
 
   const rows = started.map((span): SpanView => {
     const children = tree.kids.get(span.id) ?? [];
@@ -76,7 +61,7 @@ export function viewAt(tree: TraceTree, now: number): TraceView {
       childCount: children.filter((child) => startedIds.has(child)).length ? leaves.length : 0,
       marks,
       slowest: span.id === slowestId,
-      side: sideFor(span.start, elapsed, axis.range),
+      side: tagSide(span.start, elapsed, axis.range),
     };
   });
 

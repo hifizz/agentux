@@ -17,9 +17,3 @@ export function viewAt(steps: Step[], now: number): StepView[] {
       };
     });
 }
-
-export function ticksFor(range: number, every = 10) {
-  const ticks: number[] = [];
-  for (let value = 0; value <= range; value += every) ticks.push(value);
-  return ticks;
-}

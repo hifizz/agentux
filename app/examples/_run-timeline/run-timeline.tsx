@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { endOf, ticksFor, viewAt } from "./timeline-model";
+import { fixedAxis } from "../_trace-kit/axis";
+import { endOf, viewAt } from "./timeline-model";
 import { TimelineAxis, TimelineLines } from "./timeline-axis";
 import { TimelineLegend } from "./timeline-legend";
 import { TimelineRow } from "./timeline-row";
 import type { Step } from "./types";
+import "../_trace-kit/trace-kit.css";
 import "./run-timeline.css";
 
 export type RunTimelineProps = {
@@ -22,7 +24,7 @@ export function RunTimeline({ steps, now, range, selectedId, onSelect, label = "
   const [inner, setInner] = useState<string | null>(null);
   const selected = selectedId === undefined ? inner : selectedId;
   const views = useMemo(() => viewAt(steps, now), [steps, now]);
-  const ticks = useMemo(() => ticksFor(range), [range]);
+  const ticks = useMemo(() => fixedAxis(range).ticks, [range]);
   const running = now < endOf(steps);
 
   const select = (id: string) => {
@@ -32,7 +34,7 @@ export function RunTimeline({ steps, now, range, selectedId, onSelect, label = "
   };
 
   return (
-    <section className={className ? `rt ${className}` : "rt"} aria-label={label}>
+    <section className={className ? `tk rt ${className}` : "tk rt"} aria-label={label}>
       <div className="rt-top"><TimelineLegend /></div>
       <div className="rt-grid">
         <TimelineAxis ticks={ticks} range={range} />

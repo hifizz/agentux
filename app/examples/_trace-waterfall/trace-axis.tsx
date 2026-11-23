@@ -1,7 +1,7 @@
 import { formatTick } from "./format";
-import type { TraceAxis } from "./types";
+import type { Axis } from "../_trace-kit/axis";
 
-export function TraceLayer({ axis, now }: { axis: TraceAxis; now: number }) {
+export function TraceLayer({ axis, now }: { axis: Axis; now: number }) {
   return (
     <div className="wf__layer" aria-hidden="true">
       {axis.ticks.map((tick) => (
