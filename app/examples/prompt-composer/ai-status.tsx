@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
+import { ShimmerText } from '@/app/examples/_shared/ui/shimmer-text'
 import { cn } from '@/lib/utils'
 
 export type AiStatusState = 'thinking' | 'researching' | 'analyzing' | 'writing' | 'done' | 'error'
@@ -61,9 +62,6 @@ const iconVariants: Variants = {
     center: { scale: 1, opacity: 1, rotate: 0, filter: 'blur(0px)' },
     exit: { scale: 0.5, opacity: 0, rotate: 30, filter: 'blur(4px)' },
 }
-
-// the highlight sits mid gradient and the size leaves room either side, so each sweep starts off screen
-const SHIMMER = 'linear-gradient(90deg, var(--ai-status-ink) 40%, var(--ai-status-shine) 50%, var(--ai-status-ink) 60%)'
 
 const STROKE = {
     fill: 'none',
@@ -184,9 +182,9 @@ function AiStatus({
                                 exit="exit"
                                 transition={swap}
                                 data-slot="ai-status-label"
-                                className={cn('font-semibold', !shimmering && 'text-[#868593]')}
+                                className="font-semibold"
                             >
-                                {shimmering ? <Shimmer reduced={reduced}>{text}</Shimmer> : text}
+                                <ShimmerText active={shimmering}>{text}</ShimmerText>
                             </motion.span>
                         </AnimatePresence>
                     </span>
@@ -350,23 +348,6 @@ function AiStatusIcon({ state }: AiStatusIconProps) {
                 />
             )
     }
-}
-
-function Shimmer({ reduced, children }: { reduced: boolean; children: React.ReactNode }) {
-    if (reduced) {
-        return <span className="text-[#868593]">{children}</span>
-    }
-    return (
-        <motion.span
-            className="bg-clip-text text-transparent [--ai-status-ink:#868593] [--ai-status-shine:#000] dark:[--ai-status-shine:#fff]"
-            style={{ backgroundImage: SHIMMER, backgroundSize: '250% 100%' }}
-            initial={{ backgroundPosition: '100% 0' }}
-            animate={{ backgroundPosition: '0% 0' }}
-            transition={{ duration: 1.6, ease: 'linear', repeat: Infinity }}
-        >
-            {children}
-        </motion.span>
-    )
 }
 
 export { AiStatus, AiStatusIcon }

@@ -1,4 +1,5 @@
 import { ArrowDown, Brain, ChevronDown, Check, Copy, FileText, Globe, LoaderCircle, RotateCcw, SquareTerminal, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ShimmerText } from "@/app/examples/_shared/ui/shimmer-text";
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const ROW = "flex items-center gap-2 text-xs text-muted-foreground";
@@ -20,6 +21,15 @@ export function StreamingPreview() {
     <div className={`${CARD} flex flex-col gap-2`}>
       <p className="text-xs leading-5 text-foreground">Tokens arrive in bursts, the text arrives at a steady pace<span className="ml-0.5 inline-block h-3 w-1.5 translate-y-0.5 rounded-sm bg-foreground motion-safe:animate-pulse" /></p>
       <div className="flex gap-1">{[30, 8, 44, 2, 20].map((w, i) => <span key={i} className={BAR} style={{ width: w }} />)}</div>
+    </div>
+  );
+}
+
+export function ShimmerTextPreview() {
+  return (
+    <div className={`${CARD} flex items-center gap-2`}>
+      <FileText aria-hidden size={16} className="shrink-0 text-muted-foreground" />
+      <ShimmerText className="text-sm font-semibold">Reviewing changes</ShimmerText>
     </div>
   );
 }

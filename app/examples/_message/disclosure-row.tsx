@@ -2,6 +2,7 @@
 
 import { ChevronRight } from "lucide-react";
 import { cx } from "@/app/examples/_shared/ui/cx";
+import { ShimmerText } from "@/app/examples/_shared/ui/shimmer-text";
 
 export type DisclosureRowProps = {
   icon?: React.ReactNode;
@@ -14,12 +15,12 @@ export type DisclosureRowProps = {
   className?: string;
 };
 
-export function DisclosureRow({ icon, label, detail, end, open, shimmer, onToggle, className }: DisclosureRowProps) {
+export function DisclosureRow({ icon, label, detail, end, open, shimmer = false, onToggle, className }: DisclosureRowProps) {
   const body = (
     <>
       {icon && <span className="grid size-4 shrink-0 place-items-center text-ch-ink-subtle [&_svg]:size-3.5">{icon}</span>}
-      <span className={cx("flex min-w-0 flex-1 items-baseline gap-1.5 text-ch-body", shimmer && "ch-anim-shimmer")}>
-        <span className="shrink-0 text-ch-ink-muted">{label}</span>
+      <span className="flex min-w-0 flex-1 items-baseline gap-1.5 text-ch-body">
+        <ShimmerText active={shimmer} className="shrink-0">{label}</ShimmerText>
         {detail && <span className="min-w-0 truncate text-ch-ink-subtle">{detail}</span>}
       </span>
       {end}

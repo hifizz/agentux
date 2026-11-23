@@ -24,6 +24,7 @@ export const displayFiles = {
   "agent-message": ["agent-message/demo.tsx", "_message/message.tsx", "_message/thinking.tsx", "_message/tool-call.tsx", "_message/message-actions.tsx"],
   "markdown": ["_message/markdown.tsx", "_message/message.css"],
   "smooth-streaming": ["_message/use-smooth-stream.ts"],
+  "shimmer-text": ["_shared/ui/shimmer-text.tsx", "_shared/tokens.css"],
   "shadow-scroll": ["_message/shadow-scroll.tsx"],
   "message-actions": ["_message/message-actions.tsx"],
   "thinking": ["_message/thinking.tsx"],

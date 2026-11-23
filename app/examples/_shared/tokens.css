@@ -331,7 +331,7 @@
 @keyframes ch-bar-exit-fade { to { opacity: 0; } }
 @keyframes ch-spin { to { transform: rotate(360deg); } }
 @keyframes ch-think-dot { 0%, 100% { opacity: 0.18; } 50% { opacity: 1; } }
-@keyframes ch-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes ch-shimmer { from { background-position: 100% 0; } to { background-position: 0% 0; } }
 @keyframes ch-fade-in { 0% { opacity: 0; } }
 @keyframes ch-fade-out { to { opacity: 0; } }
 @keyframes ch-dialog-in { 0% { opacity: 0; transform: translateY(6px) scale(0.97); } }
@@ -341,13 +341,17 @@
 
 .ch-anim-spin { animation: ch-spin 1s linear infinite; }
 .ch-anim-think-dot { animation: ch-think-dot 1.2s ease-in-out infinite; }
-.ch-anim-shimmer {
-  background: linear-gradient(90deg, var(--ch-ink-subtle) 40%, var(--ch-ink) 50%, var(--ch-ink-subtle) 60%) 100% 0 / 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: ch-shimmer 1.8s linear infinite;
+@media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .ch-anim-shimmer {
+      background: linear-gradient(90deg, var(--ch-ink-muted) 40%, var(--ch-ink) 50%, var(--ch-ink-muted) 60%) 100% 0 / 250% 100% no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: ch-shimmer 1.8s linear infinite;
+    }
+  }
 }
-.ch-anim-shimmer, .ch-anim-shimmer * { -webkit-text-fill-color: transparent; }
 .ch-anim-fade-in { animation: ch-fade-in 0.2s var(--ch-ease-out-strong); }
 .ch-anim-fade-out { animation: ch-fade-out 0.16s var(--ch-ease-out-strong) forwards; }
 .ch-anim-dialog-in { animation: ch-dialog-in 0.2s var(--ch-ease-out-strong); }
@@ -356,7 +360,6 @@
 .ch-anim-pop-out { animation: ch-pop-out 65ms ease-in forwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .ch-anim-shimmer { animation: none; }
   .ch-press, .ch-tool-lift > * { transition: none !important; }
   .ch-press:active:not(:disabled) { scale: 1 !important; }
   .ch-tool-lift:hover > * { rotate: none !important; scale: 1 !important; }

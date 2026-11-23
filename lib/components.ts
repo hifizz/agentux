@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
-import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
+import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
@@ -543,6 +543,21 @@ export const smoothStreaming = {
   source: MESSAGE,
 } satisfies Example;
 
+export const shimmerText = {
+  name: "Shimmer Text",
+  href: "/examples/shimmer-text/",
+  category: "Message · Rendering",
+  description: "A neutral highlight sweeps across a working status label.",
+  preview: ShimmerTextPreview,
+  interaction: "Switch between Working and Complete to see the label settle when the review ends. With reduced motion, both states use solid text.",
+  parts: [{ name: "ShimmerText", file: "_shared/ui/shimmer-text.tsx", description: "An inline span styled with the shared ink colors." }],
+  props: [
+    { name: "children", type: "ReactNode", description: "The status text.", required: true },
+    { name: "active", type: "boolean", description: "Runs the sweep while true. Defaults to true." },
+    { name: "className", type: "string", description: "Additional classes for the span." },
+  ],
+} satisfies Example;
+
 export const shadowScroll = {
   name: "Shadow Scroll",
   href: "/examples/shadow-scroll/",
@@ -688,7 +703,7 @@ export const workLog = {
   source: MESSAGE,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm, workLog];
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm, workLog];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
