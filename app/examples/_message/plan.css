@@ -1,0 +1,30 @@
+@media (prefers-reduced-motion: no-preference) {
+  .reni-plan-step,
+  .reni-plan-count {
+    animation: reni-plan-rise 240ms var(--ch-ease-out-strong) backwards;
+  }
+
+  .reni-plan-icon {
+    animation: reni-plan-pop 200ms var(--ch-ease-out-strong);
+  }
+
+  .reni-plan-icon[data-status="completed"] path {
+    stroke-dasharray: 24;
+    animation: reni-plan-check 280ms var(--ch-ease-out-strong);
+  }
+}
+
+@keyframes reni-plan-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reni-plan-pop {
+  from { opacity: 0.4; transform: scale(0.75); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes reni-plan-check {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
