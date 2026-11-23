@@ -23,6 +23,14 @@ export function useTreeNav({ nodes, defaultFolded = NO_FOLDS }: Options) {
   const visible = nodes.filter((node) => !isHidden(node.id));
   const rovingId = visible.find((node) => node.id === focusId)?.id ?? visible[0]?.id;
 
+  const setFolded = (ids: string[], folded: boolean) => setFolds((current) => ({ ...current, ...Object.fromEntries(ids.map((id) => [id, folded])) }));
+
+  const ancestorsOf = (id: string) => {
+    const ids: string[] = [];
+    for (let parent = parentOf.get(id); parent; parent = parentOf.get(parent)) ids.push(parent);
+    return ids;
+  };
+
   const toggle = (id: string) => setFolds((current) => ({ ...current, [id]: !(current[id] ?? defaultFolded.has(id)) }));
 
   const focusNode = (id: string | undefined) => {
@@ -55,5 +63,5 @@ export function useTreeNav({ nodes, defaultFolded = NO_FOLDS }: Options) {
     return true;
   };
 
-  return { isFolded, isHidden, toggle, rovingId, register, elements, handleKey };
+  return { isFolded, isHidden, toggle, setFolded, ancestorsOf, rovingId, register, elements, handleKey };
 }

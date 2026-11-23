@@ -27,6 +27,14 @@
   --tk-error-ink: #d72400da;
   --tk-error-edge: color-mix(in srgb, #f04438 34%, transparent);
   --tk-error-mark: color-mix(in srgb, #f04438 62%, transparent);
+  --tk-evaluator-bg: color-mix(in srgb, #1e8a4f 10%, transparent);
+  --tk-evaluator-edge: color-mix(in srgb, #1e8a4f 30%, transparent);
+  --tk-evaluator-ink: #1e7a45;
+  --tk-evaluator-mark: color-mix(in srgb, #1e8a4f 62%, transparent);
+  --tk-guardrail-bg: color-mix(in srgb, #e8b000 12%, transparent);
+  --tk-guardrail-edge: color-mix(in srgb, #e8b000 36%, transparent);
+  --tk-guardrail-ink: #8f6c00;
+  --tk-guardrail-mark: color-mix(in srgb, #e8b000 70%, transparent);
   --tk-brand-bg: #008ff519;
   --tk-brand-fg: #006dcbf2;
   --tk-ok-bg: #00a43319;
@@ -50,6 +58,14 @@
 }
 
 :where(.dark, [data-theme="dark"]) .tk {
+  --tk-evaluator-bg: color-mix(in srgb, #5fc88a 14%, transparent);
+  --tk-evaluator-edge: color-mix(in srgb, #5fc88a 36%, transparent);
+  --tk-evaluator-ink: #5fc88a;
+  --tk-evaluator-mark: color-mix(in srgb, #5fc88a 75%, transparent);
+  --tk-guardrail-bg: color-mix(in srgb, #e6c24d 16%, transparent);
+  --tk-guardrail-edge: color-mix(in srgb, #e6c24d 38%, transparent);
+  --tk-guardrail-ink: #e6c24d;
+  --tk-guardrail-mark: color-mix(in srgb, #e6c24d 78%, transparent);
   --tk-card: #1c1c1f;
   --tk-strong: #ffffff;
   --tk-ink: rgba(255, 255, 255, 0.9);
@@ -98,6 +114,8 @@
 .tk [data-kind] { --k-bg: var(--tk-agent-bg); --k-edge: var(--tk-agent-edge); --k-ink: var(--tk-agent-ink); --k-mark: var(--tk-agent-mark); }
 .tk [data-kind="llm"] { --k-bg: var(--tk-llm-bg); --k-edge: var(--tk-llm-edge); --k-ink: var(--tk-llm-ink); --k-mark: var(--tk-llm-mark); }
 .tk [data-kind="tool"] { --k-bg: var(--tk-tool-bg); --k-edge: var(--tk-tool-edge); --k-ink: var(--tk-tool-ink); --k-mark: var(--tk-tool-mark); }
+.tk [data-kind="evaluator"] { --k-bg: var(--tk-evaluator-bg); --k-edge: var(--tk-evaluator-edge); --k-ink: var(--tk-evaluator-ink); --k-mark: var(--tk-evaluator-mark); }
+.tk [data-kind="guardrail"] { --k-bg: var(--tk-guardrail-bg); --k-edge: var(--tk-guardrail-edge); --k-ink: var(--tk-guardrail-ink); --k-mark: var(--tk-guardrail-mark); }
 .tk [data-kind="error"], .tk [data-kind][data-status="failed"] { --k-bg: var(--tk-error-bg); --k-edge: var(--tk-error-edge); --k-ink: var(--tk-error-ink); --k-mark: var(--tk-error-mark); }
 
 .tk-pill { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 5px; height: 20px; padding: 0 7px; border-radius: var(--tk-radius-sm); background: var(--tk-fill); font-size: 12px; font-weight: 500; line-height: 16px; color: var(--tk-text); white-space: nowrap; }
@@ -108,12 +126,14 @@
 .tk-spin { animation: tk-spin 900ms linear infinite; }
 
 .tk-stats { display: grid; grid-template-columns: repeat(var(--tk-stat-cols, 6), minmax(0, 1fr)); padding: 12px 0; border-bottom: 0.5px solid var(--tk-line); }
-.tk-stat { display: grid; gap: 2px; min-width: 0; padding: 0 16px; }
+.tk-stat { display: grid; gap: 2px; align-content: start; min-width: 0; padding: 0 16px; }
 .tk-stat:first-child { padding-left: 22px; }
 .tk-stat:last-child { padding-right: 10px; }
 .tk-stat + .tk-stat { border-left: 0.5px solid var(--tk-line); }
 .tk-stat dt { overflow: hidden; font-size: 10px; font-weight: 500; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--tk-muted); white-space: nowrap; text-overflow: ellipsis; }
 .tk-stat dd { overflow: hidden; font-size: 15px; font-weight: 500; line-height: 24px; color: var(--tk-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tk-stat[data-muted] dd { color: var(--tk-faint); }
+.tk-stat-cap { display: block; font-size: 11px; font-weight: 400; line-height: 14px; color: var(--tk-muted); }
 .tk-stat[data-tone="bad"] dd { color: var(--tk-error-ink); }
 
 .tk-tile { display: grid; flex: 0 0 auto; place-items: center; width: var(--tk-tile-size, 20px); height: var(--tk-tile-size, 20px); border-radius: 5px; background: var(--tk-card); box-shadow: var(--tk-tile-shadow, var(--tk-shadow)); color: var(--tk-text); }
@@ -131,6 +151,15 @@
 .tk-bar[data-status="running"]::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--tk-card), transparent) -60px 0 / 60px 100% no-repeat; opacity: 0.7; animation: tk-sweep 1500ms linear infinite; }
 .tk-bar[data-status="running"]::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: min(28px, 100%); background: linear-gradient(90deg, transparent, var(--k-edge)); animation: tk-glow 1100ms ease-in-out infinite alternate; }
 .tk-span-mark { position: absolute; top: calc(50% - 2.5px); height: 5px; border-radius: 1.5px; background: var(--k-mark); opacity: 0; transform: scaleY(0.2); transition: opacity 200ms ease, transform 200ms var(--tk-ease); pointer-events: none; }
+
+.tk-wait { position: absolute; top: 0; bottom: 0; left: 0; background: repeating-linear-gradient(135deg, transparent 0 3px, var(--k-edge) 3px 4px); border-right: 1px solid var(--k-mark); }
+.tk-bracket { position: absolute; top: calc(50% - 1px); height: 2px; border-radius: 1px; background: var(--tk-agent-edge); }
+.tk-bracket::before, .tk-bracket::after { content: ""; position: absolute; top: -3px; left: 0; width: 1.5px; height: 8px; background: var(--tk-agent-edge); }
+.tk-bracket::after { left: auto; right: 0; }
+.tk-dot { position: absolute; top: calc(50% - 4px); width: 8px; height: 8px; margin-left: -4px; border-radius: 1.5px; background: var(--k-mark, var(--tk-agent-mark)); transform: rotate(45deg); }
+.tk-stack { display: flex; gap: 1px; height: 4px; overflow: hidden; border-radius: 2px; background: var(--tk-fill); }
+.tk-stack[data-size="md"] { height: 8px; border-radius: 3px; }
+.tk-stack > i { display: block; height: 100%; }
 
 .tk-tag { position: absolute; top: calc(50% - 9px); display: flex; align-items: center; gap: 6px; height: 18px; padding: 0 4px; border-radius: 4px; background: var(--tk-card); font-size: 12px; line-height: 16px; color: var(--tk-text); white-space: nowrap; font-variant-numeric: tabular-nums; pointer-events: none; }
 .tk-tag[data-side="inside"] { flex-direction: row-reverse; background: none; color: var(--k-ink); }
