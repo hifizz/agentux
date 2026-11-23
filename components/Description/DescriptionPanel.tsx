@@ -100,7 +100,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             inert={codeOpen}
             className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
           >
-            <DescriptionContent item={item} className="p-8 pt-60" />
+            <DescriptionContent item={item} className="p-8 pt-20" />
           </div>
           <CodeDrawer
             open={codeOpen}
