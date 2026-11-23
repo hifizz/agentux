@@ -217,6 +217,11 @@ html {
   color: #fff;
 }
 
+:root:not(.dark) .docs-shell {
+  --background: #efefef;
+  --card: #fff;
+}
+
 .docs-desktop {
   --nav-width: min(360px, 25vw);
   --info-width: min(560px, 38vw);

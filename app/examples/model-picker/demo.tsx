@@ -16,7 +16,7 @@ export default function Demo() {
       status={`${card?.name ?? "Model"} · effort ${EFFORT_LABEL[value.effort]}`}
       actions={[{ label: "One model", pressed: single, onClick: () => { setSingle((v) => !v); setValue(DEFAULT_DEMO_SELECTION); } }]}
     >
-      <div className="@container mx-auto flex w-full max-w-md items-center justify-center rounded-ch-card border border-ch-line bg-ch-surface p-3 shadow-ch-bar">
+      <div className="@container mx-auto flex w-full max-w-md items-center justify-center">
         <ModelPicker catalog={catalog} value={value} onChange={setValue} />
       </div>
     </Stage>

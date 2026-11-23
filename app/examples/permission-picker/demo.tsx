@@ -16,7 +16,7 @@ export default function Demo() {
       status={`${info.label}: ${info.hint}`}
       actions={[{ label: "Hide Bypass", pressed: safe, onClick: () => { setSafe((v) => !v); if (value === "bypass") setValue("auto"); } }]}
     >
-      <div className="@container mx-auto flex w-full max-w-md items-center justify-center rounded-ch-card border border-ch-line bg-ch-surface p-3 shadow-ch-bar">
+      <div className="@container mx-auto flex w-full max-w-md items-center justify-center">
         <PermissionPicker value={value} onChange={setValue} modes={safe ? SAFE : undefined} />
       </div>
     </Stage>

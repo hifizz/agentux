@@ -4,7 +4,7 @@ import Stage from "@/components/examples/Stage";
 import { BranchSelect, RepoBranchPicker, RepoSelect } from "../prompt-composer/composer";
 import { useRepo } from "../prompt-composer/fixtures";
 
-const ROW = "@container flex items-center justify-between gap-3 rounded-ch-card border border-ch-line bg-ch-surface px-3 py-2.5 shadow-ch-bar";
+const ROW = "@container mx-auto flex w-full max-w-md items-center justify-between gap-3";
 const LABEL = "text-ch-caption text-ch-ink-subtle";
 
 export default function Demo() {

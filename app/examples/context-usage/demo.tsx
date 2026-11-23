@@ -22,7 +22,7 @@ export default function Demo() {
       onReplay={() => setSegments(CONTEXT.segments)}
       replayLabel="Reset"
     >
-      <div className="flex flex-wrap items-center justify-center gap-4 rounded-ch-card border border-ch-line bg-ch-surface p-3 shadow-ch-bar">
+      <div className="flex flex-wrap items-center justify-center gap-4">
         <TokenCount used={used} window={CONTEXT.window} />
         <span className="flex items-center gap-1 text-ch-caption text-ch-ink-subtle">
           Hover or focus <ContextUsage {...context} />

@@ -6,7 +6,7 @@ export default function ExamplesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-dvh overflow-hidden p-2 bg-background">
+    <div className="docs-shell h-dvh overflow-hidden bg-background p-2">
       <SidebarShell>{children}</SidebarShell>
     </div>
   );

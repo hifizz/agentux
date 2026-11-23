@@ -49,7 +49,7 @@ export default function MobileSidebar() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col rounded-r-3xl bg-card p-4 pl-6"
+              className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col rounded-r-3xl bg-background p-4 pl-6 dark:bg-card"
             >
               <div className="mt-18 flex items-center justify-between gap-3">
                 <SidebarHeader onNavigate={() => setOpen(false)} />

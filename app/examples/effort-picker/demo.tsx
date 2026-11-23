@@ -21,7 +21,7 @@ export default function Demo() {
       status={hidden ? `${model.name} has no effort levels, so the picker hides` : `${model.name} · ${EFFORT_LABEL[effort]}`}
       actions={DEMO_MODELS.slice(2, 5).concat(DEMO_MODELS[0]).map((m) => ({ label: m.name, pressed: m.key === modelKey, onClick: () => pick(m.key) }))}
     >
-      <div className="@container mx-auto flex min-h-13 w-full max-w-md items-center justify-center rounded-ch-card border border-ch-line bg-ch-surface p-3 shadow-ch-bar">
+      <div className="@container mx-auto flex min-h-13 w-full max-w-md items-center justify-center">
         {hidden ? <span className="text-ch-caption text-ch-ink-subtle">Nothing to pick</span> : <EffortPicker model={model} value={effort} onChange={setEffort} />}
       </div>
     </Stage>
