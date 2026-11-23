@@ -26,6 +26,7 @@ export function TraceSummary({ trace, onSelect }: TraceSummaryProps) {
   return (
     <div className="tv-detail">
       <p className="tv-empty">Select a step for its details.</p>
+      <div className="tv-detail-body">
       {tokens && (
         <div className="tv-sec">
           <span className="tv-label">Tokens · {formatTokens(tokens.total)}</span>
@@ -70,6 +71,7 @@ export function TraceSummary({ trace, onSelect }: TraceSummaryProps) {
           </ul>
         </div>
       )}
+      </div>
     </div>
   );
 }

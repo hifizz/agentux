@@ -111,7 +111,7 @@ export function TraceView({ trace, selectedId, onSelect, loadIo, className }: Tr
         foldDisabled={expandableIds.length === 0}
         onFold={() => nav.setFolded(expandableIds, !allFolded)}
       />
-      <div className="tv-main">
+      <div>
         <div className="tv-wf">
           <GridLayer axis={axis} />
           <AxisHead axis={axis} />
@@ -143,7 +143,7 @@ export function TraceView({ trace, selectedId, onSelect, loadIo, className }: Tr
             })}
           </div>
         </div>
-        <aside className="tv-panel" aria-label="Details">
+        <aside className="tv-panel" aria-label="Details" data-selected={selectedNode ? "" : undefined}>
           <div className="tv-panel-in">
             {selectedNode ? <NodePanel trace={trace} node={selectedNode} loadIo={loadIo} onClose={() => select(null)} onNavigate={reveal} /> : <TraceSummary trace={trace} onSelect={reveal} />}
           </div>

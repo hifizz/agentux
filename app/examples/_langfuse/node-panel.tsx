@@ -47,6 +47,7 @@ export function NodePanel({ trace, node, loadIo, onClose, onNavigate }: NodePane
         <StatusPill status={pill.status}>{pill.text}</StatusPill>
         <CloseButton label="Close details" onClick={onClose} />
       </CardHead>
+      <div className="tv-detail-body">
       <FactGrid items={facts} />
       {node.failure && (
         <ErrorNote>
@@ -93,6 +94,7 @@ export function NodePanel({ trace, node, loadIo, onClose, onNavigate }: NodePane
       )}
       {status === "done" && io.input !== undefined && <IoBlock label="Input" text={io.input} />}
       {status === "done" && io.output !== undefined && <IoBlock label="Output" text={io.output} />}
+      </div>
     </div>
   );
 }
