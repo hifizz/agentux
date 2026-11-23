@@ -1,6 +1,7 @@
 import type { Example } from "./components";
+import { publicPath } from "./site";
 
-export const manifestPath = (item: Example) => `/r/${item.href.split("/").filter(Boolean).pop()}.json`;
+export const manifestPath = (item: Example) => publicPath(`/r/${item.href.split("/").filter(Boolean).pop()}.json`);
 
 export type SourceFile = { path: string; content: string };
 
