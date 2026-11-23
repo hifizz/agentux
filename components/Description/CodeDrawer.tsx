@@ -6,10 +6,16 @@ import type { Example } from "@/lib/components";
 import { manifestPath } from "@/lib/example-source";
 import CopyButton from "../CopyButton";
 
+type SourceFile = { path: string; content: string };
+
 export function SourceFiles({ item }: { item: Example }) {
-  const [files, setFiles] = useState<{ path: string; content: string }[]>([]);
+  const [files, setFiles] = useState<SourceFile[]>([]);
   const [selected, setSelected] = useState(0);
   const [error, setError] = useState(false);
+  const [highlighted, setHighlighted] = useState<{
+    file: SourceFile;
+    html: string;
+  }>();
   const url = manifestPath(item);
   useEffect(() => {
     const controller = new AbortController();
@@ -25,6 +31,23 @@ export function SourceFiles({ item }: { item: Example }) {
     return () => controller.abort();
   }, [url]);
   const file = files[selected];
+  useEffect(() => {
+    if (!file) return;
+    let active = true;
+    import("@/lib/highlight-source")
+      .then(({ highlightSource }) => {
+        if (!active) return;
+        const html = highlightSource(file.path, file.content);
+        if (html) setHighlighted({ file, html });
+      })
+      .catch(() => {
+        // the source stays readable if the wasm module cannot load or run
+      });
+    return () => {
+      active = false;
+    };
+  }, [file]);
+
   if (!file)
     return (
       <p role="status" className="text-sm text-muted-foreground">
@@ -48,12 +71,18 @@ export function SourceFiles({ item }: { item: Example }) {
         </select>
         <CopyButton value={file.content} label="Copy source" />
       </div>
-      <pre
+      <div
         tabIndex={0}
-        className="min-h-0 flex-1 overflow-auto rounded-xl bg-muted p-4 text-xs leading-6"
+        className="min-h-0 flex-1 overflow-auto rounded-xl bg-muted p-4 text-xs leading-6 [&_pre]:bg-transparent!"
       >
-        <code>{file.content}</code>
-      </pre>
+        {highlighted?.file === file ? (
+          <div dangerouslySetInnerHTML={{ __html: highlighted.html }} />
+        ) : (
+          <pre>
+            <code>{file.content}</code>
+          </pre>
+        )}
+      </div>
     </>
   );
 }

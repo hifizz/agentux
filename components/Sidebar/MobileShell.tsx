@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { activeExample } from "@/lib/components";
+import { activeExample, type Example } from "@/lib/components";
 import { cn } from "@/lib/utils";
 import MobileSidebar from "./MobileSidebar";
 import DescriptionContent from "../Description/DescriptionContent";
@@ -9,6 +10,28 @@ import { SourceFiles } from "../Description/CodeDrawer";
 import ThemeToggle from "../ThemeToggle";
 
 const CARD = "rounded-[32px] bg-card";
+
+function MobileSource({ item }: { item: Example }) {
+  const [hasOpened, setHasOpened] = useState(false);
+
+  return (
+    <details
+      className={cn(CARD, "p-6")}
+      onToggle={(event) => {
+        if (event.currentTarget.open) setHasOpened(true);
+      }}
+    >
+      <summary className="cursor-pointer text-sm font-medium">
+        Source code
+      </summary>
+      {hasOpened && (
+        <div className="mt-4 flex h-96 flex-col">
+          <SourceFiles item={item} />
+        </div>
+      )}
+    </details>
+  );
+}
 
 export default function MobileShell({
   children,
@@ -32,14 +55,7 @@ export default function MobileShell({
             <div className={cn(CARD, "p-6")}>
               <DescriptionContent item={item} />
             </div>
-            <details key={item.href} className={cn(CARD, "p-6")}>
-              <summary className="cursor-pointer text-sm font-medium">
-                Source code
-              </summary>
-              <div className="mt-4 flex h-96 flex-col">
-                <SourceFiles item={item} />
-              </div>
-            </details>
+            <MobileSource key={item.href} item={item} />
           </>
         )}
       </div>
