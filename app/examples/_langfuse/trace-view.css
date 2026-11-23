@@ -63,14 +63,13 @@
 .tv-row[data-fail="propagated"]::before { opacity: 0.4; }
 
 .tv-name { display: flex; align-items: center; min-width: 0; height: var(--tv-row); }
-.tv-name .tk-tile { margin-right: 8px; }
+.tv-icon { display: grid; flex: 0 0 auto; place-items: center; width: 24px; margin-right: 6px; }
 .tv-chev { display: grid; flex: 0 0 auto; place-items: center; width: 16px; height: 20px; margin-right: 4px; border-radius: 4px; color: var(--tk-muted); transition: background-color 140ms, color 140ms; }
 .tv-chev:not([data-leaf]):hover { background: var(--tk-fill); color: var(--tk-ink); }
 .tv-chev > svg { transition: transform 240ms var(--tk-ease); }
 .tv-row[data-folded] .tv-chev > svg { transform: rotate(-90deg); }
 .tv-title { min-width: 0; overflow: hidden; color: var(--tk-ink); white-space: nowrap; text-overflow: ellipsis; }
 .tv-title[data-parent] { font-weight: 500; color: var(--tk-strong); }
-.tv-warn { flex: 0 0 auto; margin-left: 6px; color: var(--tk-error-ink); }
 .tv-more { flex: 0 0 auto; height: 18px; margin-left: 6px; padding: 0 5px; border-radius: 4px; background: var(--tk-fill); font-size: 11px; font-weight: 500; line-height: 18px; color: var(--tk-text); font-variant-numeric: tabular-nums; animation: tk-pop 220ms var(--tk-ease) both; }
 .tv-amount { display: none; }
 

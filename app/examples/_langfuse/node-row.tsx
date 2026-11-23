@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from "react";
-import { ChevronDown, TriangleAlert } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { tagSide, type Axis } from "../_trace-kit/axis";
 import { SpanBar, SpanBracket, SpanDot } from "../_trace-kit/span-bar";
 import { SpanTag } from "../_trace-kit/span-tag";
@@ -67,9 +67,8 @@ export function NodeRow({ node, axis, hidden, folded, expandable, below, selecte
         ) : (
           <span className="tv-chev" data-leaf="" aria-hidden="true" />
         )}
-        <NodeIcon kind={node.kind} />
+        <span className="tv-icon"><NodeIcon node={node} /></span>
         <span className="tv-title" data-parent={node.childIds.length > 0 && node.kind !== "span" ? "" : undefined} dir="auto">{node.name}</span>
-        {node.failure === "origin" && <TriangleAlert className="tv-warn" size={12} aria-hidden="true" />}
         {folded && below > 0 && <span className="tv-more">+{below}</span>}
         <span className="tv-amount">{amount}</span>
       </div>

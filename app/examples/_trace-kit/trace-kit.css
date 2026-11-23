@@ -141,11 +141,25 @@
 .tk-tile .tk-mark { transform: scale(0.82); }
 .tk-tile[data-agent] .tk-mark { transform: none; }
 
-.tk-mark { display: grid; flex: 0 0 auto; grid-template-columns: repeat(3, 3px); grid-auto-rows: 3px; gap: 1.5px; place-content: center; width: 16px; height: 16px; }
+.tk-mark { display: grid; flex: 0 0 auto; grid-template-columns: repeat(3, var(--tk-mark-cell, 3px)); grid-auto-rows: var(--tk-mark-cell, 3px); gap: var(--tk-mark-gap, 1.5px); place-content: center; width: 16px; height: 16px; }
 .tk-mark i { border-radius: 0.75px; background: var(--tk-mark-color); opacity: 0; }
 .tk-mark i[data-on] { opacity: 1; }
 .tk-mark[data-busy] i { animation: tk-pixel 1.2s ease-in-out infinite both; }
 .tk-mark[data-busy] i:not([data-on]) { opacity: 0.16; }
+
+.tk-kind { --s: var(--tk-kind-size, 20px); position: relative; display: grid; flex: 0 0 auto; place-items: center; width: var(--s); height: var(--s); border-radius: calc(var(--s) * 0.3); background: var(--k-bg); box-shadow: inset 0 0 0 0.5px var(--k-edge); color: var(--k-ink); transition: background-color 240ms, box-shadow 240ms, color 240ms; }
+.tk-kind > svg { width: calc(var(--s) * 0.58); height: calc(var(--s) * 0.58); }
+.tk-kind[data-shape="circle"] { border-radius: 50%; }
+.tk-kind[data-shape="diamond"] { border-radius: calc(var(--s) * 0.22); transform: rotate(45deg) scale(0.74); }
+.tk-kind[data-shape="diamond"] > svg { transform: rotate(-45deg); width: calc(var(--s) * 0.62); height: calc(var(--s) * 0.62); }
+.tk-kind[data-shape="outline"] { background: transparent; box-shadow: none; border: 1px dashed var(--k-edge); border-radius: calc(var(--s) * 0.3); color: var(--tk-muted); }
+.tk-kind[data-shape="outline"] > svg { width: calc(var(--s) * 0.62); height: calc(var(--s) * 0.62); }
+.tk-kind .tk-mark { --tk-mark-cell: calc(var(--s) * 0.19); --tk-mark-gap: calc(var(--s) * 0.075); width: auto; height: auto; }
+.tk-kind-badge { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--tk-card); }
+.tk-kind-badge[data-badge="running"] { background: var(--tk-accent); animation: tk-pulse 1400ms ease-in-out infinite; }
+.tk-kind-badge[data-badge="failed"] { background: var(--tk-error-mark); }
+.tk-kind-badge[data-badge="failed"]::before { content: "!"; font: 700 7px/1 Inter, sans-serif; color: #fff; }
+.tk-kind-badge[data-badge="propagated"] { background: var(--tk-card); box-shadow: 0 0 0 1.5px var(--tk-card), inset 0 0 0 1.5px var(--tk-error-mark); }
 
 .tk-bar { position: absolute; top: calc(50% - var(--tk-bar-h, 14px) / 2); height: var(--tk-bar-h, 14px); overflow: hidden; border-radius: 4px; background: var(--k-bg); box-shadow: inset 0 0 0 0.5px var(--k-edge); transition: box-shadow 160ms, background-color 240ms, opacity 240ms; animation: tk-grow 560ms var(--tk-ease) backwards; }
 .tk-bar[data-status="running"]::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--tk-card), transparent) -60px 0 / 60px 100% no-repeat; opacity: 0.7; animation: tk-sweep 1500ms linear infinite; }
@@ -170,6 +184,7 @@
 .tk-card[data-closing] { animation: tk-close 160ms ease forwards; pointer-events: none; }
 .tk-card-head { display: flex; align-items: center; min-width: 0; }
 .tk-card-head .tk-tile { --tk-tile-size: 28px; --tk-tile-icon: 15px; margin-right: 10px; border-radius: 6px; }
+.tk-card-head .tk-kind { margin-right: 10px; }
 .tk-card-head .tk-pill { height: 18px; margin-left: 8px; padding: 0 6px; font-size: 11px; border-radius: calc(var(--tk-radius-sm) - 1px); }
 .tk-card-who { display: grid; flex: 1 1 0; min-width: 0; }
 .tk-card-name { overflow: hidden; font-weight: 500; line-height: 18px; color: var(--tk-strong); overflow-wrap: anywhere; }

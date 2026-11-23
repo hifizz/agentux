@@ -42,7 +42,7 @@ export function NodePanel({ trace, node, loadIo, onClose, onNavigate }: NodePane
   return (
     <div className="tv-detail">
       <CardHead>
-        <NodeIcon kind={node.kind} size={15} />
+        <NodeIcon node={node} scale={1.4} />
         <CardWho title={node.name} sub={`${KIND_LABEL[node.kind]}${node.model ? ` · ${node.model}` : ""}`} />
         <StatusPill status={pill.status}>{pill.text}</StatusPill>
         <CloseButton label="Close details" onClick={onClose} />
