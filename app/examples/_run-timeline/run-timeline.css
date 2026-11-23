@@ -53,7 +53,7 @@
 .rt-row:is(:hover, [data-open]) .tk-tag { background: none; }
 
 @container rt (max-width: 640px) {
-  .rt { --rt-label: 150px; }
+  .rt-grid { --rt-label: 150px; }
 }
 
 @container rt (max-width: 480px) {
