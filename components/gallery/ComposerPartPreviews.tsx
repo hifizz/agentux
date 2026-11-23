@@ -2,7 +2,7 @@ import { AtSign, CornerDownRight, Pencil, X, Folder, GitBranch, Laptop, Lock, Pa
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const CHIP = "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-muted-foreground";
-const MENU = "flex flex-col gap-0.5 rounded-xl border border-foreground/10 bg-card p-1 text-xs shadow-sm";
+const MENU = "flex flex-col gap-0.5 rounded-xl border border-foreground/10 bg-popover p-1 text-xs shadow-sm";
 const ROW = "flex items-center justify-between gap-3 rounded-md px-2 py-1 text-muted-foreground";
 const ON = "bg-foreground/[0.06] text-foreground";
 

@@ -1,5 +1,5 @@
 export const POPUP =
-  "origin-(--transform-origin) rounded-ch-card border border-ch-line bg-ch-surface text-ch-body text-ch-ink shadow-ch-pop outline-none transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0 motion-reduce:transition-none";
+  "origin-(--transform-origin) rounded-ch-card border border-ch-line bg-ch-popover text-ch-body text-ch-ink shadow-ch-pop outline-none transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0 motion-reduce:transition-none";
 
 export const ITEM =
   "flex w-full cursor-default items-center gap-2 rounded-ch-control px-2 py-1.5 text-left text-ch-body text-ch-ink-muted outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-highlighted:bg-ch-ghost-hover data-highlighted:text-ch-ink data-selected:text-ch-ink";

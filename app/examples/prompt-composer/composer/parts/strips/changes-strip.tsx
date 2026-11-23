@@ -21,7 +21,7 @@ export function ChangesStripView({ strip }: ChangesStripViewProps) {
     <div className="relative" onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)} onPointerLeave={() => setHover(false)} onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setPinned(false)}>
       {open && (
         <div className="absolute inset-x-0 bottom-full z-20 pb-1.5">
-          <ul aria-label="Changed files" className="ch-anim-pop-in flex max-h-52 flex-col overflow-y-auto rounded-ch-card border border-ch-line bg-ch-surface p-1 shadow-ch-pop">
+          <ul aria-label="Changed files" className="ch-anim-pop-in flex max-h-52 flex-col overflow-y-auto rounded-ch-card border border-ch-line bg-ch-popover p-1 shadow-ch-pop">
             {strip.files.map((f) => (
               <li key={f.path}>
                 <button

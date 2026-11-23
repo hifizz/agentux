@@ -25,7 +25,7 @@ const Sidebar = ({
         aria-label={open ? "Close sidebar" : "Open sidebar"}
         aria-expanded={open}
         data-chrome
-        className="pointer-events-auto absolute top-4 left-4 z-50 cursor-pointer rounded-lg bg-[#F4F4F9] p-2 dark:bg-popover"
+        className="pointer-events-auto absolute top-4 left-4 z-50 cursor-pointer rounded-lg bg-muted p-2 dark:bg-popover"
       >
         {open ? <OpenIcon /> : <ClosedIcon />}
       </button>
@@ -36,7 +36,7 @@ const Sidebar = ({
           inert={!open}
           animate={{ x: open ? 0 : -PANEL_SHIFT }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="pointer-events-auto flex h-full w-[var(--nav-width)] flex-col bg-background p-4 pl-6"
+          className="pointer-events-auto flex h-full w-[var(--nav-width)] flex-col bg-sidebar p-4 pl-6"
         >
           <div className="mt-18 flex items-center justify-between gap-3">
             <SidebarHeader />

@@ -5,11 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1.0000 0 0);
+  --background: var(--color-neutral-100);
   --foreground: oklch(0.3211 0 0);
-  --card: #EBEBEB;
+  --card: var(--color-white);
   --card-foreground: oklch(0.3211 0 0);
-  --popover: oklch(1.0000 0 0);
+  --popover: var(--color-neutral-50);
   --popover-foreground: oklch(0.3211 0 0);
   --primary: #000;
   --primary-foreground: oklch(1.0000 0 0);
@@ -29,7 +29,7 @@
   --chart-3: oklch(0.4882 0.2172 264.3763);
   --chart-4: oklch(0.4244 0.1809 265.6377);
   --chart-5: oklch(0.3791 0.1378 265.5222);
-  --sidebar: oklch(0.9846 0.0017 247.8389);
+  --sidebar: var(--background);
   --sidebar-foreground: oklch(0.3211 0 0);
   --sidebar-primary: oklch(0.6231 0.1880 259.8145);
   --sidebar-primary-foreground: oklch(1.0000 0 0);
@@ -60,11 +60,11 @@
 }
 
 .dark {
-  --background: oklch(0 0 0);
+  --background: var(--color-black);
   --foreground: oklch(0.9219 0 0);
-  --card: oklch(0.1822 0 0);
+  --card: var(--color-neutral-900);
   --card-foreground: oklch(1.0000 0 0);
-  --popover: #262626;
+  --popover: var(--color-neutral-800);
   --popover-foreground: oklch(0.9219 0 0);
   --primary: oklch(0 0 0);
   --primary-foreground: oklch(1.0000 0 0);
@@ -84,7 +84,7 @@
   --chart-3: oklch(0.5461 0.2152 262.8809);
   --chart-4: oklch(0.4882 0.2172 264.3763);
   --chart-5: oklch(0.4244 0.1809 265.6377);
-  --sidebar: oklch(0 0 0);
+  --sidebar: var(--background);
   --sidebar-foreground: oklch(0.9219 0 0);
   --sidebar-primary: oklch(0 0 0);
   --sidebar-primary-foreground: oklch(1.0000 0 0);
@@ -217,11 +217,6 @@ html {
   color: #fff;
 }
 
-:root:not(.dark) .docs-shell {
-  --background: #f5f5f5;
-  --card: #fff;
-}
-
 .docs-desktop {
   --nav-width: min(360px, 25vw);
   --info-width: min(560px, 38vw);
@@ -235,7 +230,5 @@ html {
 html[data-record] [data-chrome] { display: none; }
 
 .tf-chat {
-  --card: #fff;
   font-family: "DM Sans Variable", sans-serif;
 }
-.dark .tf-chat { --card: #1b1b1b; }

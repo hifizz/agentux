@@ -1,6 +1,7 @@
 .tf-chat, :root {
-  --ch-page: var(--card);
-  --ch-surface: var(--card);
+  --ch-page: var(--background, var(--color-neutral-100));
+  --ch-surface: var(--card, var(--color-white));
+  --ch-popover: var(--popover, var(--color-neutral-50));
   --ch-glow: #ededed80;
   --ch-sunken: #f8f8f8;
   --ch-nav-active: #f3f3f3;
@@ -81,6 +82,9 @@
 }
 
 .dark .tf-chat, .dark {
+  --ch-page: var(--background, var(--color-black));
+  --ch-surface: var(--card, var(--color-neutral-900));
+  --ch-popover: var(--popover, var(--color-neutral-800));
   --ch-glow: #3838384d;
   --ch-sunken: #212121;
   --ch-nav-active: #2e2e2e;
@@ -156,6 +160,7 @@
 @theme inline {
   --color-ch-page: var(--ch-page);
   --color-ch-surface: var(--ch-surface);
+  --color-ch-popover: var(--ch-popover);
   --color-ch-sunken: var(--ch-sunken);
   --color-ch-nav-active: var(--ch-nav-active);
   --color-ch-ghost-hover: var(--ch-ghost-hover);

@@ -45,7 +45,7 @@ export function CommandMenuTrigger({
           openCommandMenu();
         }}
         className={cn(
-          "flex h-7 min-w-7 shrink-0 cursor-pointer items-center justify-center bg-[#F4F4F9] px-2 font-runde text-[12px] font-semibold text-[#868593] outline-none transition-[color,transform] duration-200 hover:text-black focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#FC4C01]/60 active:scale-95 motion-reduce:transition-none dark:bg-popover dark:hover:text-white",
+          "flex h-7 min-w-7 shrink-0 cursor-pointer items-center justify-center bg-muted px-2 font-runde text-[12px] font-semibold text-[#868593] outline-none transition-[color,transform] duration-200 hover:text-black focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#FC4C01]/60 active:scale-95 motion-reduce:transition-none dark:bg-popover dark:hover:text-white",
           className,
         )}
       >

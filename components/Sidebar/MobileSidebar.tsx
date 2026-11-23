@@ -27,7 +27,7 @@ export default function MobileSidebar() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close sidebar" : "Open sidebar"}
-        className="absolute left-4 top-4 z-60 cursor-pointer rounded-lg bg-[#F4F4F9] p-2 dark:bg-popover"
+        className="absolute left-4 top-4 z-60 cursor-pointer rounded-lg bg-muted p-2 dark:bg-popover"
       >
         {open ? <OpenIcon /> : <ClosedIcon />}
       </button>
@@ -49,7 +49,7 @@ export default function MobileSidebar() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col rounded-r-3xl bg-background p-4 pl-6 dark:bg-card"
+              className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col rounded-r-3xl bg-sidebar p-4 pl-6"
             >
               <div className="mt-18 flex items-center justify-between gap-3">
                 <SidebarHeader onNavigate={() => setOpen(false)} />
