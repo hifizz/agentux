@@ -721,7 +721,33 @@ export const workLog = {
   source: MESSAGE,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog];
+export const liveSession = {
+  name: "Live Session",
+  href: "/examples/live-session/",
+  category: "Message · Blocks",
+  description: "A team of agents chatting while they work, with the team plan and the shared context beside the conversation.",
+  interaction:
+    "The scene replays on its own. Click an agent tab to dim the rest and fade the plan steps it does not own. Type @ to name an agent, press Enter to send. Click a message to open its details, a file chip to preview it, or Reply on a question that needs you.",
+  parts: [
+    { name: "LiveSession", file: "_live-session/live-session.tsx", description: "Lays out chat, plan and context, and holds the picked agent." },
+    { name: "AgentChat", file: "_live-session/agent-chat.tsx", description: "Tabs, message stream, composer and file preview." },
+    { name: "MessageStream · ChatMessage", file: "_live-session/message-stream.tsx", description: "Scrolling stream that keeps to the bottom and shows a new count when scrolled up." },
+    { name: "Composer", file: "_live-session/composer.tsx", description: "Input with @ mention menu, recipient and reply draft." },
+    { name: "TeamPlan", file: "_live-session/team-plan.tsx", description: "Plan header, run timer and step list with status icons." },
+    { name: "ContextWindow", file: "_live-session/context-window.tsx", description: "Token count, pixel grid and one row per segment." },
+    { name: "useLiveSession", file: "_live-session/use-live-session.ts", description: "Plays a timed script into session state and loops it." },
+  ],
+  props: [
+    { name: "agents", type: "Agent[]", description: "Name, model, mark pattern and color of each participant.", required: true },
+    { name: "session", type: "SessionState", description: "Visible agents, stream items, plan steps and context segments.", required: true },
+    { name: "agentCount", type: "number", description: "Agents shown in the plan header.", required: true },
+    { name: "elapsed", type: "number", description: "Run time in seconds.", required: true },
+    { name: "onSend", type: "(draft: Draft) => void", description: "Called with recipient, text and the quoted message.", required: true },
+  ],
+  source: "Recreated from the behavior of a reference Live Session block. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 

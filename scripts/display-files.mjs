@@ -33,4 +33,5 @@ export const displayFiles = {
   "web-search": ["_message/web-search.tsx"],
   "subagent-swarm": ["_message/swarm.tsx"],
   "work-log": ["_message/work-log.tsx"],
+  "live-session": ["_live-session/live-session.tsx", "_live-session/agent-chat.tsx", "_live-session/message-stream.tsx", "_live-session/chat-message.tsx", "_live-session/composer.tsx", "_live-session/team-plan.tsx", "_live-session/context-window.tsx", "_live-session/use-live-session.ts", "_live-session/live-session.css"],
 };
