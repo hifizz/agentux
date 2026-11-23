@@ -53,6 +53,8 @@ export function visibleIds(trace: Trace, filter: TraceFilter, hideInstant: boole
   return keep;
 }
 
+export const isFailed = (trace: Trace) => trace.nodes.some((node) => node.parentId === null && node.status === "error");
+
 export const axisOf = (trace: Trace): Axis => (trace.running ? autoAxis(trace.duration) : fitAxis(trace.duration));
 
 export const slowest = (trace: Trace, count = 3) =>

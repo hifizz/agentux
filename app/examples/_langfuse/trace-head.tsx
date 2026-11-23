@@ -4,7 +4,7 @@ import { StatusPill } from "../_trace-kit/status-pill";
 import { formatCost, formatDuration, formatStart, formatTokens } from "./format";
 import type { Trace } from "./model";
 import { TokenBreakdown } from "./token-legend";
-import { cachedShare } from "./view-model";
+import { cachedShare, isFailed } from "./view-model";
 
 export type TraceHeadProps = {
   trace: Trace;
@@ -29,7 +29,7 @@ export function statsOf(trace: Trace): Stat[] {
 }
 
 export function TraceHead({ trace, failures, onJump }: TraceHeadProps) {
-  const failed = trace.nodes.some((node) => node.parentId === null && node.status === "error");
+  const failed = isFailed(trace);
   return (
     <>
       <header className="tv-head">

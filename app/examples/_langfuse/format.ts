@@ -25,6 +25,16 @@ export function formatCost(cost: number) {
   return `$${Number(cost.toPrecision(2))}`;
 }
 
+export function formatSpan(ms: number) {
+  if (ms < 600_000) return formatDuration(ms);
+  const minutes = Math.round(ms / 60_000);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return minutes % 60 ? `${hours}h ${minutes % 60}m` : `${hours}h`;
+  const days = Math.floor(hours / 24);
+  return hours % 24 ? `${days}d ${hours % 24}h` : `${days}d`;
+}
+
 const START = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 
 export const formatStart = (epochMs: number) => `${START.format(epochMs)} UTC`;
