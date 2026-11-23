@@ -2,7 +2,6 @@
   --cw-card: #ffffff;
   --cw-card-2: #f9f9fb;
   --cw-pill: #f1f1f4;
-  --cw-seg-track: #e6e6eb;
   --cw-line: #e3e3e8;
   --cw-line-2: #ececf0;
   --cw-fg: #1c1c21;
@@ -24,7 +23,6 @@
   --cw-k-system: var(--cw-c6); --cw-k-tools: var(--cw-c2); --cw-k-skills: var(--cw-c7); --cw-k-memory: var(--cw-c4);
   --cw-k-files: var(--cw-c3); --cw-k-chat: var(--cw-c1); --cw-k-results: #ea580c;
   --cw-k-free: color-mix(in srgb, var(--cw-fg) 7%, transparent);
-  --cw-k: var(--cw-fg);
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -42,8 +40,6 @@
   --cw-card: #232327;
   --cw-card-2: #1f1f23;
   --cw-pill: #2d2d33;
-  --cw-seg-track: rgba(255, 255, 255, .035);
-  --cw-mark-fill: rgba(255, 255, 255, .15);
   --cw-line: #333339;
   --cw-line-2: #2c2c32;
   --cw-fg: #ededf1;
@@ -206,6 +202,7 @@
 .cw .ctx-short { display: none; flex: none; font-size: 11.5px; color: var(--cw-muted); white-space: nowrap; }
 .cw .ctx-card.shut .ctx-short { display: inline; }
 .cw .ctx-card.shut { padding-bottom: 14px; }
+.cw .ctx-card.shut > :not(.ctx-head) { display: none; }
 .cw .ctx-card.shut .ctx-head { height: 20px; white-space: nowrap; flex-wrap: nowrap; }
 .cw .ctx-card.shut .ctx-end { flex: 0 1 auto; }
 @container cw (max-width: 520px) {
@@ -224,7 +221,7 @@
 
 .cw .ctx-click { cursor: pointer; }
 .cw .ctx-leg.ctx-click { border-radius: 5px; }
-.cw .ctx-waffle > i:not(.free) { cursor: pointer; }
+.cw[data-clickable] .ctx-waffle > i:not(.free), .cw[data-clickable] .ctx-tile:not(.free) { cursor: pointer; }
 
 .cw .ctx-viz { position: relative; }
 .cw .ctx-viz[data-look="map"] > .ctx-waffle, .cw .ctx-viz[data-look="grid"] > .ctx-map { display: none; }
@@ -235,7 +232,7 @@
 .cw .ctx-tile {
   --t-ease: cubic-bezier(.32, .72, 0, 1);
   position: absolute; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; gap: 1px;
-  padding: 7px 9px; border-radius: 7px; cursor: pointer;
+  padding: 7px 9px; border-radius: 7px;
   background: color-mix(in srgb, var(--cw-k) 11%, var(--cw-card));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cw-k) 24%, transparent);
   transition: left .4s var(--t-ease), top .4s var(--t-ease), width .4s var(--t-ease), height .4s var(--t-ease),
@@ -254,7 +251,7 @@
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cw-k) 48%, transparent);
 }
 .cw .ctx-tile.free {
-  --cw-k: var(--cw-fg); cursor: default;
+  --cw-k: var(--cw-fg);
   background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--cw-fg) 5.5%, transparent) 0 1px, transparent 1px 6px), color-mix(in srgb, var(--cw-fg) 1.5%, var(--cw-card));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cw-fg) 9%, transparent);
 }

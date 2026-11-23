@@ -81,7 +81,7 @@ export function ContextWindow({
   const currentLook = look === undefined ? innerLook : look;
   const wanted = tab === undefined ? innerTab : tab;
   const currentTab = wanted === "all" || (partOf(prompt, wanted)?.tokens ?? 0) > 0 ? wanted : "all";
-  const state = live ? "live" : prompt.counted === false ? "est" : "counted";
+  const state = live ? "live" : prompt.counted ? "counted" : "est";
   const window = prompt.window ?? 0;
   const focusValue = useMemo(() => ({ focus, setFocus }), [focus]);
 
@@ -131,7 +131,7 @@ export function ContextWindow({
 
   return (
     <FocusContext.Provider value={focusValue}>
-      <section className={root} aria-label={title}>
+      <section className={root} data-clickable={onSelectItem ? "" : undefined} aria-label={title}>
         <div className={`ctx-card${shut ? " shut" : ""}`}>
           <div className="ctx-head">
             {foldable ? (
@@ -170,15 +170,11 @@ export function ContextWindow({
               <StateRow state={state} />
             </span>
           </div>
-          {!shut && (
-            <>
-              <ContextStats prompt={prompt} live={live} cache={cache} liveCache={liveCache} points={session?.points} />
-              <ContextViz prompt={prompt} look={currentLook} onSelectItem={onSelectItem} />
-              <ContextLegend prompt={prompt} look={currentLook} onLook={pickLook} onSelectItem={onSelectItem} />
-              <ContextContents prompt={prompt} tab={currentTab} onTab={pickTab} onSelectItem={onSelectItem} />
-              <ContextFoot prompt={prompt} session={session} agentName={agent?.name} />
-            </>
-          )}
+          <ContextStats prompt={prompt} live={live} cache={cache} liveCache={liveCache} points={session?.points} />
+          <ContextViz prompt={prompt} look={currentLook} hidden={shut} onSelectItem={onSelectItem} />
+          <ContextLegend prompt={prompt} look={currentLook} onLook={pickLook} onSelectItem={onSelectItem} />
+          <ContextContents prompt={prompt} tab={currentTab} onTab={pickTab} onSelectItem={onSelectItem} />
+          <ContextFoot prompt={prompt} session={session} agentName={agent?.name} />
         </div>
       </section>
     </FocusContext.Provider>
