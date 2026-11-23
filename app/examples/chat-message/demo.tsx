@@ -27,6 +27,10 @@ function finish(id: number) {
 After that the strip only animates when a message is added or taken.`;
 
 const READ = call("m-read", "read", { path: "app/examples/prompt-composer/demo.tsx", offset: 64, limit: 6 });
+const PLAN = call("m-plan", "update_plan", { plan: [
+  { step: "Trace the queue updates", status: "in_progress" },
+  { step: "Explain the extra render", status: "pending" },
+] });
 const GREP = call("m-grep", "bash", { command: 'rg -n "setQueue" app/examples/prompt-composer' });
 const READ_OUT = `  useEffect(() => {
     if (busy || queue.length === 0) return;
@@ -46,13 +50,14 @@ function Turn({ stopped }: { stopped: boolean }) {
   const cancelled = (id: string, name: string) => result(id, name, "Cancelled", { isError: true });
 
   const results = [
+    ...(thought.done ? [result(PLAN.id, PLAN.name, "Plan updated")] : []),
     ...(tools >= 1 ? [result(READ.id, "read", READ_OUT)] : stopped && thought.done ? [cancelled(READ.id, "read")] : []),
     ...(tools >= 2 ? [result(GREP.id, "bash", GREP_OUT)] : stopped && thought.done ? [cancelled(GREP.id, "bash")] : []),
   ];
   const slots = stopped ? [] : [...(tools < 1 ? [slot(READ.id, "read", "running")] : []), ...(tools < 2 ? [slot(GREP.id, "bash", tools < 1 ? "pending" : "running")] : [])];
 
   const message = assistant(
-    [{ type: "thinking", thinking: thought.text }, ...(thought.done ? [READ, GREP] : []), ...(tools >= 2 ? [{ type: "text" as const, text: answer.text }] : [])],
+    [{ type: "thinking", thinking: thought.text }, ...(thought.done ? [PLAN, READ, GREP] : []), ...(tools >= 2 ? [{ type: "text" as const, text: answer.text }] : [])],
     { stopReason: stopped ? "aborted" : "stop", durationMs: 8400, usage: usage(3120) },
   );
 

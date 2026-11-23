@@ -37,7 +37,7 @@ export type ToolView = {
   readonly argsText?: string;
 };
 
-export type ToolCategory = "file" | "shell" | "script" | "web" | "mcp" | "agent" | "ask" | "other";
+export type ToolCategory = "file" | "shell" | "script" | "web" | "mcp" | "agent" | "ask" | "plan" | "other";
 
 export type ToolAction = { readonly active: string; readonly done: string };
 

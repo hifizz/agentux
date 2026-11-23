@@ -6,6 +6,8 @@ import Stage from "@/components/examples/Stage";
 import { useStream } from "@/components/examples/use-script";
 import { useBurstStream } from "../_message/fixtures";
 import { Markdown } from "../_message/markdown";
+import { Plan } from "../_message/plan";
+import { planSnapshot } from "../_fixtures/plan";
 import { feedbackActions, MessageActions, MetaDot, retryAction, useCopyAction, type Feedback } from "../_message/message-actions";
 import { Message, MessageAttachments, MessageAvatar, MessageError, TypingDots } from "../_message/message";
 import { ShadowScroll } from "../_message/shadow-scroll";
@@ -15,6 +17,7 @@ import { SourceList, WebSearch, type SearchSource } from "../_message/web-search
 import { useSmoothStream } from "../_message/use-smooth-stream";
 
 const PROMPT = "Compare these two specs and tell me what changed in the streaming section.";
+const STEPS = ["Read both specifications", "Check the streaming guidance", "Summarize the differences"];
 const THOUGHT = "Two files are attached. I should read both, then check whether the new pacing numbers match current guidance before summarizing.";
 const SOURCES: SearchSource[] = [
   { id: "a", title: "Smooth streaming in AI SDKs", url: "https://sdk.vercel.ai/docs/smooth-stream" },
@@ -79,6 +82,7 @@ function Assistant({ fail, onRetry }: { fail: boolean; onRetry: () => void }) {
     >
       {phase === 0 && <TypingDots label="Starting" />}
       {phase >= 1 && <Thinking streaming={!thought.done}>{thought.text}</Thinking>}
+      {phase >= 2 && <Plan plan={planSnapshot(STEPS, done ? STEPS.length : phase - 2, !(fail && phase >= 4))} />}
       {phase >= 2 && (
         <ToolCall name="read" status={phase >= 3 ? "done" : "running"} icon={<FileText />} verb={{ active: "Reading", done: "Read" }} summary="2 files" duration={0.2}>
           <ToolInput value={{ paths: ["spec-v1.md", "spec-v2.md"] }} />

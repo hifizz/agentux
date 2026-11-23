@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, type ReactNode } from "react";
-import { Bot, ChevronRight, Code, FileText, Globe, MessageCircleQuestion, Plug, SquareFunction, SquareTerminal, type LucideIcon } from "lucide-react";
+import { Bot, ChevronRight, Code, FileText, Globe, ListChecks, MessageCircleQuestion, Plug, SquareFunction, SquareTerminal, type LucideIcon } from "lucide-react";
 import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
 import { cx } from "@/app/examples/_shared/ui/cx";
 import type { PiRenderers, ToolCategory, ToolPresentation, ToolView } from "../contracts";
@@ -20,6 +20,7 @@ const ICON: Record<ToolCategory, LucideIcon> = {
   mcp: Plug,
   agent: Bot,
   ask: MessageCircleQuestion,
+  plan: ListChecks,
   other: SquareFunction,
 };
 

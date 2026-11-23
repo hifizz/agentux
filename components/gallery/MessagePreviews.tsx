@@ -1,5 +1,6 @@
 import { ArrowDown, Brain, ChevronDown, Check, Copy, FileText, Globe, LoaderCircle, RotateCcw, SquareTerminal, ThumbsDown, ThumbsUp } from "lucide-react";
 import { ShimmerText } from "@/app/examples/_shared/ui/shimmer-text";
+import { PlanList } from "@/app/examples/_message/plan";
 
 const CARD = "w-[min(80%,22rem)] translate-y-2 rounded-[20px] border border-foreground/10 bg-card p-3 shadow-[0_20px_65px_-18px_#0000002e] motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:-translate-y-1 sm:p-4";
 const ROW = "flex items-center gap-2 text-xs text-muted-foreground";
@@ -76,6 +77,19 @@ export function SearchPreview() {
     <div className={`${CARD} flex flex-col gap-2`}>
       <p className={ROW}><Globe size={14} /> Searched 5 sites <span className="ml-auto flex -space-x-1">{["r", "m", "n"].map((l) => <span key={l} className="grid size-4 place-items-center rounded-full bg-foreground text-[9px] text-background ring-2 ring-card">{l}</span>)}</span></p>
       <p className="text-xs leading-5 text-foreground">Reveal tokens on each frame <span className="rounded-full bg-foreground/10 px-1 text-[10px]">1</span></p>
+    </div>
+  );
+}
+
+export function PlanPreview() {
+  return (
+    <div className={`${CARD} flex flex-col gap-2`}>
+      <p className="flex items-center justify-between text-sm font-medium">Plan <span className="text-xs text-muted-foreground">1/3 complete</span></p>
+      <PlanList plan={[
+        { step: "Read both specifications", status: "completed" },
+        { step: "Check the streaming guidance", status: "in_progress" },
+        { step: "Summarize the differences", status: "pending" },
+      ]} />
     </div>
   );
 }

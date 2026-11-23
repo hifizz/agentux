@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
-import { ActionsPreview, AgentMessagePreview, MarkdownPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
+import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
 
 export type ExampleProp = {
@@ -488,7 +488,7 @@ export const agentMessage = {
   name: "Agent Message",
   href: "/examples/agent-message/",
   category: "Message · Rendering",
-  description: "One assistant turn assembled from the message parts: thinking, tools, search, streamed Markdown, sources and actions.",
+  description: "An assistant shares its plan, uses tools and streams a Markdown answer with sources and actions.",
   preview: AgentMessagePreview,
   interaction: "The turn plays on its own inside a following scroll area. Turn on Fail to see the error with Retry. Hover the footer to copy, rate or regenerate.",
   parts: [
@@ -496,6 +496,7 @@ export const agentMessage = {
     { name: "MessageAttachments", file: "_message/message.tsx", description: "File chips above a user message." },
     { name: "MessageError", file: "_message/message.tsx", description: "Inline failure with an optional Retry." },
     { name: "TypingDots", file: "_message/message.tsx", description: "Status before the first token." },
+    { name: "Plan", file: "_message/plan.tsx", description: "Shows the current step and completed count as the turn progresses." },
     { name: "DisclosureRow", file: "_message/disclosure-row.tsx", description: "The shared row behind thinking, tools, search and swarm." },
   ],
   props: [
@@ -636,6 +637,23 @@ export const toolOutput = {
   source: MESSAGE,
 } satisfies Example;
 
+export const plan = {
+  name: "Plan",
+  href: "/examples/plan/",
+  category: "Message · Tools",
+  description: "The model’s ordered plan with a status for each step and a running completion count.",
+  preview: PlanPreview,
+  interaction: "Switch between Proposed, Working and Finished. Click the header to collapse the list. New steps and status updates appear in the order supplied by the model.",
+  parts: [
+    { name: "Plan", file: "_message/plan.tsx", description: "Collapsible message card with a completed step count." },
+    { name: "PlanList", file: "_message/plan.tsx", description: "Ordered steps for embedding in a tool result." },
+  ],
+  props: [
+    { name: "plan", type: "readonly PlanStep[]", description: "Each step has a step string and a status of pending, in_progress or completed.", required: true },
+    { name: "defaultOpen", type: "boolean", description: "Starts expanded by default." },
+  ],
+} satisfies Example;
+
 export const webSearch = {
   name: "Web Search",
   href: "/examples/web-search/",
@@ -703,7 +721,7 @@ export const workLog = {
   source: MESSAGE,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm, workLog];
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
