@@ -773,7 +773,32 @@ export const traceWaterfall = {
   source: "Recreated from the behavior of a reference trace view. Colors and spacing are the reference values for now.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall];
+export const runTimeline = {
+  name: "Run Timeline",
+  href: "/examples/run-timeline/",
+  category: "Message · Blocks",
+  description: "The steps of an agent run as bars on a fixed time axis, added one by one as the run goes.",
+  interaction:
+    "The run plays in real time and loops. A new step slides in when it starts, its bar grows and its time counts up, and a line marks now. Sub-agent steps nest under their parent. A failed step turns red. Click a step to select it.",
+  parts: [
+    { name: "RunTimeline", file: "_run-timeline/run-timeline.tsx", description: "Legend, axis and the step rows. Selection can be controlled or local." },
+    { name: "TimelineRow", file: "_run-timeline/timeline-row.tsx", description: "One step: tile, name, bar and time tag." },
+    { name: "StepTile", file: "_run-timeline/step-tile.tsx", description: "Icon for thinking and tool steps, a pixel mark for sub-agents." },
+    { name: "TimelineAxis · TimelineLines", file: "_run-timeline/timeline-axis.tsx", description: "Time labels, dashed guides and the now line." },
+    { name: "viewAt", file: "_run-timeline/timeline-model.ts", description: "Turns steps and a clock value into the rows to show, with status and elapsed time." },
+    { name: "useRunClock", file: "_run-timeline/use-run-clock.ts", description: "Real-time clock that holds at the end and loops." },
+  ],
+  props: [
+    { name: "steps", type: "Step[]", description: "Id, label, kind, start, duration, parent, tool and an optional failure.", required: true },
+    { name: "now", type: "number", description: "Clock value in seconds. Steps that have not started stay hidden.", required: true },
+    { name: "range", type: "number", description: "Seconds covered by the axis.", required: true },
+    { name: "selectedId / onSelect", type: "string | null / (id) => void", description: "Controlled selection. Omit to let the timeline keep it." },
+    { name: "label", type: "string", description: "Accessible name of the section." },
+  ],
+  source: "Recreated from the behavior of a reference run detail screen. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
