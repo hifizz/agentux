@@ -14,6 +14,7 @@ export default function Stage({
   replayLabel = "Replay",
   actions = [],
   align = "center",
+  wide = false,
   children,
 }: {
   status?: string;
@@ -21,6 +22,7 @@ export default function Stage({
   replayLabel?: string;
   actions?: StageAction[];
   align?: "top" | "center";
+  wide?: boolean;
   children: React.ReactNode;
 }) {
   const button =
@@ -29,7 +31,7 @@ export default function Stage({
     <div className="tf-chat flex h-full min-w-0 flex-col gap-3 pt-12 text-ch-ink">
       <div className="no-scrollbar relative min-h-0 flex-1 overflow-auto">
         <div
-          className={`mx-auto flex min-h-full w-full max-w-2xl flex-col gap-4 px-1 py-3 sm:px-4 ${align === "center" ? "justify-center" : ""}`}
+          className={`mx-auto flex min-h-full w-full ${wide ? "max-w-6xl" : "max-w-2xl"} flex-col gap-4 px-1 py-3 sm:px-4 ${align === "center" ? "justify-center" : ""}`}
         >
           {children}
         </div>

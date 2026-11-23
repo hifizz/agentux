@@ -33,4 +33,8 @@ export const displayFiles = {
   "web-search": ["_message/web-search.tsx"],
   "subagent-swarm": ["_message/swarm.tsx"],
   "work-log": ["_message/work-log.tsx"],
+  "live-session": ["_live-session/live-session.tsx", "_live-session/agent-chat.tsx", "_live-session/message-stream.tsx", "_live-session/chat-message.tsx", "_live-session/composer.tsx", "_live-session/team-plan.tsx", "_live-session/context-window.tsx", "_live-session/use-live-session.ts", "_live-session/live-session.css"],
+  "trace-waterfall": ["_trace-waterfall/trace-waterfall.tsx", "_trace-waterfall/trace-row.tsx", "_trace-waterfall/span-popover.tsx", "_trace-waterfall/trace-header.tsx", "_trace-waterfall/trace-axis.tsx", "_trace-waterfall/trace-model.ts", "_trace-waterfall/use-trace-clock.ts", "_trace-waterfall/trace-waterfall.css"],
+  "run-timeline": ["_run-timeline/run-timeline.tsx", "_run-timeline/timeline-row.tsx", "_run-timeline/step-tile.tsx", "_run-timeline/timeline-axis.tsx", "_run-timeline/timeline-model.ts", "_run-timeline/use-run-clock.ts", "_run-timeline/run-timeline.css"],
+  "context-window": ["_context-window/context-window.tsx", "_context-window/context-stats.tsx", "_context-window/context-viz.tsx", "_context-window/context-legend.tsx", "_context-window/context-contents.tsx", "_context-window/context-session.tsx", "_context-window/context-model.ts", "_context-window/types.ts", "_context-window/use-context-script.ts", "_context-window/context-window.css"],
 };

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
+import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -721,7 +722,118 @@ export const workLog = {
   source: MESSAGE,
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog];
+export const liveSession = {
+  name: "Live Session",
+  href: "/examples/live-session/",
+  category: "Message · Blocks",
+  description: "A team of agents chatting while they work, with the team plan and the shared context beside the conversation.",
+  interaction:
+    "The scene replays on its own. Click an agent tab to dim the rest and fade the plan steps it does not own. Type @ to name an agent, press Enter to send. Click a message to open its details, a file chip to preview it, or Reply on a question that needs you.",
+  parts: [
+    { name: "LiveSession", file: "_live-session/live-session.tsx", description: "Lays out chat, plan and context, and holds the picked agent." },
+    { name: "AgentChat", file: "_live-session/agent-chat.tsx", description: "Tabs, message stream, composer and file preview." },
+    { name: "MessageStream · ChatMessage", file: "_live-session/message-stream.tsx", description: "Scrolling stream that keeps to the bottom and shows a new count when scrolled up." },
+    { name: "Composer", file: "_live-session/composer.tsx", description: "Input with @ mention menu, recipient and reply draft." },
+    { name: "TeamPlan", file: "_live-session/team-plan.tsx", description: "Plan header, run timer and step list with status icons." },
+    { name: "ContextWindow", file: "_live-session/context-window.tsx", description: "Token count, pixel grid and one row per segment." },
+    { name: "useLiveSession", file: "_live-session/use-live-session.ts", description: "Plays a timed script into session state and loops it." },
+  ],
+  props: [
+    { name: "agents", type: "Agent[]", description: "Name, model, mark pattern and color of each participant.", required: true },
+    { name: "session", type: "SessionState", description: "Visible agents, stream items, plan steps and context segments.", required: true },
+    { name: "agentCount", type: "number", description: "Agents shown in the plan header.", required: true },
+    { name: "elapsed", type: "number", description: "Run time in seconds.", required: true },
+    { name: "onSend", type: "(draft: Draft) => void", description: "Called with recipient, text and the quoted message.", required: true },
+  ],
+  source: "Recreated from the behavior of a reference Live Session block. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const traceWaterfall = {
+  name: "Trace Waterfall",
+  href: "/examples/trace-waterfall/",
+  category: "Message · Blocks",
+  description: "Every model call, tool call and sub-agent of a run as a bar on a live timeline, with cost and tokens per step.",
+  interaction:
+    "The run plays at six times speed and loops. The time axis widens as the run grows. Click a row for its details, the chevron or Left and Right arrows to fold a branch, Up and Down to move. A folded branch keeps its calls as small marks on its bar. The slowest finished call is tagged.",
+  parts: [
+    { name: "TraceWaterfall", file: "_trace-waterfall/trace-waterfall.tsx", description: "Holds folds and the selected row, handles keys and places the details card." },
+    { name: "TraceHeader", file: "_trace-waterfall/trace-header.tsx", description: "Title, task, live state and six totals." },
+    { name: "TraceRow", file: "_trace-waterfall/trace-row.tsx", description: "One span: name column, bar, marks and the duration tag." },
+    { name: "SpanPopover", file: "_trace-waterfall/span-popover.tsx", description: "Details for one span: status, duration, cost, tokens, error and input." },
+    { name: "TraceLayer", file: "_trace-waterfall/trace-axis.tsx", description: "Axis ticks and the now line." },
+    { name: "viewAt", file: "_trace-waterfall/trace-model.ts", description: "Turns spans and a clock value into rows, totals and the axis range." },
+    { name: "useTraceClock", file: "_trace-waterfall/use-trace-clock.ts", description: "Plays a run at a chosen speed, holds the end and loops." },
+  ],
+  props: [
+    { name: "spans", type: "Span[]", description: "Id, parent, kind, title, start, duration, cost, tokens and an optional failure.", required: true },
+    { name: "now", type: "number", description: "Clock value in milliseconds. Spans that have not started stay hidden.", required: true },
+    { name: "task", type: "string", description: "Text next to the title.", required: true },
+    { name: "title", type: "string", description: "Header title. Defaults to Trace." },
+    { name: "defaultFolded", type: "ReadonlySet<string>", description: "Span ids that start folded." },
+  ],
+  source: "Recreated from the behavior of a reference trace view. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const runTimeline = {
+  name: "Run Timeline",
+  href: "/examples/run-timeline/",
+  category: "Message · Blocks",
+  description: "The steps of an agent run as bars on a fixed time axis, added one by one as the run goes.",
+  interaction:
+    "The run plays in real time and loops. A new step slides in when it starts, its bar grows and its time counts up, and a line marks now. Sub-agent steps nest under their parent. A failed step turns red. Click a step to select it.",
+  parts: [
+    { name: "RunTimeline", file: "_run-timeline/run-timeline.tsx", description: "Legend, axis and the step rows. Selection can be controlled or local." },
+    { name: "TimelineRow", file: "_run-timeline/timeline-row.tsx", description: "One step: tile, name, bar and time tag." },
+    { name: "StepTile", file: "_run-timeline/step-tile.tsx", description: "Icon for thinking and tool steps, a pixel mark for sub-agents." },
+    { name: "TimelineAxis · TimelineLines", file: "_run-timeline/timeline-axis.tsx", description: "Time labels, dashed guides and the now line." },
+    { name: "viewAt", file: "_run-timeline/timeline-model.ts", description: "Turns steps and a clock value into the rows to show, with status and elapsed time." },
+    { name: "useRunClock", file: "_run-timeline/use-run-clock.ts", description: "Real-time clock that holds at the end and loops." },
+  ],
+  props: [
+    { name: "steps", type: "Step[]", description: "Id, label, kind, start, duration, parent, tool and an optional failure.", required: true },
+    { name: "now", type: "number", description: "Clock value in seconds. Steps that have not started stay hidden.", required: true },
+    { name: "range", type: "number", description: "Seconds covered by the axis.", required: true },
+    { name: "selectedId / onSelect", type: "string | null / (id) => void", description: "Controlled selection. Omit to let the timeline keep it." },
+    { name: "label", type: "string", description: "Accessible name of the section." },
+  ],
+  source: "Recreated from the behavior of a reference run detail screen. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const contextWindow = {
+  name: "Context Window",
+  href: "/examples/context-window/",
+  category: "Message · Blocks",
+  description: "How full a model's context window is, by part, as a map or a block grid, in an open card, a folded row or a compact card.",
+  preview: ContextWindowPreview,
+  interaction:
+    "Each request is estimated while it is live, then counted. Hover a legend chip, a row, a tile or a cell to light what it stands for. Switch between the map and the grid, pick a part in the contents tabs, and fold the card to one line. Replay restarts the requests.",
+  parts: [
+    { name: "ContextWindow", file: "_context-window/context-window.tsx", description: "Head, layout switch and the shared focus. Fold, look and tab can be controlled or local." },
+    { name: "ContextStats", file: "_context-window/context-stats.tsx", description: "Tokens used, health, headroom and the prompt cache. The compact layout uses a figure row." },
+    { name: "ContextViz", file: "_context-window/context-viz.tsx", description: "The tile map, the block grid and their tip." },
+    { name: "ContextLegend · ContextPartRows", file: "_context-window/context-legend.tsx", description: "Part chips with the look switch, or one row per part in the compact card." },
+    { name: "ContextContents", file: "_context-window/context-contents.tsx", description: "Tabs and the largest items first, with Show all." },
+    { name: "ContextFoot · ContextSpark", file: "_context-window/context-session.tsx", description: "Crumbs, turn notes and the session line against the window." },
+    { name: "tilesOf · cellsOf", file: "_context-window/context-model.ts", description: "Pure layout of the tiles and the 400 cells, plus health, headroom and number formats." },
+    { name: "useContextScript", file: "_context-window/use-context-script.ts", description: "Plays the demo requests, each live and then counted, and holds on the last." },
+  ],
+  props: [
+    { name: "prompt", type: "Prompt", description: "Window, tokens, parts with items, and whether the count is the vendor's.", required: true },
+    { name: "live", type: "boolean", description: "The request is under way. Defaults to false." },
+    { name: "layout", type: "\"full\" | \"compact\"", description: "Defaults to full." },
+    { name: "title", type: "string", description: "Card title. Defaults to Context window." },
+    { name: "agent / model", type: "{ name, icon } / { id, icon }", description: "Route shown in the head." },
+    { name: "cache / liveCache", type: "PromptCache | null", description: "This request's cache, and the last answered one shown dimmed while live." },
+    { name: "session", type: "{ points, at, crumbs, onPoint }", description: "Session line, headroom and footer path." },
+    { name: "foldable · collapsed / onCollapsedChange", type: "boolean · boolean / (collapsed) => void", description: "Folds the full card to one line. Omit collapsed to let the card keep it." },
+    { name: "look / onLookChange", type: "\"map\" | \"grid\"", description: "Controlled or local, like tab." },
+    { name: "tab / onTabChange", type: "\"all\" | PartKind", description: "Contents tab." },
+    { name: "onSelectItem", type: "(part, item?) => void", description: "Makes tiles, cells, chips and rows clickable. Omit it and nothing is." },
+  ],
+  source: "Recreated from the behavior of a reference routing page. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
