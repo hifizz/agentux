@@ -747,7 +747,33 @@ export const liveSession = {
   source: "Recreated from the behavior of a reference Live Session block. Colors and spacing are the reference values for now.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession];
+export const traceWaterfall = {
+  name: "Trace Waterfall",
+  href: "/examples/trace-waterfall/",
+  category: "Message · Blocks",
+  description: "Every model call, tool call and sub-agent of a run as a bar on a live timeline, with cost and tokens per step.",
+  interaction:
+    "The run plays at six times speed and loops. The time axis widens as the run grows. Click a row for its details, the chevron or Left and Right arrows to fold a branch, Up and Down to move. A folded branch keeps its calls as small marks on its bar. The slowest finished call is tagged.",
+  parts: [
+    { name: "TraceWaterfall", file: "_trace-waterfall/trace-waterfall.tsx", description: "Holds folds and the selected row, handles keys and places the details card." },
+    { name: "TraceHeader", file: "_trace-waterfall/trace-header.tsx", description: "Title, task, live state and six totals." },
+    { name: "TraceRow", file: "_trace-waterfall/trace-row.tsx", description: "One span: name column, bar, marks and the duration tag." },
+    { name: "SpanPopover", file: "_trace-waterfall/span-popover.tsx", description: "Details for one span: status, duration, cost, tokens, error and input." },
+    { name: "TraceLayer", file: "_trace-waterfall/trace-axis.tsx", description: "Axis ticks and the now line." },
+    { name: "viewAt", file: "_trace-waterfall/trace-model.ts", description: "Turns spans and a clock value into rows, totals and the axis range." },
+    { name: "useTraceClock", file: "_trace-waterfall/use-trace-clock.ts", description: "Plays a run at a chosen speed, holds the end and loops." },
+  ],
+  props: [
+    { name: "spans", type: "Span[]", description: "Id, parent, kind, title, start, duration, cost, tokens and an optional failure.", required: true },
+    { name: "now", type: "number", description: "Clock value in milliseconds. Spans that have not started stay hidden.", required: true },
+    { name: "task", type: "string", description: "Text next to the title.", required: true },
+    { name: "title", type: "string", description: "Header title. Defaults to Trace." },
+    { name: "defaultFolded", type: "ReadonlySet<string>", description: "Span ids that start folded." },
+  ],
+  source: "Recreated from the behavior of a reference trace view. Colors and spacing are the reference values for now.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
