@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useMediaQuery } from "@/lib/use-media-query";
 
 export function useSteps(delays: readonly number[], active = true) {
   const [step, setStep] = useState(0);
@@ -14,7 +14,7 @@ export function useSteps(delays: readonly number[], active = true) {
 }
 
 export function useStream(text: string, active = true, chars = 4, ms = 28) {
-  const reduced = useReducedMotion();
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!active || reduced) return;

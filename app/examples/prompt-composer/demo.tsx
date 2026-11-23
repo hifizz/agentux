@@ -4,9 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { RotateCcw } from "lucide-react";
 import { AiStatus } from "./ai-status";
-import { PromptComposer, type PermissionMode, type QueuedMessage, type Strip, type Submission } from "./composer";
+import {
+  PromptComposer,
+  type PermissionMode,
+  type QueuedMessage,
+  type Strip,
+  type Submission,
+} from "./composer";
 import { CONTEXT, useDirectory, useHost, useRepo } from "./fixtures";
-import { DEFAULT_DEMO_SELECTION, DEMO_MODELS, type ModelSelection } from "@/app/examples/_shared/models";
+import {
+  DEFAULT_DEMO_SELECTION,
+  DEMO_MODELS,
+  type ModelSelection,
+} from "@/app/examples/_shared/models";
 
 const THINK_MS = 1400;
 const WORD_MS = 40;
@@ -36,8 +46,11 @@ type Message = {
 const SPRING = { type: "spring", duration: 0.5, bounce: 0.15 } as const;
 
 function describe(submission: Submission) {
-  const model = DEMO_MODELS.find((m) => m.key === submission.model?.key)?.name ?? "Model";
-  const files = submission.attachments.length ? ` · ${submission.attachments.length} file${submission.attachments.length > 1 ? "s" : ""}` : "";
+  const model =
+    DEMO_MODELS.find((m) => m.key === submission.model?.key)?.name ?? "Model";
+  const files = submission.attachments.length
+    ? ` · ${submission.attachments.length} file${submission.attachments.length > 1 ? "s" : ""}`
+    : "";
   return `${model} · ${submission.permission ?? "ask"}${files}`;
 }
 
@@ -56,23 +69,44 @@ export default function Demo() {
   const repo = useRepo();
   const host = useHost(busy ? "running" : "ready");
   const spent = messages.reduce((n, m) => n + 600 + m.shown * 2, 0);
-  const context = { ...CONTEXT, segments: CONTEXT.segments.map((s) => (s.id === "messages" ? { ...s, tokens: s.tokens + spent } : s)) };
+  const context = {
+    ...CONTEXT,
+    segments: CONTEXT.segments.map((s) =>
+      s.id === "messages" ? { ...s, tokens: s.tokens + spent } : s,
+    ),
+  };
 
   const start = (prompt: string, meta: string) => {
     const id = ++turn.current;
-    setMessages((list) => [...list, { id, prompt, meta, answer: ANSWERS[(id - 1) % ANSWERS.length], shown: 0, phase: "thinking" }]);
+    setMessages((list) => [
+      ...list,
+      {
+        id,
+        prompt,
+        meta,
+        answer: ANSWERS[(id - 1) % ANSWERS.length],
+        shown: 0,
+        phase: "thinking",
+      },
+    ]);
   };
 
   const drain = () => {
     const [next, ...rest] = queue;
     if (!next) return;
     setQueue(rest);
-    start(next.text, next.mode === "steer" ? "steered into the run" : "from the queue");
+    start(
+      next.text,
+      next.mode === "steer" ? "steered into the run" : "from the queue",
+    );
   };
 
   useEffect(() => {
     if (!live || !busy) return;
-    const update = (patch: Partial<Message>) => setMessages((list) => list.map((m) => (m.id === live.id ? { ...m, ...patch } : m)));
+    const update = (patch: Partial<Message>) =>
+      setMessages((list) =>
+        list.map((m) => (m.id === live.id ? { ...m, ...patch } : m)),
+      );
     const words = live.answer.split(" ").length;
     const tick = () => {
       if (live.phase === "thinking") return update({ phase: "writing" });
@@ -82,24 +116,39 @@ export default function Demo() {
       setChanges(true);
       drain();
     };
-    const timer = setTimeout(tick, live.phase === "thinking" ? (reduced ? 200 : THINK_MS) : WORD_MS);
+    const timer = setTimeout(
+      tick,
+      live.phase === "thinking" ? (reduced ? 200 : THINK_MS) : WORD_MS,
+    );
     return () => clearTimeout(timer);
   });
 
   useEffect(() => {
-    scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: reduced ? "auto" : "smooth" });
+    scroller.current?.scrollTo({
+      top: scroller.current.scrollHeight,
+      behavior: reduced ? "auto" : "smooth",
+    });
   }, [messages, reduced]);
 
   const submit = (submission: Submission) => {
     if (submission.whenBusy) {
-      setQueue((list) => [...list, { id: crypto.randomUUID(), text: submission.text, mode: submission.whenBusy ?? "queue" }]);
+      setQueue((list) => [
+        ...list,
+        {
+          id: crypto.randomUUID(),
+          text: submission.text,
+          mode: submission.whenBusy ?? "queue",
+        },
+      ]);
       return;
     }
     start(submission.text, describe(submission));
   };
 
   const stop = () => {
-    setMessages((list) => list.map((m) => (m.id === live?.id ? { ...m, phase: "stopped" } : m)));
+    setMessages((list) =>
+      list.map((m) => (m.id === live?.id ? { ...m, phase: "stopped" } : m)),
+    );
     drain();
   };
 
@@ -117,55 +166,76 @@ export default function Demo() {
           {
             kind: "queue",
             messages: queue,
-            onSteer: (id: string) => setQueue((list) => list.map((m) => (m.id === id ? { ...m, mode: "steer" } : m))),
-            onEdit: (id: string, text: string) => setQueue((list) => list.map((m) => (m.id === id ? { ...m, text } : m))),
-            onRemove: (id: string) => setQueue((list) => list.filter((m) => m.id !== id)),
+            onSteer: (id: string) =>
+              setQueue((list) =>
+                list.map((m) => (m.id === id ? { ...m, mode: "steer" } : m)),
+              ),
+            onEdit: (id: string, text: string) =>
+              setQueue((list) =>
+                list.map((m) => (m.id === id ? { ...m, text } : m)),
+              ),
+            onRemove: (id: string) =>
+              setQueue((list) => list.filter((m) => m.id !== id)),
           } as const,
         ]
       : []),
   ];
 
   return (
-    <div className="tf-chat flex h-full flex-col bg-ch-page text-ch-ink">
-      <div className="flex items-center justify-between px-5 pt-4">
-        <p className="text-sm font-medium text-ch-ink-muted">Agent session</p>
-        <button
-          type="button"
-          onClick={reset}
-          disabled={messages.length === 0}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-ch-ink-muted hover:bg-ch-ghost-hover hover:text-ch-ink disabled:pointer-events-none disabled:opacity-40"
-        >
-          <RotateCcw size={14} aria-hidden="true" /> New chat
-        </button>
-      </div>
-
-      <div ref={scroller} aria-label="Conversation" className="no-scrollbar flex-1 overflow-y-auto px-5 py-4">
-        {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
-            <p className="font-runde text-2xl font-semibold">What should the agent do?</p>
-            <p className="max-w-sm text-sm text-ch-ink-muted">Pick a model, effort and permission, attach a file, then send. Send again while it writes to queue or steer.</p>
+    <div className="tf-chat mx-auto flex h-full max-w-2xl flex-col justify-center gap-3 px-1 py-12 text-ch-ink sm:px-4">
+      {messages.length > 0 && (
+        <>
+          <button
+            type="button"
+            onClick={reset}
+            className="inline-flex cursor-pointer items-center gap-1.5 self-end rounded-full bg-popover px-3 py-1.5 text-xs text-ch-ink-muted hover:text-ch-ink"
+          >
+            <RotateCcw size={12} aria-hidden="true" /> New chat
+          </button>
+          <div
+            ref={scroller}
+            aria-label="Conversation"
+            className="no-scrollbar min-h-0 overflow-y-auto px-2 py-3"
+          >
+            <ol className="mx-auto flex max-w-2xl flex-col gap-6">
+              <AnimatePresence initial={false}>
+                {messages.map((m) => (
+                  <motion.li
+                    key={m.id}
+                    initial={reduced ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={SPRING}
+                    className="flex flex-col gap-3"
+                  >
+                    <div className="ml-auto max-w-[85%] rounded-2xl bg-ch-tonal px-4 py-2.5 text-sm">
+                      <p className="whitespace-pre-wrap">{m.prompt}</p>
+                      <p className="mt-1 text-xs text-ch-ink-subtle">
+                        {m.meta}
+                      </p>
+                    </div>
+                    <AiStatus
+                      state={m.phase === "stopped" ? "error" : m.phase}
+                      label={m.phase === "stopped" ? "Stopped" : undefined}
+                      timer
+                    />
+                    {m.shown > 0 && (
+                      <p className="text-sm leading-relaxed text-ch-ink">
+                        {m.answer.split(" ").slice(0, m.shown).join(" ")}
+                      </p>
+                    )}
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ol>
           </div>
-        ) : (
-          <ol className="mx-auto flex max-w-2xl flex-col gap-6">
-            <AnimatePresence initial={false}>
-              {messages.map((m) => (
-                <motion.li key={m.id} initial={reduced ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={SPRING} className="flex flex-col gap-3">
-                  <div className="ml-auto max-w-[85%] rounded-2xl bg-ch-tonal px-4 py-2.5 text-sm">
-                    <p className="whitespace-pre-wrap">{m.prompt}</p>
-                    <p className="mt-1 text-xs text-ch-ink-subtle">{m.meta}</p>
-                  </div>
-                  <AiStatus state={m.phase === "stopped" ? "error" : m.phase} label={m.phase === "stopped" ? "Stopped" : undefined} timer />
-                  {m.shown > 0 && <p className="text-sm leading-relaxed text-ch-ink">{m.answer.split(" ").slice(0, m.shown).join(" ")}</p>}
-                </motion.li>
-              ))}
-            </AnimatePresence>
-          </ol>
-        )}
-      </div>
+        </>
+      )}
 
-      <div className="mx-auto w-full max-w-2xl px-4 pb-4">
+      <div className="w-full shrink-0">
         <PromptComposer
-          placeholder={busy ? "Queue a follow-up" : "Ask the agent to build something"}
+          placeholder={
+            busy ? "Queue a follow-up" : "Ask the agent to build something"
+          }
           onSubmit={submit}
           busy={busy}
           busyPolicy="steerable"

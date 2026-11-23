@@ -1,32 +1,63 @@
-import { ArrowUpRight, PanelTop } from "lucide-react";
 import Link from "next/link";
 import type { Example } from "@/lib/components";
+import { cn } from "@/lib/utils";
 
-export default function ComponentCard({ item }: { item: Example }) {
+const ArrowIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    aria-hidden="true"
+  >
+    <path d="M7 17 17 7M8 7h9v9" />
+  </svg>
+);
+
+export default function ComponentCard({
+  item,
+  large = false,
+  className,
+}: {
+  item: Example;
+  large?: boolean;
+  className?: string;
+}) {
   const Preview = item.preview;
 
   return (
     <Link
       href={item.href}
-      className="group flex flex-col rounded-[32px] border border-black/[0.04] bg-[#f7f3ee] p-2 transition-colors duration-200 ease-out hover:bg-[#f1ebe4] dark:border-transparent dark:border-apple dark:bg-[#151413] dark:hover:bg-[#1c1917]"
+      prefetch={false}
+      className={cn(
+        "group flex flex-col rounded-[32px] border border-black/[0.04] bg-[#F5F5F7] p-2 transition-colors duration-200 ease-out dark:border-transparent dark:border-apple dark:bg-[#121212] dark:hover:bg-muted",
+        large && "lg:h-full",
+        className,
+      )}
       style={{ cornerShape: "squircle" } as React.CSSProperties}
     >
       <div
-        aria-hidden="true"
-        className="example-cover relative grid aspect-[2/1] min-h-38 w-full place-items-center overflow-hidden rounded-3xl border border-foreground/[0.06] bg-[#fffaf6] dark:bg-[#110f0e]"
+        className={cn(
+          "relative aspect-4/3 w-full overflow-hidden rounded-3xl border border-black/[0.06] bg-white dark:border-neutral-500/15 dark:bg-neutral-950",
+          large && "lg:aspect-auto lg:flex-1",
+        )}
         style={{ cornerShape: "squircle" } as React.CSSProperties}
       >
-        {Preview ? <Preview /> : <PanelTop className="text-muted-foreground" size={32} />}
+        <div className="absolute inset-0 grid place-items-center">{Preview && <Preview />}</div>
       </div>
 
-      <div className="flex items-center justify-between gap-3 px-3 pb-2 pt-3 sm:px-4 sm:pb-3">
+      <div className="flex items-center justify-between gap-3 px-3 pb-1 pt-2">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-muted-foreground">{item.category}</p>
-          <h3 className="mt-0.5 font-runde text-lg font-bold tracking-tight">{item.name}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+          <h3 className="flex items-center gap-2 font-runde text-base font-semibold tracking-tight">
+            {item.name}
+          </h3>
         </div>
-        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#ff6b35]/12 text-[#a53712] transition-colors group-hover:bg-[#ff6b35]/20 dark:text-[#ff8e61]">
-          <ArrowUpRight size={18} />
+        <span className="flex shrink-0 items-center justify-center text-[#FC4C01]">
+          <ArrowIcon />
         </span>
       </div>
     </Link>

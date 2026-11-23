@@ -1,6 +1,6 @@
 # Turnframe
 
-An Agent UX showcase built with Next.js, Tailwind CSS, and Motion. It includes one interactive example, Prompt Composer, with a simulated chat response.
+An Agent UX showcase built with Next.js, Tailwind CSS, and Motion. Browse interactive composer, chat, and agent message examples. All interactions use local fixtures.
 
 ## Run locally
 
@@ -21,6 +21,8 @@ Open http://localhost:3000. Run `npm run build` to export the static site to `ou
 
 The site name, tagline, and logo path live in `lib/site.ts`.
 
-## Credits
+## Reuse an example
 
-The site is adapted from [Rare UI](https://rareui.com/) by Swami Malode. See [LICENSE](LICENSE) for the upstream copyright, attribution, and distribution terms.
+Open **Install** on a demo to copy its shadcn command, or **Get code** to inspect and copy its files. Each static manifest contains the demo and its local dependencies, with import paths rewritten for installation. In a Tailwind v4 project import the included `turnframe/app/examples/_shared/tokens.css` in the main stylesheet, relative to the configured components directory. Render the demo inside a container with a height.
+
+Run `npm run registry:build` after editing an example during development. The dev and production build commands generate the manifests automatically.

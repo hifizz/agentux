@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useMediaQuery } from "@/lib/use-media-query";
 
 export type SmoothStreamOptions = { minRate?: number; lag?: number };
 
 export function useSmoothStream(target: string, { minRate = 60, lag = 0.6 }: SmoothStreamOptions = {}) {
-  const reduced = useReducedMotion();
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [count, setCount] = useState(0);
   const pos = useRef(0);
   const size = target.length;

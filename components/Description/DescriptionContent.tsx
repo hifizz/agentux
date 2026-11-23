@@ -2,7 +2,7 @@ import type { Example } from "@/lib/components";
 import { cn } from "@/lib/utils";
 import PropsTable from "./PropsTable";
 
-function SectionLabel({ as: Tag = "p", children }: { as?: "p" | "h2"; children: React.ReactNode }) {
+function SectionLabel({ as: Tag = "p", children }: { as?: "p" | "h1" | "h2"; children: React.ReactNode }) {
   return <Tag className="text-xs font-medium uppercase tracking-normal text-foreground/40">{children}</Tag>;
 }
 
@@ -10,14 +10,22 @@ export default function DescriptionContent({ item, className }: { item: Example;
   return (
     <div className={cn("flex flex-col gap-12 text-left", className)}>
       <div className="flex flex-col gap-4">
-        <SectionLabel>{item.category}</SectionLabel>
+        <SectionLabel as="h1">{item.name}</SectionLabel>
         <p className="font-sans text-2xl font-semibold leading-relaxed text-foreground/90">{item.description}</p>
       </div>
 
       {item.interaction && (
         <div className="flex flex-col gap-3">
-          <SectionLabel as="h2">Interaction</SectionLabel>
+          <SectionLabel as="h2">Interaction Type</SectionLabel>
           <p className="text-sm leading-relaxed text-foreground/70">{item.interaction}</p>
+        </div>
+      )}
+
+      {item.props && item.props.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <SectionLabel as="h2">Props</SectionLabel>
+          <p className="-mt-1 text-sm leading-relaxed text-foreground/70">Options for the assembled component.</p>
+          <PropsTable props={item.props} />
         </div>
       )}
 
@@ -35,14 +43,6 @@ export default function DescriptionContent({ item, className }: { item: Example;
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {item.props && item.props.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <SectionLabel as="h2">Props</SectionLabel>
-          <p className="-mt-1 text-sm leading-relaxed text-foreground/70">Options for the assembled component.</p>
-          <PropsTable props={item.props} />
         </div>
       )}
 

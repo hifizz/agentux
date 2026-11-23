@@ -689,3 +689,12 @@ export const workLog = {
 } satisfies Example;
 
 export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shadowScroll, messageActions, thinkingBlock, toolOutput, webSearch, subagentSwarm, workLog];
+
+export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
+
+export const exampleGroups = Array.from(new Set(examples.map(exampleFamily)), (label) => ({
+  label,
+  items: examples.filter((item) => exampleFamily(item) === label),
+}));
+
+export const activeExample = (path: string) => examples.find((item) => item.href === `${path.replace(/\/$/, "")}/`);

@@ -11,7 +11,7 @@ export default function Footer() {
       </Link>
       <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
         <Link href="/examples/" className="hover:text-foreground">Examples</Link>
-        <a href="https://rareui.com/" className="hover:text-foreground">Based on Rare UI</a>
+        <a href={site.repository} className="hover:text-foreground">GitHub</a>
       </nav>
     </footer>
   );
