@@ -18,6 +18,7 @@ Open http://localhost:3000. Run `npm run build` to export the static site to `ou
 1. Add a route under `app/examples/`. Keep the example and its private UI in the same route directory.
 2. Add the name, route, category, and description to `examples` in `lib/components.ts`.
 3. Optionally set the entry's `preview` to a small component for the gallery card.
+4. Get Code shows `demo.tsx` by default. To show the component implementation instead, list its files relative to `app/examples/` in `scripts/display-files.mjs`, primary file first. List multiple files only when they belong together; Install still includes all dependencies.
 
 The site name, tagline, and logo path live in `lib/site.ts`.
 

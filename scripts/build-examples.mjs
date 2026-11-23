@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import path from "node:path/posix";
 import ts from "typescript";
+import { displayFiles } from "./display-files.mjs";
 
 const pkg = JSON.parse(readFileSync("package.json", "utf8"));
 const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
@@ -69,6 +70,10 @@ function collect(slug) {
   }
   visit(`${examples}/${slug}/demo.tsx`);
   visit(tokens);
+  const shown = (displayFiles[slug] ?? [`${slug}/demo.tsx`]).map((path) => `${examples}/${path}`);
+  for (const path of shown) {
+    if (!files.has(path)) throw new Error(`Missing display source for ${slug}: ${path}`);
+  }
   return {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: slug,
@@ -76,6 +81,7 @@ function collect(slug) {
     dependencies: [...dependencies].sort(),
     devDependencies: [...devDependencies].sort(),
     files: [...files.values()],
+    meta: { displayFiles: shown },
     docs: `Import ${pkg.name}/${tokens} from your global Tailwind v4 stylesheet, then render the default export of ${pkg.name}/${examples}/${slug}/demo.tsx inside a container with a height. Both paths are under your configured components directory.`,
   };
 }
