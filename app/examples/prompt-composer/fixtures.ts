@@ -4,8 +4,8 @@ import { useState } from "react";
 import { branchesOf as seedBranches, GITHUB_REPOS } from "@/app/examples/_shared/github";
 import type { ChangedFile, ContextControl, DirectoryControl, Host, HostControl, HostStatus, QueuedMessage, RepoControl, RepoRef } from "./composer";
 
-export const DIRECTORIES = ["~/code/turnframe", "~/code/agent-builder", "~/code/acme/web", "~/code/acme/billing-service", "~/code/acme/design-system", "~/notes"];
-export const RECENT = ["~/code/turnframe", "~/code/agent-builder"];
+export const DIRECTORIES = ["~/code/reni", "~/code/agent-builder", "~/code/acme/web", "~/code/acme/billing-service", "~/code/acme/design-system", "~/notes"];
+export const RECENT = ["~/code/reni", "~/code/agent-builder"];
 
 export const HOSTS: readonly Host[] = [
   { id: "local", name: "This Mac", kind: "local" },

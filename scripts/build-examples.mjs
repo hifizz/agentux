@@ -27,7 +27,7 @@ function collect(slug) {
     const entry = {
       type: "registry:file",
       path: file,
-      target: `@components/turnframe/${file}`,
+      target: `@components/${pkg.name}/${file}`,
       content,
     };
     files.set(file, entry);
@@ -76,7 +76,7 @@ function collect(slug) {
     dependencies: [...dependencies].sort(),
     devDependencies: [...devDependencies].sort(),
     files: [...files.values()],
-    docs: `Import turnframe/${tokens} from your global Tailwind v4 stylesheet, then render the default export of turnframe/${examples}/${slug}/demo.tsx inside a container with a height. Both paths are under your configured components directory.`,
+    docs: `Import ${pkg.name}/${tokens} from your global Tailwind v4 stylesheet, then render the default export of ${pkg.name}/${examples}/${slug}/demo.tsx inside a container with a height. Both paths are under your configured components directory.`,
   };
 }
 

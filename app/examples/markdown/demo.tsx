@@ -47,7 +47,7 @@ npm run lint && npm run build
 
 ---
 
-Footnotes and autolinks: https://turnframe.dev reads as a link.[^1]
+Footnotes and autolinks: https://github.com/hifizz/agentux reads as a link.[^1]
 
 [^1]: A footnote at the end of the message.
 

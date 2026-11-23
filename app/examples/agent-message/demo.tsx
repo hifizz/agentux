@@ -56,8 +56,8 @@ function Assistant({ fail, onRetry }: { fail: boolean; onRetry: () => void }) {
   return (
     <Message
       role="assistant"
-      name="Turnframe"
-      avatar={<MessageAvatar label="T" />}
+      name="reni"
+      avatar={<MessageAvatar label="r" className="normal-case" />}
       time="now"
       footer={
         done && (

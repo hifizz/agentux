@@ -72,14 +72,14 @@ export function BottomTrayPreview() {
     <div className={`${CARD} flex flex-col p-0!`}>
       <p className="relative z-10 rounded-[16px] border border-foreground/10 bg-card px-3 py-3 text-sm text-muted-foreground">Start a task</p>
       <div className="-mt-3 flex justify-between rounded-b-[20px] bg-foreground/[0.04] px-2 pt-4 pb-1.5">
-        <span className="flex"><span className={CHIP}><Folder size={12} /> turnframe</span><span className={CHIP}><GitBranch size={12} /> main</span></span>
+        <span className="flex"><span className={CHIP}><Folder size={12} /> reni</span><span className={CHIP}><GitBranch size={12} /> main</span></span>
         <span className={CHIP}><Laptop size={12} /> This Mac</span>
       </div>
     </div>
   );
 }
 
-export const DirectoryPreview = () => <MenuPreview title="Recent" rows={["~/code/turnframe", "~/code/agent-builder", "Scratch"]} active={0} />;
+export const DirectoryPreview = () => <MenuPreview title="Recent" rows={["~/code/reni", "~/code/agent-builder", "Scratch"]} active={0} />;
 
 export function RepoPreview() {
   return (

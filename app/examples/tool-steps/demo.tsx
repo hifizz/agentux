@@ -23,7 +23,7 @@ const PATCH = `@@ -64,6 +64,5 @@
 +    send(next.text);
 +  }, [send]);`;
 
-const LINT_OUT = `> turnframe@0.1.0 lint
+const LINT_OUT = `> reni@0.1.0 lint
 > eslint
 
 app/examples/prompt-composer/demo.tsx
@@ -50,7 +50,7 @@ const SPECS: Spec[] = [
     id: "s-lint",
     name: "bash",
     args: { command: "npm run lint", timeout: 120 },
-    live: "> turnframe@0.1.0 lint\n> eslint\n",
+    live: "> reni@0.1.0 lint\n> eslint\n",
     done: (id, name) => result(id, name, LINT_OUT, { isError: true, diagnostics: [{ severity: "error", code: "exit_code", message: "Command exited with code 1" }] }),
   },
   {

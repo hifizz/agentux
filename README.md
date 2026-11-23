@@ -1,4 +1,4 @@
-# Turnframe
+# reni
 
 An Agent UX showcase built with Next.js, Tailwind CSS, and Motion. Browse interactive composer, chat, and agent message examples. All interactions use local fixtures.
 
@@ -23,6 +23,6 @@ The site name, tagline, and logo path live in `lib/site.ts`.
 
 ## Reuse an example
 
-Open **Install** on a demo to copy its shadcn command, or **Get code** to inspect and copy its files. Each static manifest contains the demo and its local dependencies, with import paths rewritten for installation. In a Tailwind v4 project import the included `turnframe/app/examples/_shared/tokens.css` in the main stylesheet, relative to the configured components directory. Render the demo inside a container with a height.
+Open **Install** on a demo to copy its shadcn command, or **Get code** to inspect and copy its files. Each static manifest contains the demo and its local dependencies, with import paths rewritten for installation. In a Tailwind v4 project import the included `reni/app/examples/_shared/tokens.css` in the main stylesheet, relative to the configured components directory. Render the demo inside a container with a height.
 
 Run `npm run registry:build` after editing an example during development. The dev and production build commands generate the manifests automatically.

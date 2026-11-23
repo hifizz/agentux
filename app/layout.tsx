@@ -53,7 +53,7 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          storageKey="turnframe-theme"
+          storageKey="reni-theme"
           enableSystem
           disableTransitionOnChange
         >

@@ -3,7 +3,7 @@
 import { Squircle } from "@squircle-js/react";
 import { cn } from "@/lib/utils";
 
-export const OPEN_EVENT = "turnframe:command-menu";
+export const OPEN_EVENT = "reni:command-menu";
 
 export const openCommandMenu = () =>
   window.dispatchEvent(new Event(OPEN_EVENT));
