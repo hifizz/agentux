@@ -857,7 +857,32 @@ export const langfuseTrace = {
   source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace];
+
+
+export const langfuseSession = {
+  name: "Langfuse Session",
+  href: "/examples/langfuse-session/",
+  category: "Message · Blocks",
+  description: "A Langfuse session as a strip of turns and a list that opens each turn into its trace.",
+  interaction:
+    "The strip shows every turn in time order. Each block is as wide as the square root of its duration, red when the turn failed and amber when only some steps did, and long idle gaps collapse into a marker with the time between turns. Click a block or a row to open its trace in place. The first failing turn starts open. Jump to failure walks through the failed turns, and With errors keeps only those.",
+  parts: [
+    { name: "SessionView", file: "_langfuse/session-view.tsx", description: "Holds which turns are open, the filter and the jump, and lays out the head, strip and turn list." },
+    { name: "SessionHead", file: "_langfuse/session-head.tsx", description: "Session id, status and six totals. Duration also shows the idle time between turns." },
+    { name: "SessionStrip", file: "_langfuse/session-strip.tsx", description: "One block per turn with idle gaps compressed." },
+    { name: "TurnRow", file: "_langfuse/turn-row.tsx", description: "A collapsible turn: number, name, offset, summary, tokens with cached share, duration and state." },
+    { name: "Session model", file: "_langfuse/session-model.ts", description: "Turn states, the strip layout, the turn to open first and the one line summary." },
+    { name: "TraceView", file: "_langfuse/trace-view.tsx", description: "The full trace of an open turn." },
+  ],
+  props: [
+    { name: "session", type: "Session", description: "A session from toSession.", required: true },
+    { name: "loadIo", type: "(node: TraceNode) => Promise<{ input?: string; output?: string }>", description: "Passed to every open trace. Keep the function stable." },
+    { name: "defaultOpenId", type: "string | null", description: "Trace id to open first. Defaults to the first failing turn, then the longest. Null opens none." },
+  ],
+  source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
