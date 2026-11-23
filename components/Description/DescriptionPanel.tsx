@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { CodeXml, Maximize, Minimize, X } from "lucide-react";
@@ -90,25 +90,24 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         role="complementary"
         animate={{ x: open ? 0 : PANEL_SHIFT }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="pointer-events-auto relative flex h-full w-[var(--info-width)] flex-col overflow-hidden rounded-2xl bg-background"
+        className="pointer-events-auto relative flex h-full w-[var(--info-width)] flex-col overflow-clip rounded-2xl bg-background"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-background to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-background to-transparent" />
 
-        <div
-          key={item.href}
-          inert={codeOpen}
-          className="no-scrollbar flex flex-1 flex-col overflow-y-auto"
-        >
-          <DescriptionContent item={item} className="p-8 pt-60" />
-        </div>
-
-        <CodeDrawer
-          key={item.href}
-          open={codeOpen}
-          onClose={() => setCodeOpen(false)}
-          item={item}
-        />
+        <Fragment key={item.href}>
+          <div
+            inert={codeOpen}
+            className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
+          >
+            <DescriptionContent item={item} className="p-8 pt-60" />
+          </div>
+          <CodeDrawer
+            open={codeOpen}
+            onClose={() => setCodeOpen(false)}
+            item={item}
+          />
+        </Fragment>
       </motion.div>
     </div>
   );
