@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
+import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -798,7 +799,41 @@ export const runTimeline = {
   source: "Recreated from the behavior of a reference run detail screen. Colors and spacing are the reference values for now.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline];
+export const contextWindow = {
+  name: "Context Window",
+  href: "/examples/context-window/",
+  category: "Message · Blocks",
+  description: "How full a model's context window is, by part, as a map or a block grid, in an open card, a folded row or a compact card.",
+  preview: ContextWindowPreview,
+  interaction:
+    "Each request is estimated while it is live, then counted. Hover a legend chip, a row, a tile or a cell to light what it stands for. Switch between the map and the grid, pick a part in the contents tabs, and fold the card to one line. Replay restarts the requests.",
+  parts: [
+    { name: "ContextWindow", file: "_context-window/context-window.tsx", description: "Head, layout switch and the shared focus. Fold, look and tab can be controlled or local." },
+    { name: "ContextStats", file: "_context-window/context-stats.tsx", description: "Tokens used, health, headroom and the prompt cache. The compact layout uses a figure row." },
+    { name: "ContextViz", file: "_context-window/context-viz.tsx", description: "The tile map, the block grid and their tip." },
+    { name: "ContextLegend · ContextPartRows", file: "_context-window/context-legend.tsx", description: "Part chips with the look switch, or one row per part in the compact card." },
+    { name: "ContextContents", file: "_context-window/context-contents.tsx", description: "Tabs and the largest items first, with Show all." },
+    { name: "ContextFoot · ContextSpark", file: "_context-window/context-session.tsx", description: "Crumbs, turn notes and the session line against the window." },
+    { name: "tilesOf · cellsOf", file: "_context-window/context-model.ts", description: "Pure layout of the tiles and the 400 cells, plus health, headroom and number formats." },
+    { name: "useContextScript", file: "_context-window/use-context-script.ts", description: "Plays the demo requests, each live and then counted, and holds on the last." },
+  ],
+  props: [
+    { name: "prompt", type: "Prompt", description: "Window, tokens, parts with items, and whether the count is the vendor's.", required: true },
+    { name: "live", type: "boolean", description: "The request is under way. Defaults to false." },
+    { name: "layout", type: "\"full\" | \"compact\"", description: "Defaults to full." },
+    { name: "title", type: "string", description: "Card title. Defaults to Context window." },
+    { name: "agent / model", type: "{ name, icon } / { id, icon }", description: "Route shown in the head." },
+    { name: "cache / liveCache", type: "PromptCache | null", description: "This request's cache, and the last answered one shown dimmed while live." },
+    { name: "session", type: "{ points, at, crumbs, onPoint }", description: "Session line, headroom and footer path." },
+    { name: "foldable · collapsed / onCollapsedChange", type: "boolean · boolean / (collapsed) => void", description: "Folds the full card to one line. Omit collapsed to let the card keep it." },
+    { name: "look / onLookChange", type: "\"map\" | \"grid\"", description: "Controlled or local, like tab." },
+    { name: "tab / onTabChange", type: "\"all\" | PartKind", description: "Contents tab." },
+    { name: "onSelectItem", type: "(part, item?) => void", description: "Makes tiles, cells, chips and rows clickable. Omit it and nothing is." },
+  ],
+  source: "Recreated from the behavior of a reference routing page. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 

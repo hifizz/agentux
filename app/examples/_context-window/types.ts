@@ -1,0 +1,22 @@
+export type PartKind = "system" | "tools" | "skills" | "memory" | "files" | "results" | "chat";
+export type PromptItem = { name: string; tag?: string; n?: number; tokens: number };
+export type PromptPart = { kind: PartKind; tokens: number; items?: PromptItem[] };
+export type Prompt = { window?: number; tokens: number; counted?: boolean; held?: boolean; turns?: number; parts: PromptPart[] };
+export type PromptCache = { read: number; total: number };
+export type SessionPoint = { id: string; tokens: number };
+export type ContextLook = "map" | "grid";
+export type ContextTab = "all" | PartKind;
+export type Cell = { kind: PartKind; item: number } | null;
+export type Tile = {
+  key: string;
+  kind: PartKind | "";
+  free?: boolean;
+  it?: PromptItem;
+  its?: PromptItem[];
+  tokens: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+export type Focus = { f: PartKind | "free" | "item" | "tile"; kind?: PartKind; item?: PromptItem; index?: number; tileKey?: string } | null;
