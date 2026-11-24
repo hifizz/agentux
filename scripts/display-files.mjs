@@ -1,6 +1,7 @@
 const composerFiles = (...parts) => parts.map((part) => `prompt-composer/composer/${part}.tsx`);
 
 export const displayFiles = {
+  "agent-crew": ["agent-crew/crew.tsx", "agent-crew/agent-card.tsx", "agent-crew/routes.tsx", "agent-crew/project-picker.tsx", "agent-crew/model.ts", "agent-crew/projects.ts", "agent-crew/crew.css", "agent-crew/demo.tsx"],
   "agent-findings": ["agent-findings/findings.tsx", "agent-findings/run.ts", "agent-findings/findings.css", "agent-findings/demo.tsx"],
   "agent-workbench": ["agent-workbench/workbench.tsx", "agent-workbench/connections.tsx", "agent-workbench/details.tsx", "agent-workbench/marks.tsx", "agent-workbench/run.ts", "agent-workbench/workbench.css", "agent-workbench/demo.tsx"],
   "agent-tree": ["agent-tree/agent-tree.tsx", "agent-tree/marks.tsx", "agent-tree/use-wires.ts", "agent-tree/run.ts", "agent-tree/tree.css", "agent-tree/demo.tsx"],
