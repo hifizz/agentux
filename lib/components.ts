@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
+import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -885,7 +886,36 @@ export const langfuseSession = {
   source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession];
+export const delegateBoard = {
+  name: "Delegate Board",
+  href: "/examples/delegate-board/",
+  category: "Agents · Delegation",
+  description: "A pile of unassigned tasks next to a roster of agents with queues, rates and busy times. Hand work over by drag or keyboard, or let Auto deal it out.",
+  preview: DelegateBoardPreview,
+  interaction:
+    "Drag a task onto an agent and the row previews the extra time and price before you drop. Queued chips move between agents or back to the pile. Focus a task and press Enter, arrows choose the agent, Enter again drops it, and the number keys hand it over at once. The running chip spins. Auto assigns every task to whoever frees up first, and the demo replays the hand-off on a loop.",
+  parts: [
+    { name: "DelegateBoard", file: "_delegate-board/delegate-board.tsx", description: "Card shell: title bar with the Auto switch, the unassigned pile, the agent roster, the drag ghost and the screen reader announcements." },
+    { name: "Board model", file: "_delegate-board/board-model.ts", description: "Queue minutes, busy-until, queue spend, earliest-free pick, task moves and the drop preview math." },
+    { name: "Board types", file: "_delegate-board/types.ts", description: "BoardTask, BoardAgent, BoardDrag and DropTarget." },
+    { name: "useDelegateScript", file: "_delegate-board/use-delegate-script.ts", description: "Plays the demo loop: two task drops, a chip moved to a cheaper agent, Auto draining the pile, then reset." },
+    { name: "delegate-board.css", file: "_delegate-board/delegate-board.css", description: "All colors and spacing as tokens on .db, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "tasks", type: "BoardTask[]", description: "Unassigned pile. Id, title, minutes, an optional estimate label and tool marks.", required: true },
+    { name: "agents", type: "BoardAgent[]", description: "Roster: id, name, model, per-minute rate, an optional mark and the queued tasks. The first queued task renders as running.", required: true },
+    { name: "now", type: "number", description: "Clock in milliseconds used for busy-until and drop preview times.", required: true },
+    { name: "onAssign", type: "(taskId, to, from) => void", description: "Called on drop, keyboard hand-over or Auto. to is an agent id or \"pile\", from the previous agent id or null.", required: true },
+    { name: "auto / onAutoChange", type: "boolean / (auto) => void", description: "Auto routes each pile task to the earliest-free agent. Omit to let the board keep it." },
+    { name: "drag", type: "BoardDrag | null", description: "Scripted drag view: picked source, hover target and ghost. Real pointer drags are handled inside." },
+    { name: "title / hint / autoHint", type: "string", description: "Header text. hint shows while Auto is off, autoHint while it is on." },
+    { name: "queueLimit", type: "number", description: "Chips shown per agent before the rest fold into a +N pile tip. Defaults to 4." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference delegation card. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
