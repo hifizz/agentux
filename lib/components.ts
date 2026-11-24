@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
+import { AgentTrailPreview } from "@/components/gallery/AgentTrailPreview";
 import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
@@ -915,7 +916,34 @@ export const delegateBoard = {
   source: "Recreated from the behavior of a reference delegation card. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard];
+export const agentTrail = {
+  name: "Agent Trail",
+  href: "/examples/agent-trail/",
+  category: "Agents · Steps",
+  description: "A vertical run of steps an agent walks through, each with a mark, tool logo, live status and clock. Running steps unfold substeps on a sparking connector, and gate steps pause for an approval.",
+  preview: AgentTrailPreview,
+  interaction:
+    "The running step opens on its own and shows its substeps, with a spark travelling the connector to the live one. Press a step row to fold or unfold its substeps; past six, they fold around the running one into +N rows. When a gate step is reached it pauses as Needs you – press it to open the ask panel, Enter on a button resolves it and Esc closes the panel. Rows announce state changes to screen readers.",
+  parts: [
+    { name: "AgentTrail", file: "_agent-trail/agent-trail.tsx", description: "Card shell: head with task, agent pill and done count, the step rows with marks, wires, spark, substeps, ask panel and announcements." },
+    { name: "Trail model", file: "_agent-trail/trail-model.ts", description: "Duration and meta text per state, the running substep index and the fold window for long substep lists." },
+    { name: "Trail types", file: "_agent-trail/types.ts", description: "TrailStep, TrailSub, TrailState and the label table." },
+    { name: "useTrailScript", file: "_agent-trail/use-trail-script.ts", description: "Plays the demo loop: substeps advance, steps complete, the gate pauses and the run resets." },
+    { name: "agent-trail.css", file: "_agent-trail/agent-trail.css", description: "All colors and spacing as tokens on .at, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "steps", type: "TrailStep[]", description: "Id, title, state, optional duration, status, startedAt, gate, ask, tool and substeps.", required: true },
+    { name: "title", type: "string", description: "Task name in the head. Leave out for no header." },
+    { name: "agent", type: "{ name, logo? }", description: "Agent pill next to the title." },
+    { name: "expanded / onExpandedChange", type: "string[] / (ids) => void", description: "Controlled set of steps with open substeps. Uncontrolled, the running step opens itself." },
+    { name: "onApprove / onDecline", type: "(step) => void", description: "Resolvers for waiting gate steps. Without them the ask panel stays inert." },
+    { name: "labels", type: "Partial<TrailLabels>", description: "Overrides for every string the card renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference step trail. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
