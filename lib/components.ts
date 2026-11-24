@@ -780,6 +780,14 @@ export const traceWaterfall = {
   source: "Recreated from the behavior of a reference trace view. Colors and spacing are the reference values for now.",
 } satisfies Example;
 
+export const agentTree = {
+  name: "Agent Tree",
+  href: "/examples/agent-tree/",
+  category: "Message · Blocks",
+  description: "A live delegation tree with status, elapsed time and cost for each branch.",
+  interaction: "Fold a branch with its count button. Open a waiting or failed count to answer the agent. Replay starts a new run.",
+} satisfies Example;
+
 export const runTimeline = {
   name: "Run Timeline",
   href: "/examples/run-timeline/",
@@ -1055,7 +1063,7 @@ export const modelMenu = {
   source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, agentTree, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 

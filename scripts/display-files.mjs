@@ -1,6 +1,7 @@
 const composerFiles = (...parts) => parts.map((part) => `prompt-composer/composer/${part}.tsx`);
 
 export const displayFiles = {
+  "agent-tree": ["agent-tree/agent-tree.tsx", "agent-tree/marks.tsx", "agent-tree/use-wires.ts", "agent-tree/run.ts", "agent-tree/tree.css", "agent-tree/demo.tsx"],
   "prompt-composer": composerFiles("prompt-composer", "parts/prompt-input", "parts/send-button", "parts/attach-button", "parts/attachment-chips", "parts/permission-picker", "parts/model-picker", "parts/effort-picker", "parts/context-usage", "parts/strips/top-tray", "parts/bottom-tray"),
   "chat-message": ["_pi-ui/messages/assistant-message.tsx", "_pi-ui/messages/user-message.tsx", "_pi-ui/blocks/text-block.tsx"],
   "reasoning": ["_pi-ui/blocks/thinking-block.tsx"],
