@@ -5,6 +5,7 @@ import { AgentCheckpointsPreview } from "@/components/gallery/AgentCheckpointsPr
 import { AgentTrailPreview } from "@/components/gallery/AgentTrailPreview";
 import { CommandMenuPreview } from "@/components/gallery/CommandMenuPreview";
 import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
+import { ModelMenuPreview } from "@/components/gallery/ModelMenuPreview";
 import { RunningNowPreview } from "@/components/gallery/RunningNowPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
@@ -1028,7 +1029,33 @@ export const agentCheckpoints = {
   source: "Recreated from the behavior of a reference checkpoint rail. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints];
+export const modelMenu = {
+  name: "Model Menu",
+  href: "/examples/model-menu/",
+  category: "Composer · Settings",
+  description: "A model menu for a chat composer: rows with speed, quality and cost bars on hover, an extended-thinking switch that unfolds effort, and a tray rolling the first-token time and price.",
+  preview: ModelMenuPreview,
+  interaction:
+    "The demo loops on its own: it opens, points at models so their bars fill, turns on extended thinking to unfold the effort picker, then picks one. You can drive it too: hover a row for its bars, ↑↓ and ↵ to pick, Esc or click away to close.",
+  parts: [
+    { name: "ModelMenu", file: "_model-menu/model-menu.tsx", description: "Trigger with name swap and thinking flag, the dialog card: listbox rows with 5-seg meters, switches, the fold with the effort radiogroup and sliding thumb, and the rolling caption." },
+    { name: "Menu model", file: "_model-menu/menu-model.ts", description: "Lit-model stats, aria labels, spoken captions and list/effort movement math." },
+    { name: "Menu types", file: "_model-menu/types.ts", description: "MenuEffort, ModelStats, MenuModel and the label table." },
+    { name: "useModelMenuScript", file: "_model-menu/use-model-menu-script.ts", description: "Plays the demo loop through the component's controlled props; user input dispatches into the same reducer." },
+    { name: "model-menu.css", file: "_model-menu/model-menu.css", description: "All colors and spacing as tokens on .mm, with a dark theme, container query and reduced-motion handling." },
+  ],
+  props: [
+    { name: "models", type: "MenuModel[]", description: "Rows: id, name, tagline, optional glyph; optional stats (speed/quality/cost 0–5, price, ttfb per effort). Stats-less rows show 'Varies'.", required: true },
+    { name: "value / open / thinking / effort / web (+ defaults)", type: "string / boolean / boolean / MenuEffort / boolean", description: "Each is controlled or starts from its default prop; matching onChange callbacks fire for each." },
+    { name: "active / pointing", type: "string | null / boolean", description: "Pointer-highlight state; control both to script hovers (onActiveChange / onPointingChange)." },
+    { name: "side / align", type: '"top" | "bottom" / "start" | "end"', description: "Popover placement around the trigger." },
+    { name: "labels", type: "Partial<MmLabels>", description: "Overrides for every string the menu renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
