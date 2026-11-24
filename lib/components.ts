@@ -294,7 +294,7 @@ export const permissionPicker = {
   category: "Composer · Settings",
   description: "How much the agent may do without asking, from Ask to Bypass.",
   preview: PermissionPreview,
-  interaction: "Click the shield to open a Base UI menu. Arrow keys move, Enter picks. Bypass is shown in red.",
+  interaction: "Open the menu to pick a mode. The trigger shows the selected icon. Arrow keys move, Enter picks. Bypass is shown in red.",
   parts: [
     { name: "PermissionPicker", file: "composer/parts/permission-picker.tsx", description: "Trigger chip and a radio menu." },
     { name: "Menu", file: "components/ui/base/menu.tsx", description: "Base UI Menu with radio items." },
