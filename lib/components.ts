@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
+import { AgentCheckpointsPreview } from "@/components/gallery/AgentCheckpointsPreview";
+import { AgentTrailPreview } from "@/components/gallery/AgentTrailPreview";
+import { CommandMenuPreview } from "@/components/gallery/CommandMenuPreview";
+import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
+import { ModelMenuPreview } from "@/components/gallery/ModelMenuPreview";
+import { RunningNowPreview } from "@/components/gallery/RunningNowPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -885,7 +891,171 @@ export const langfuseSession = {
   source: "Built on the Langfuse v2 observations data model. The sample session is redacted.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession];
+export const delegateBoard = {
+  name: "Delegate Board",
+  href: "/examples/delegate-board/",
+  category: "Agents · Delegation",
+  description: "A pile of unassigned tasks next to a roster of agents with queues, rates and busy times. Hand work over by drag or keyboard, or let Auto deal it out.",
+  preview: DelegateBoardPreview,
+  interaction:
+    "Drag a task onto an agent and the row previews the extra time and price before you drop. Queued chips move between agents or back to the pile. Focus a task and press Enter, arrows choose the agent, Enter again drops it, and the number keys hand it over at once. The running chip spins. Auto assigns every task to whoever frees up first, and the demo replays the hand-off on a loop.",
+  parts: [
+    { name: "DelegateBoard", file: "_delegate-board/delegate-board.tsx", description: "Card shell: title bar with the Auto switch, the unassigned pile, the agent roster, the drag ghost and the screen reader announcements." },
+    { name: "Board model", file: "_delegate-board/board-model.ts", description: "Queue minutes, busy-until, queue spend, earliest-free pick, task moves and the drop preview math." },
+    { name: "Board types", file: "_delegate-board/types.ts", description: "BoardTask, BoardAgent, BoardDrag and DropTarget." },
+    { name: "useDelegateScript", file: "_delegate-board/use-delegate-script.ts", description: "Plays the demo loop: two task drops, a chip moved to a cheaper agent, Auto draining the pile, then reset." },
+    { name: "delegate-board.css", file: "_delegate-board/delegate-board.css", description: "All colors and spacing as tokens on .db, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "tasks", type: "BoardTask[]", description: "Unassigned pile. Id, title, minutes, an optional estimate label and tool marks.", required: true },
+    { name: "agents", type: "BoardAgent[]", description: "Roster: id, name, model, per-minute rate, an optional mark and the queued tasks. The first queued task renders as running.", required: true },
+    { name: "now", type: "number", description: "Clock in milliseconds used for busy-until and drop preview times.", required: true },
+    { name: "onAssign", type: "(taskId, to, from) => void", description: "Called on drop, keyboard hand-over or Auto. to is an agent id or \"pile\", from the previous agent id or null.", required: true },
+    { name: "auto / onAutoChange", type: "boolean / (auto) => void", description: "Auto routes each pile task to the earliest-free agent. Omit to let the board keep it." },
+    { name: "drag", type: "BoardDrag | null", description: "Scripted drag view: picked source, hover target and ghost. Real pointer drags are handled inside." },
+    { name: "title / hint / autoHint", type: "string", description: "Header text. hint shows while Auto is off, autoHint while it is on." },
+    { name: "queueLimit", type: "number", description: "Chips shown per agent before the rest fold into a +N pile tip. Defaults to 4." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference delegation card. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const agentTrail = {
+  name: "Agent Trail",
+  href: "/examples/agent-trail/",
+  category: "Agents · Steps",
+  description: "A vertical run of steps an agent walks through, each with a mark, tool logo, live status and clock. Running steps unfold substeps on a sparking connector, and gate steps pause for an approval.",
+  preview: AgentTrailPreview,
+  interaction:
+    "The running step opens on its own and shows its substeps, with a spark travelling the connector to the live one. Press a step row to fold or unfold its substeps; past six, they fold around the running one into +N rows. When a gate step is reached it pauses as Needs you – press it to open the ask panel, Enter on a button resolves it and Esc closes the panel. Rows announce state changes to screen readers.",
+  parts: [
+    { name: "AgentTrail", file: "_agent-trail/agent-trail.tsx", description: "Card shell: head with task, agent pill and done count, the step rows with marks, wires, spark, substeps, ask panel and announcements." },
+    { name: "Trail model", file: "_agent-trail/trail-model.ts", description: "Duration and meta text per state, the running substep index and the fold window for long substep lists." },
+    { name: "Trail types", file: "_agent-trail/types.ts", description: "TrailStep, TrailSub, TrailState and the label table." },
+    { name: "useTrailScript", file: "_agent-trail/use-trail-script.ts", description: "Plays the demo loop: substeps advance, steps complete, the gate pauses and the run resets." },
+    { name: "agent-trail.css", file: "_agent-trail/agent-trail.css", description: "All colors and spacing as tokens on .at, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "steps", type: "TrailStep[]", description: "Id, title, state, optional duration, status, startedAt, gate, ask, tool and substeps.", required: true },
+    { name: "title", type: "string", description: "Task name in the head. Leave out for no header." },
+    { name: "agent", type: "{ name, logo? }", description: "Agent pill next to the title." },
+    { name: "expanded / onExpandedChange", type: "string[] / (ids) => void", description: "Controlled set of steps with open substeps. Uncontrolled, the running step opens itself." },
+    { name: "onApprove / onDecline", type: "(step) => void", description: "Resolvers for waiting gate steps. Without them the ask panel stays inert." },
+    { name: "labels", type: "Partial<TrailLabels>", description: "Overrides for every string the card renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference step trail. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const runningNow = {
+  name: "Running Now",
+  href: "/examples/running-now/",
+  category: "Agents · Status",
+  description:
+    "A live status of background agent tasks for a header or sidebar – one quiet pill, \"3 running · 2 need you\"; open it for the tasks with a filling ring, the step each is on and its steps, Pause and Resume, and Open on the ones that wait for you.",
+  preview: RunningNowPreview,
+  interaction:
+    "The pill counts running and needs-you tasks; press it to open the panel. Steps tick forward on their own and announce to screen readers. Pause a running row to freeze it, Resume to let it go again; Open on a needs-you row clears it back to running. Enter opens the panel and focuses the first row, arrows rove the rows, Esc and tabbing away close it.",
+  parts: [
+    { name: "RunningNow", file: "_running-now/running-now.tsx", description: "Pill trigger and dialog panel: count parts with swapping numbers, task rows with pie marks, step text, pause/resume/open actions and announcements." },
+    { name: "Now model", file: "_running-now/now-model.ts", description: "Counts, pie fraction, mark color, step and aria text per state, and the trigger summary/plural logic." },
+    { name: "Now types", file: "_running-now/types.ts", description: "NowTask, NowState and the label table." },
+    { name: "useNowScript", file: "_running-now/use-now-script.ts", description: "Plays the demo loop: steps advance, tasks complete, one goes needs-you and the run resets." },
+    { name: "running-now.css", file: "_running-now/running-now.css", description: "All colors and spacing as tokens on .rn, with a dark theme, RTL, touch and reduced-motion handling." },
+  ],
+  props: [
+    { name: "tasks", type: "NowTask[]", description: "Id, title, state, step, done and total per task.", required: true },
+    { name: "open / defaultOpen / onOpenChange", type: "boolean / (open) => void", description: "Controlled or uncontrolled panel state." },
+    { name: "onPause / onResume / onOpen", type: "(id) => void", description: "Row actions. Without a handler the button hides." },
+    { name: "onOpenAll", type: "() => void", description: "Footer Open Tasks button." },
+    { name: "align", type: '"start" | "end"', description: "Which edge of the trigger the panel aligns to. Defaults to end." },
+    { name: "labels", type: "Partial<NowLabels>", description: "Overrides for every string the component renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference status pill. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const commandMenu = {
+  name: "Command Menu",
+  href: "/examples/command-menu/",
+  category: "Agents · Menu",
+  description:
+    "A command menu for steering the agent: a search field over grouped commands with app marks and shortcut chips. Typing filters the list and offers an ask-the-agent row; Enter runs a command and the footer confirms.",
+  preview: CommandMenuPreview,
+  interaction:
+    "Type to filter – matches highlight and an \"Ask the agent about …\" row leads the results. Arrows move the lit row with wrap-around, Tab and Shift+Tab jump between sections, Home and End go to the edges, and the list keeps the pick in view. Enter or a click runs the command: the row pops, the footer swaps to a done line for a beat and the list height breathes to fit. Esc clears the query. The demo loops typing, section jumps and runs; Replay restarts it.",
+  parts: [
+    { name: "CommandMenu", file: "_command-menu/command-menu.tsx", description: "Search label, listbox with the sliding selection pill, grouped option rows with marks, hints and kbd chips, and the footer with tips and the done line." },
+    { name: "Menu model", file: "_command-menu/menu-model.ts", description: "Filtering, the injected ask row, flat option order, arrow/Tab/Home/End key targets and the mark segment splitter." },
+    { name: "Menu types", file: "_command-menu/types.ts", description: "CommandItem, CommandGroup and MenuLabels with the default strings." },
+    { name: "useCommandMenuScript", file: "_command-menu/use-command-menu-script.ts", description: "Plays the demo loop: arrows, a typed query, a run, section jumps, another run, then reset. Also powers Replay." },
+    { name: "command-menu.css", file: "_command-menu/command-menu.css", description: "All colors and spacing as tokens on .cm, with a dark theme, a <480px container collapse, touch and reduced-motion handling." },
+  ],
+  props: [
+    { name: "groups", type: "CommandGroup[]", description: "Labeled sections of commands: id, name, optional hint, keys, keywords, logo or icon and done text.", required: true },
+    { name: "query / onQueryChange", type: "string / (q) => void", description: "Controlled search text. Uncontrolled, typing filters in place." },
+    { name: "active / onActiveChange", type: "string / (key) => void", description: "Controlled selected option key. Uncontrolled, the first option stays lit and arrows or hover move it." },
+    { name: "onRun", type: "(item) => void", description: "Called on Enter or click. Without ran/done the menu flashes the row and shows item.done in the footer." },
+    { name: "ran / done", type: "string / string", description: "Controlled pop-animation key and footer line. The demo drives both." },
+    { name: "askIcon", type: "ReactNode", description: 'Mark on the injected "Ask the agent about …" row.' },
+    { name: "labels / placeholder", type: "Partial<MenuLabels> / string", description: "Overrides for every string the menu renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference command menu. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const agentCheckpoints = {
+  name: "Agent Checkpoints",
+  href: "/examples/agent-checkpoints/",
+  category: "Agents · Checkpoints",
+  description: "Checkpoints an agent run saves down a rail, with the cost of each. A failing one rewinds the run: the rail forks to a new lane and the next checkpoint carries an attempt chip.",
+  preview: AgentCheckpointsPreview,
+  interaction:
+    "Checkpoints appear one by one down the rail. When the run hits a failing test it rewinds itself: the failed row turns Stopped, a fork branches to a new lane and the next checkpoint carries an Attempt 2 chip. Hover a row to rewind it yourself, or focus a row and press Enter; Arrow keys move between rows.",
+  parts: [
+    { name: "AgentCheckpoints", file: "_agent-checkpoints/agent-checkpoints.tsx", description: "Card shell: head with task and sum, the SVG rail with live segments and fork curves, rows with marks, meta, Rewind button and keyboard nav." },
+    { name: "Checkpoint model", file: "_agent-checkpoints/checkpoint-model.ts", description: "Lane assignment, live-set and rail geometry, aria labels and the checkpoints/attempts/cost sum." },
+    { name: "Checkpoint types", file: "_agent-checkpoints/types.ts", description: "Checkpoint, CpDraft, CpStatus and the label table." },
+    { name: "useCheckpointsScript", file: "_agent-checkpoints/use-checkpoints-script.ts", description: "Plays the demo loop: checkpoints land, the failed one rewinds onto a fork and the run resets." },
+    { name: "agent-checkpoints.css", file: "_agent-checkpoints/agent-checkpoints.css", description: "All colors and spacing as tokens on .ac, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "checkpoints", type: "Checkpoint[]", description: "Id, title, status (running/done/failed/stopped), optional icon, files, time, cost, forkOf and attempt.", required: true },
+    { name: "task", type: "string", description: "Task name in the head, truncates with ellipsis." },
+    { name: "title", type: "string", description: 'Header label, defaults to "Checkpoints".' },
+    { name: "onRewind", type: "(checkpoint) => void", description: "Called when a row is rewound via its Rewind button or Enter." },
+    { name: "labels", type: "Partial<CpLabels>", description: "Override any UI string; attempt supports the {n} placeholder." },
+  ],
+  source: "Recreated from the behavior of a reference checkpoint rail. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const modelMenu = {
+  name: "Model Menu",
+  href: "/examples/model-menu/",
+  category: "Composer · Settings",
+  description: "A model menu for a chat composer: rows with speed, quality and cost bars on hover, an extended-thinking switch that unfolds effort, and a tray rolling the first-token time and price.",
+  preview: ModelMenuPreview,
+  interaction:
+    "The demo loops on its own: it opens, points at models so their bars fill, turns on extended thinking to unfold the effort picker, then picks one. You can drive it too: hover a row for its bars, ↑↓ and ↵ to pick, Esc or click away to close.",
+  parts: [
+    { name: "ModelMenu", file: "_model-menu/model-menu.tsx", description: "Trigger with name swap and thinking flag, the dialog card: listbox rows with 5-seg meters, switches, the fold with the effort radiogroup and sliding thumb, and the rolling caption." },
+    { name: "Menu model", file: "_model-menu/menu-model.ts", description: "Lit-model stats, aria labels, spoken captions and list/effort movement math." },
+    { name: "Menu types", file: "_model-menu/types.ts", description: "MenuEffort, ModelStats, MenuModel and the label table." },
+    { name: "useModelMenuScript", file: "_model-menu/use-model-menu-script.ts", description: "Plays the demo loop through the component's controlled props; user input dispatches into the same reducer." },
+    { name: "model-menu.css", file: "_model-menu/model-menu.css", description: "All colors and spacing as tokens on .mm, with a dark theme, container query and reduced-motion handling." },
+  ],
+  props: [
+    { name: "models", type: "MenuModel[]", description: "Rows: id, name, tagline, optional glyph; optional stats (speed/quality/cost 0–5, price, ttfb per effort). Stats-less rows show 'Varies'.", required: true },
+    { name: "value / open / thinking / effort / web (+ defaults)", type: "string / boolean / boolean / MenuEffort / boolean", description: "Each is controlled or starts from its default prop; matching onChange callbacks fire for each." },
+    { name: "active / pointing", type: "string | null / boolean", description: "Pointer-highlight state; control both to script hovers (onActiveChange / onPointingChange)." },
+    { name: "side / align", type: '"top" | "bottom" / "start" | "end"', description: "Popover placement around the trigger." },
+    { name: "labels", type: "Partial<MmLabels>", description: "Overrides for every string the menu renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
