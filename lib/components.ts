@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
 import { ActivityPreview, ApprovalsPreview, AskPreview, MessagePreview, ReasoningPreview, SuggestionsPreview, ThinkingPreview, ToolStepsPreview } from "@/components/gallery/ChatPreviews";
 import { ContextWindowPreview } from "@/components/gallery/ContextWindowPreview";
+import { AgentCheckpointsPreview } from "@/components/gallery/AgentCheckpointsPreview";
 import { AgentTrailPreview } from "@/components/gallery/AgentTrailPreview";
+import { CommandMenuPreview } from "@/components/gallery/CommandMenuPreview";
 import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
+import { RunningNowPreview } from "@/components/gallery/RunningNowPreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -943,7 +946,89 @@ export const agentTrail = {
   source: "Recreated from the behavior of a reference step trail. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail];
+export const runningNow = {
+  name: "Running Now",
+  href: "/examples/running-now/",
+  category: "Agents · Status",
+  description:
+    "A live status of background agent tasks for a header or sidebar – one quiet pill, \"3 running · 2 need you\"; open it for the tasks with a filling ring, the step each is on and its steps, Pause and Resume, and Open on the ones that wait for you.",
+  preview: RunningNowPreview,
+  interaction:
+    "The pill counts running and needs-you tasks; press it to open the panel. Steps tick forward on their own and announce to screen readers. Pause a running row to freeze it, Resume to let it go again; Open on a needs-you row clears it back to running. Enter opens the panel and focuses the first row, arrows rove the rows, Esc and tabbing away close it.",
+  parts: [
+    { name: "RunningNow", file: "_running-now/running-now.tsx", description: "Pill trigger and dialog panel: count parts with swapping numbers, task rows with pie marks, step text, pause/resume/open actions and announcements." },
+    { name: "Now model", file: "_running-now/now-model.ts", description: "Counts, pie fraction, mark color, step and aria text per state, and the trigger summary/plural logic." },
+    { name: "Now types", file: "_running-now/types.ts", description: "NowTask, NowState and the label table." },
+    { name: "useNowScript", file: "_running-now/use-now-script.ts", description: "Plays the demo loop: steps advance, tasks complete, one goes needs-you and the run resets." },
+    { name: "running-now.css", file: "_running-now/running-now.css", description: "All colors and spacing as tokens on .rn, with a dark theme, RTL, touch and reduced-motion handling." },
+  ],
+  props: [
+    { name: "tasks", type: "NowTask[]", description: "Id, title, state, step, done and total per task.", required: true },
+    { name: "open / defaultOpen / onOpenChange", type: "boolean / (open) => void", description: "Controlled or uncontrolled panel state." },
+    { name: "onPause / onResume / onOpen", type: "(id) => void", description: "Row actions. Without a handler the button hides." },
+    { name: "onOpenAll", type: "() => void", description: "Footer Open Tasks button." },
+    { name: "align", type: '"start" | "end"', description: "Which edge of the trigger the panel aligns to. Defaults to end." },
+    { name: "labels", type: "Partial<NowLabels>", description: "Overrides for every string the component renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference status pill. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const commandMenu = {
+  name: "Command Menu",
+  href: "/examples/command-menu/",
+  category: "Agents · Menu",
+  description:
+    "A command menu for steering the agent: a search field over grouped commands with app marks and shortcut chips. Typing filters the list and offers an ask-the-agent row; Enter runs a command and the footer confirms.",
+  preview: CommandMenuPreview,
+  interaction:
+    "Type to filter – matches highlight and an \"Ask the agent about …\" row leads the results. Arrows move the lit row with wrap-around, Tab and Shift+Tab jump between sections, Home and End go to the edges, and the list keeps the pick in view. Enter or a click runs the command: the row pops, the footer swaps to a done line for a beat and the list height breathes to fit. Esc clears the query. The demo loops typing, section jumps and runs; Replay restarts it.",
+  parts: [
+    { name: "CommandMenu", file: "_command-menu/command-menu.tsx", description: "Search label, listbox with the sliding selection pill, grouped option rows with marks, hints and kbd chips, and the footer with tips and the done line." },
+    { name: "Menu model", file: "_command-menu/menu-model.ts", description: "Filtering, the injected ask row, flat option order, arrow/Tab/Home/End key targets and the mark segment splitter." },
+    { name: "Menu types", file: "_command-menu/types.ts", description: "CommandItem, CommandGroup and MenuLabels with the default strings." },
+    { name: "useCommandMenuScript", file: "_command-menu/use-command-menu-script.ts", description: "Plays the demo loop: arrows, a typed query, a run, section jumps, another run, then reset. Also powers Replay." },
+    { name: "command-menu.css", file: "_command-menu/command-menu.css", description: "All colors and spacing as tokens on .cm, with a dark theme, a <480px container collapse, touch and reduced-motion handling." },
+  ],
+  props: [
+    { name: "groups", type: "CommandGroup[]", description: "Labeled sections of commands: id, name, optional hint, keys, keywords, logo or icon and done text.", required: true },
+    { name: "query / onQueryChange", type: "string / (q) => void", description: "Controlled search text. Uncontrolled, typing filters in place." },
+    { name: "active / onActiveChange", type: "string / (key) => void", description: "Controlled selected option key. Uncontrolled, the first option stays lit and arrows or hover move it." },
+    { name: "onRun", type: "(item) => void", description: "Called on Enter or click. Without ran/done the menu flashes the row and shows item.done in the footer." },
+    { name: "ran / done", type: "string / string", description: "Controlled pop-animation key and footer line. The demo drives both." },
+    { name: "askIcon", type: "ReactNode", description: 'Mark on the injected "Ask the agent about …" row.' },
+    { name: "labels / placeholder", type: "Partial<MenuLabels> / string", description: "Overrides for every string the menu renders." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference command menu. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const agentCheckpoints = {
+  name: "Agent Checkpoints",
+  href: "/examples/agent-checkpoints/",
+  category: "Agents · Checkpoints",
+  description: "Checkpoints an agent run saves down a rail, with the cost of each. A failing one rewinds the run: the rail forks to a new lane and the next checkpoint carries an attempt chip.",
+  preview: AgentCheckpointsPreview,
+  interaction:
+    "Checkpoints appear one by one down the rail. When the run hits a failing test it rewinds itself: the failed row turns Stopped, a fork branches to a new lane and the next checkpoint carries an Attempt 2 chip. Hover a row to rewind it yourself, or focus a row and press Enter; Arrow keys move between rows.",
+  parts: [
+    { name: "AgentCheckpoints", file: "_agent-checkpoints/agent-checkpoints.tsx", description: "Card shell: head with task and sum, the SVG rail with live segments and fork curves, rows with marks, meta, Rewind button and keyboard nav." },
+    { name: "Checkpoint model", file: "_agent-checkpoints/checkpoint-model.ts", description: "Lane assignment, live-set and rail geometry, aria labels and the checkpoints/attempts/cost sum." },
+    { name: "Checkpoint types", file: "_agent-checkpoints/types.ts", description: "Checkpoint, CpDraft, CpStatus and the label table." },
+    { name: "useCheckpointsScript", file: "_agent-checkpoints/use-checkpoints-script.ts", description: "Plays the demo loop: checkpoints land, the failed one rewinds onto a fork and the run resets." },
+    { name: "agent-checkpoints.css", file: "_agent-checkpoints/agent-checkpoints.css", description: "All colors and spacing as tokens on .ac, with a dark theme and reduced-motion handling." },
+  ],
+  props: [
+    { name: "checkpoints", type: "Checkpoint[]", description: "Id, title, status (running/done/failed/stopped), optional icon, files, time, cost, forkOf and attempt.", required: true },
+    { name: "task", type: "string", description: "Task name in the head, truncates with ellipsis." },
+    { name: "title", type: "string", description: 'Header label, defaults to "Checkpoints".' },
+    { name: "onRewind", type: "(checkpoint) => void", description: "Called when a row is rewound via its Rewind button or Enter." },
+    { name: "labels", type: "Partial<CpLabels>", description: "Override any UI string; attempt supports the {n} placeholder." },
+  ],
+  source: "Recreated from the behavior of a reference checkpoint rail. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
