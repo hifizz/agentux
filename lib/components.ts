@@ -780,6 +780,46 @@ export const traceWaterfall = {
   source: "Recreated from the behavior of a reference trace view. Colors and spacing are the reference values for now.",
 } satisfies Example;
 
+export const memoryGraph = {
+  name: "Memory Graph",
+  href: "/examples/memory-graph/",
+  category: "Message · Blocks",
+  description: "An assistant with its remembered facts, their sources and the tools it can use.",
+  interaction: "Follow the light as the assistant uses a tool or learns a fact. Open a card to change access or forget a memory. Select the assistant to add files or connect a tool.",
+} satisfies Example;
+
+export const agentMonitor = {
+  name: "Agent Monitor",
+  href: "/examples/agent-monitor/",
+  category: "Message · Blocks",
+  description: "One agent’s current step, tool history, elapsed time and cost.",
+  interaction: "Pause the run, approve a release or retry a failed step. Select a row or a time segment for details. Fold the card to follow the run as a tool stack.",
+} satisfies Example;
+
+export const flowBuilder = {
+  name: "Flow Builder",
+  href: "/examples/flow-builder/",
+  category: "Message · Blocks",
+  description: "Build and test an onboarding workflow with two paths for new accounts.",
+  interaction: "Use the + on a line to add a step or split a path. Drag the background to pan. Select a step to remove it, or use Option and the arrow keys to move it. Run test follows the active path.",
+} satisfies Example;
+
+export const agentHandoff = {
+  name: "Agent Handoff",
+  href: "/examples/agent-handoff/",
+  category: "Message · Blocks",
+  description: "Follow a task through research, writing and review, including the context each agent passes on.",
+  interaction: "Open an agent to inspect its task and tools. Expand a handoff to see what arrived or add back a missing item. Drag a handoff to a later agent, or double-tap the handoff and select the agent.",
+} satisfies Example;
+
+export const reviewCenter = {
+  name: "Review Center",
+  href: "/examples/review-center/",
+  category: "Message · Blocks",
+  description: "Review proposed changes, plans and payments in a risk-sorted queue.",
+  interaction: "Choose a request or filter the queue. Press F to read flagged notes, A to approve, E to edit, R to reject or S to skip. Press Z to undo the last decision.",
+} satisfies Example;
+
 export const agentCrew = {
   name: "Agent Crew",
   href: "/examples/agent-crew/",
@@ -1087,7 +1127,7 @@ export const modelMenu = {
   source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, agentTree, agentWorkbench, agentFindings, agentCrew, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
+export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, agentTree, agentWorkbench, agentFindings, agentCrew, agentMonitor, memoryGraph, agentHandoff, reviewCenter, flowBuilder, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 

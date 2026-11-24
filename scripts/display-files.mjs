@@ -1,6 +1,11 @@
 const composerFiles = (...parts) => parts.map((part) => `prompt-composer/composer/${part}.tsx`);
 
 export const displayFiles = {
+  "review-center": ["review-center/demo.tsx", "review-center/proposal.tsx", "review-center/queue.ts", "review-center/items.ts", "review-center/review.css"],
+  "agent-handoff": ["agent-handoff/demo.tsx", "agent-handoff/agent.tsx", "agent-handoff/packet.tsx", "agent-handoff/connections.tsx", "agent-handoff/relay.ts", "agent-handoff/tasks.ts", "agent-handoff/handoff.css"],
+  "flow-builder": ["flow-builder/demo.tsx", "flow-builder/steps.tsx", "flow-builder/workflow.ts", "flow-builder/use-test-run.ts", "flow-builder/flow.css"],
+  "agent-monitor": ["agent-monitor/monitor.tsx", "agent-monitor/history.tsx", "agent-monitor/folded.tsx", "agent-monitor/runs.ts", "agent-monitor/marks.tsx", "agent-monitor/swap.tsx", "agent-monitor/monitor.css", "agent-monitor/demo.tsx"],
+  "memory-graph": ["memory-graph/graph.tsx", "memory-graph/geometry.ts", "memory-graph/details.tsx", "memory-graph/marks.tsx", "memory-graph/session.ts", "memory-graph/graph.css", "memory-graph/demo.tsx"],
   "agent-crew": ["agent-crew/crew.tsx", "agent-crew/agent-card.tsx", "agent-crew/routes.tsx", "agent-crew/project-picker.tsx", "agent-crew/model.ts", "agent-crew/projects.ts", "agent-crew/crew.css", "agent-crew/demo.tsx"],
   "agent-findings": ["agent-findings/findings.tsx", "agent-findings/run.ts", "agent-findings/findings.css", "agent-findings/demo.tsx"],
   "agent-workbench": ["agent-workbench/workbench.tsx", "agent-workbench/connections.tsx", "agent-workbench/details.tsx", "agent-workbench/marks.tsx", "agent-workbench/run.ts", "agent-workbench/workbench.css", "agent-workbench/demo.tsx"],
