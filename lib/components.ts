@@ -684,7 +684,7 @@ export const webSearch = {
 export const subagentSwarm = {
   name: "Subagent Swarm",
   href: "/examples/subagent-swarm/",
-  category: "Message · Blocks",
+  category: "Agents · Delegation",
   description: "Several subagents working in parallel, each with a live step, progress and result.",
   preview: SwarmPreview,
   interaction: "Three slots run at once and the reviewer waits until the others finish. One agent fails on purpose. Replay to start again.",
@@ -705,7 +705,7 @@ export const subagentSwarm = {
 export const workLog = {
   name: "Work Log",
   href: "/examples/work-log/",
-  category: "Message · Blocks",
+  category: "Chat · Logs",
   description: "A folding log of what the agent did while it worked: reads, searches, commands, edits and thinking, with time and lines changed.",
   preview: WorkLogPreview,
   interaction:
@@ -731,7 +731,7 @@ export const workLog = {
 export const liveSession = {
   name: "Live Session",
   href: "/examples/live-session/",
-  category: "Message · Blocks",
+  category: "Agents · Collaboration",
   description: "A team of agents chatting while they work, with the team plan and the shared context beside the conversation.",
   interaction:
     "The scene replays on its own. Click an agent tab to dim the rest and fade the plan steps it does not own. Type @ to name an agent, press Enter to send. Click a message to open its details, a file chip to preview it, or Reply on a question that needs you.",
@@ -757,7 +757,7 @@ export const liveSession = {
 export const traceWaterfall = {
   name: "Trace Waterfall",
   href: "/examples/trace-waterfall/",
-  category: "Message · Blocks",
+  category: "Observe · Traces",
   description: "Every model call, tool call and sub-agent of a run as a bar on a live timeline, with cost and tokens per step.",
   interaction:
     "The run plays at six times speed and loops. The time axis widens as the run grows. Click a row for its details, the chevron or Left and Right arrows to fold a branch, Up and Down to move. A folded branch keeps its calls as small marks on its bar. The slowest finished call is tagged.",
@@ -783,7 +783,7 @@ export const traceWaterfall = {
 export const memoryGraph = {
   name: "Memory Graph",
   href: "/examples/memory-graph/",
-  category: "Message · Blocks",
+  category: "Agents · Memory",
   description: "An assistant with its remembered facts, their sources and the tools it can use.",
   interaction: "Follow the light as the assistant uses a tool or learns a fact. Open a card to change access or forget a memory. Select the assistant to add files or connect a tool.",
 } satisfies Example;
@@ -791,7 +791,7 @@ export const memoryGraph = {
 export const agentMonitor = {
   name: "Agent Monitor",
   href: "/examples/agent-monitor/",
-  category: "Message · Blocks",
+  category: "Agents · Status",
   description: "One agent’s current step, tool history, elapsed time and cost.",
   interaction: "Pause the run, approve a release or retry a failed step. Select a row or a time segment for details. Fold the card to follow the run as a tool stack.",
 } satisfies Example;
@@ -799,7 +799,7 @@ export const agentMonitor = {
 export const flowBuilder = {
   name: "Flow Builder",
   href: "/examples/flow-builder/",
-  category: "Message · Blocks",
+  category: "Agents · Workflows",
   description: "Build and test an onboarding workflow with two paths for new accounts.",
   interaction: "Use the + on a line to add a step or split a path. Drag the background to pan. Select a step to remove it, or use Option and the arrow keys to move it. Run test follows the active path.",
 } satisfies Example;
@@ -807,7 +807,7 @@ export const flowBuilder = {
 export const agentHandoff = {
   name: "Agent Handoff",
   href: "/examples/agent-handoff/",
-  category: "Message · Blocks",
+  category: "Agents · Delegation",
   description: "Follow a task through research, writing and review, including the context each agent passes on.",
   interaction: "Open an agent to inspect its task and tools. Expand a handoff to see what arrived or add back a missing item. Drag a handoff to a later agent, or double-tap the handoff and select the agent.",
 } satisfies Example;
@@ -815,7 +815,7 @@ export const agentHandoff = {
 export const reviewCenter = {
   name: "Review Center",
   href: "/examples/review-center/",
-  category: "Message · Blocks",
+  category: "Agents · Review",
   description: "Review proposed changes, plans and payments in a risk-sorted queue.",
   interaction: "Choose a request or filter the queue. Press F to read flagged notes, A to approve, E to edit, R to reject or S to skip. Press Z to undo the last decision.",
 } satisfies Example;
@@ -823,7 +823,7 @@ export const reviewCenter = {
 export const agentCrew = {
   name: "Agent Crew",
   href: "/examples/agent-crew/",
-  category: "Message · Blocks",
+  category: "Agents · Delegation",
   description: "A project team with live handoffs, context usage and controls for each agent.",
   interaction: "Switch projects to see another crew. Use the arrow keys to move between cards. Open a card to inspect its usage, send an instruction or steer its work.",
 } satisfies Example;
@@ -831,7 +831,7 @@ export const agentCrew = {
 export const agentFindings = {
   name: "Agent Findings",
   href: "/examples/agent-findings/",
-  category: "Message · Blocks",
+  category: "Agents · Review",
   description: "Follow four reviewers through a verification run and see findings as they arrive.",
   interaction: "Select a reviewer to filter the feed. Select the reviewer again or clear its chip to see all findings. Replay restarts the checks.",
 } satisfies Example;
@@ -839,7 +839,7 @@ export const agentFindings = {
 export const agentWorkbench = {
   name: "Agent Workbench",
   href: "/examples/agent-workbench/",
-  category: "Message · Blocks",
+  category: "Agents · Workspace",
   description: "Follow one request from its sender through an assistant, attached files and connected tools.",
   interaction: "Select the assistant, a file or a tool for its details. The active connection lights up as the request progresses. Escape closes the details.",
 } satisfies Example;
@@ -847,7 +847,7 @@ export const agentWorkbench = {
 export const agentTree = {
   name: "Agent Tree",
   href: "/examples/agent-tree/",
-  category: "Message · Blocks",
+  category: "Agents · Delegation",
   description: "A live delegation tree with status, elapsed time and cost for each branch.",
   interaction: "Fold a branch with its count button. Open a waiting or failed count to answer the agent. Replay starts a new run.",
 } satisfies Example;
@@ -855,7 +855,7 @@ export const agentTree = {
 export const runTimeline = {
   name: "Run Timeline",
   href: "/examples/run-timeline/",
-  category: "Message · Blocks",
+  category: "Observe · Runs",
   description: "The steps of an agent run as bars on a fixed time axis, added one by one as the run goes.",
   interaction:
     "The run plays in real time and loops. A new step slides in when it starts, its bar grows and its time counts up, and a line marks now. Sub-agent steps nest under their parent. A failed step turns red. Click a step to select it.",
@@ -880,7 +880,7 @@ export const runTimeline = {
 export const contextWindow = {
   name: "Context Window",
   href: "/examples/context-window/",
-  category: "Message · Blocks",
+  category: "Observe · Context",
   description: "How full a model's context window is, by part, as a map or a block grid, in an open card, a folded row or a compact card.",
   preview: ContextWindowPreview,
   interaction:
@@ -914,7 +914,7 @@ export const contextWindow = {
 export const langfuseTrace = {
   name: "Langfuse Trace",
   href: "/examples/langfuse-trace/",
-  category: "Message · Blocks",
+  category: "Observe · Traces",
   description: "One Langfuse trace as a waterfall of steps, with totals, filters, failure tracking and a details panel.",
   interaction:
     "Click a step to open its details on the right: timing, first token and speed, the token split between new, cached and output, the failure path and its input and output, which load on demand. With nothing selected the panel summarizes the trace. Filter by generations, tools or errors, hide instant steps, fold branches with the chevrons or the arrow keys, and jump to the failing step. Traces above 60 steps start folded below the second level.",
@@ -941,7 +941,7 @@ export const langfuseTrace = {
 export const langfuseSession = {
   name: "Langfuse Session",
   href: "/examples/langfuse-session/",
-  category: "Message · Blocks",
+  category: "Observe · Sessions",
   description: "A Langfuse session as a strip of turns and a list that opens each turn into its trace.",
   interaction:
     "The strip shows every turn in time order. Each block is as wide as the square root of its duration, red when the turn failed and amber when only some steps did, and long idle gaps collapse into a marker with the time between turns. Click a block or a row to open its trace in place. The first failing turn starts open. Click any step of any open turn and its details show in a pane on the right of the whole session, which stays in view while the turns scroll. With nothing selected the pane summarizes the session, and a failure listed there opens its turn and selects the step. Jump to failure selects the failing step, and With errors keeps only the turns with errors. Below 980px the pane goes away and each trace docks its details at the bottom.",
@@ -1127,7 +1127,13 @@ export const modelMenu = {
   source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
 } satisfies Example;
 
-export const examples: Example[] = [promptComposer, promptInput, permissionPicker, modelPicker, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates, chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, thinkingIndicator, suggestions, agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch, subagentSwarm, workLog, liveSession, traceWaterfall, runTimeline, agentTree, agentWorkbench, agentFindings, agentCrew, agentMonitor, memoryGraph, agentHandoff, reviewCenter, flowBuilder, contextWindow, langfuseTrace, langfuseSession, delegateBoard, agentTrail, runningNow, commandMenu, agentCheckpoints, modelMenu];
+export const examples: Example[] = [
+  promptComposer, promptInput, permissionPicker, modelPicker, modelMenu, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates,
+  chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, workLog, thinkingIndicator, suggestions,
+  agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch,
+  subagentSwarm, agentTree, agentCrew, delegateBoard, agentHandoff, liveSession, agentWorkbench, agentMonitor, runningNow, agentTrail, agentCheckpoints, memoryGraph, flowBuilder, commandMenu, agentFindings, reviewCenter,
+  runTimeline, traceWaterfall, langfuseTrace, langfuseSession, contextWindow,
+];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
 
