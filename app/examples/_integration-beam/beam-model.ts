@@ -1,11 +1,10 @@
 export const PULSE_LEN = 84;
 export const TRAVEL = 1500;
 export const STAGGER = 280;
-export const PERIOD = 6000;
-export const FIRST_WAVE = 1000;
+export const REST = 1500;
+export const FIRST_WAVE = 400;
 export const MORPH = 460;
-export const FLASH = 640;
-export const FIRE_WINDOW = 120;
+export const RING = 760;
 
 export type Pt = { x: number; y: number };
 
@@ -44,12 +43,10 @@ export const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.ma
 
 export const easeInOutSine = (x: number) => (1 - Math.cos(Math.PI * x)) / 2;
 
-export const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+export const easeOutQuint = (x: number) => 1 - Math.pow(1 - x, 5);
 
-export function flashOpacity(elapsed: number): number {
-  if (elapsed >= FLASH) return 0;
-  return 0.95 * Math.pow(1 - elapsed / FLASH, 1.5);
-}
+// short beams get shorter pulses, so the comet keeps its proportions in the stacked layout
+export const segLen = (len: number) => Math.min(PULSE_LEN, len * 0.42);
 
 export const fill = (template: string, vars: Record<string, string | number>) =>
   Object.entries(vars).reduce((text, [k, v]) => text.replaceAll(`{${k}}`, String(v)), template);

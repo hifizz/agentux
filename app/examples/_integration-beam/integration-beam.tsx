@@ -3,22 +3,20 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
-  FIRE_WINDOW,
   FIRST_WAVE,
-  FLASH,
   MORPH,
-  PERIOD,
-  PULSE_LEN,
+  REST,
+  RING,
   STAGGER,
   TRAVEL,
   beamD,
   beamGeo,
   clamp,
   easeInOutSine,
-  easeOutCubic,
+  easeOutQuint,
   fill,
-  flashOpacity,
   lerpGeo,
+  segLen,
   type BeamGeo,
 } from "./beam-model";
 import { IB_LABELS, type BeamCenter, type BeamTool, type IbLabels } from "./types";
@@ -33,17 +31,17 @@ export type IntegrationBeamProps = {
   className?: string;
 };
 
-type Pulse = { active: boolean; start: number };
-
 type Engine = {
   beams: (BeamGeo | null)[];
   targets: (BeamGeo | null)[];
   lens: number[];
   morphFrom: (BeamGeo | null)[] | null;
   morphStart: number;
-  pulses: Pulse[];
-  waveStart: number;
-  flashes: Map<HTMLElement, number>;
+  pulseStart: (number | null)[];
+  queue: { beam: number; at: number }[];
+  nextCycle: number;
+  syncFrom: number;
+  syncTo: number;
   visible: boolean;
   syncOn: boolean;
   raf: number;
@@ -109,9 +107,11 @@ export function IntegrationBeam({ left = [], right = [], center = { name: "Merge
         lens: [],
         morphFrom: null,
         morphStart: 0,
-        pulses: [],
-        waveStart: 0,
-        flashes: new Map(),
+        pulseStart: [],
+        queue: [],
+        nextCycle: 0,
+        syncFrom: 0,
+        syncTo: 0,
         visible: true,
         syncOn: false,
         raf: 0,
@@ -124,14 +124,18 @@ export function IntegrationBeam({ left = [], right = [], center = { name: "Merge
     reducedRef.current = mq.matches;
     const onMotionChange = () => {
       reducedRef.current = mq.matches;
+      if (!mq.matches) {
+        eng.nextCycle = performance.now() + FIRST_WAVE;
+        kick();
+      }
     };
     mq.addEventListener("change", onMotionChange);
 
-    eng.pulses = Array.from({ length: beamCount }, () => ({ active: false, start: 0 }));
-    eng.flashes = new Map();
+    eng.pulseStart = Array.from({ length: beamCount }, () => null);
+    eng.queue = [];
     eng.syncOn = false;
     eng.visible = true;
-    eng.waveStart = performance.now() + FIRST_WAVE;
+    eng.nextCycle = performance.now() + FIRST_WAVE;
 
     const applyBeam = (i: number) => {
       const g = eng.beams[i];
@@ -187,22 +191,28 @@ export function IntegrationBeam({ left = [], right = [], center = { name: "Merge
       } else {
         eng.morphFrom = eng.beams.map((b, i) => b ?? targets[i]);
         eng.morphStart = performance.now();
+        kick();
       }
     };
 
-    const fire = (i: number, at: number) => {
-      eng.pulses[i] = { active: true, start: at };
-      const g = pulseEls.current[i];
-      if (g) g.style.opacity = "1";
-    };
-
-    const endPulse = (i: number) => {
-      eng.pulses[i] = { active: false, start: 0 };
+    const hide = (i: number) => {
+      eng.pulseStart[i] = null;
       const g = pulseEls.current[i];
       if (g) g.style.opacity = "0";
     };
 
-    const renderPulse = (i: number, x: number) => {
+    const ring = (el: HTMLElement | null | undefined) => {
+      el?.animate(
+        [
+          { opacity: 0, transform: "scale(0.96)" },
+          { opacity: 1, transform: "scale(1)", offset: 0.3 },
+          { opacity: 0, transform: "scale(1.14)" },
+        ],
+        { duration: RING, easing: "ease-out" },
+      );
+    };
+
+    const paint = (i: number, x: number) => {
       const line = lineEls.current[i];
       const glow = glowEls.current[i];
       const core = coreEls.current[i];
@@ -210,31 +220,51 @@ export function IntegrationBeam({ left = [], right = [], center = { name: "Merge
       if (!line || !glow || !core || !grad) return;
       const len = eng.lens[i];
       if (!len) return;
-      const off = PULSE_LEN - easeInOutSine(x) * (len + PULSE_LEN);
-      const dash = `${PULSE_LEN} ${len + PULSE_LEN}`;
+      const seg = segLen(len);
+      const head = easeInOutSine(x) * (len + seg);
+      const off = seg - head;
+      const dash = `${seg} ${len + seg}`;
       for (const p of [glow, core]) {
         p.style.strokeDasharray = dash;
         p.style.strokeDashoffset = String(off);
       }
-      const tail = clamp(-off, 0, len);
-      const head = clamp(-off + PULSE_LEN, 0, len);
-      const p1 = line.getPointAtLength(tail);
-      const p2 = line.getPointAtLength(head);
+      const p1 = line.getPointAtLength(clamp(head - seg, 0, len));
+      const p2 = line.getPointAtLength(clamp(head, 0, len));
       grad.setAttribute("x1", String(p1.x));
       grad.setAttribute("y1", String(p1.y));
-      grad.setAttribute("x2", String(p2.x));
+      grad.setAttribute("x2", String(p2.x + (p2.x === p1.x && p2.y === p1.y ? 0.01 : 0)));
       grad.setAttribute("y2", String(p2.y));
+      const g = pulseEls.current[i];
+      if (g) g.style.opacity = "1";
     };
 
-    const flashEl = (el: HTMLElement | null | undefined) => {
-      if (!el) return;
-      eng.flashes.set(el, performance.now());
+    // one wave per cycle: in-pulses staggered from the cycle start, out-pulses as the first in-pulse lands
+    const planCycle = (now: number) => {
+      const off = pausedRef.current;
+      const ins: number[] = [];
+      const outs: number[] = [];
+      for (let j = 0; j < inCount; j++) if (!off.has(keyIn(j))) ins.push(j);
+      for (let j = 0; j < outCount; j++) if (!off.has(keyOut(j))) outs.push(inCount + j);
+      if (!ins.length && !outs.length) {
+        eng.nextCycle = now + REST;
+        return;
+      }
+      const tOut = ins.length ? now + TRAVEL : now;
+      eng.queue = [
+        ...ins.map((beam, k) => ({ beam, at: now + k * STAGGER })),
+        ...outs.map((beam, k) => ({ beam, at: tOut + k * STAGGER })),
+      ];
+      const end = Math.max(...eng.queue.map((q) => q.at)) + TRAVEL;
+      eng.syncFrom = ins.length ? tOut : now;
+      eng.syncTo = end;
+      eng.nextCycle = end + REST;
     };
 
     const frame = (t: number) => {
+      eng.raf = 0;
       if (eng.morphFrom) {
         const x = clamp((t - eng.morphStart) / MORPH, 0, 1);
-        const e = easeOutCubic(x);
+        const e = easeOutQuint(x);
         for (let i = 0; i < beamCount; i++) {
           const target = eng.targets[i];
           if (!target) continue;
@@ -245,90 +275,77 @@ export function IntegrationBeam({ left = [], right = [], center = { name: "Merge
         if (x >= 1) eng.morphFrom = null;
       }
 
-      while (eng.waveStart + PERIOD <= t) eng.waveStart += PERIOD;
-
-      const off = pausedRef.current;
-      const inLive: number[] = [];
-      const outLive: number[] = [];
-      for (let j = 0; j < inCount; j++) if (!off.has(keyIn(j))) inLive.push(j);
-      for (let j = 0; j < outCount; j++) if (!off.has(keyOut(j))) outLive.push(inCount + j);
-
       const live = eng.visible && !reducedRef.current;
       if (live) {
-        inLive.forEach((bi, order) => {
-          const fireAt = eng.waveStart + order * STAGGER;
-          if (!eng.pulses[bi].active && t >= fireAt && t - fireAt < FIRE_WINDOW) fire(bi, fireAt);
+        if (t >= eng.nextCycle) planCycle(t);
+        eng.queue = eng.queue.filter((q) => {
+          if (q.at > t) return true;
+          const key = q.beam < inCount ? keyIn(q.beam) : keyOut(q.beam - inCount);
+          if (!pausedRef.current.has(key) && eng.pulseStart[q.beam] === null) eng.pulseStart[q.beam] = q.at;
+          return false;
         });
-        if (inLive.length) {
-          outLive.forEach((bi, order) => {
-            const fireAt = eng.waveStart + TRAVEL + order * STAGGER;
-            if (!eng.pulses[bi].active && t >= fireAt && t - fireAt < FIRE_WINDOW) fire(bi, fireAt);
-          });
+        for (let i = 0; i < beamCount; i++) {
+          const startAt = eng.pulseStart[i];
+          if (startAt === null) continue;
+          const key = i < inCount ? keyIn(i) : keyOut(i - inCount);
+          // paused mid-flight: the pulse fades out where it is
+          if (pausedRef.current.has(key)) {
+            hide(i);
+            continue;
+          }
+          const x = (t - startAt) / TRAVEL;
+          if (x >= 1) {
+            hide(i);
+            ring(i < inCount ? hubRingRef.current : ringEls.current[keyOut(i - inCount)]);
+          } else {
+            paint(i, x);
+          }
+        }
+        const sync = t >= eng.syncFrom && t < eng.syncTo;
+        if (sync !== eng.syncOn) {
+          eng.syncOn = sync;
+          setSyncing(sync);
         }
       }
 
-      for (let i = 0; i < beamCount; i++) {
-        const p = eng.pulses[i];
-        if (!p.active) continue;
-        const key = i < inCount ? keyIn(i) : keyOut(i - inCount);
-        if (off.has(key)) {
-          endPulse(i);
-          continue;
-        }
-        const x = (t - p.start) / TRAVEL;
-        if (x >= 1) {
-          endPulse(i);
-          flashEl(i < inCount ? hubRingRef.current : ringEls.current[keyOut(i - inCount)]);
-        } else {
-          renderPulse(i, x);
-        }
-      }
+      if (eng.morphFrom || live) eng.raf = requestAnimationFrame(frame);
+    };
 
-      eng.flashes.forEach((start, el) => {
-        const e = t - start;
-        if (e >= FLASH) {
-          el.style.opacity = "";
-          eng.flashes.delete(el);
-        } else {
-          el.style.opacity = flashOpacity(e).toFixed(3);
-        }
-      });
-
-      const sync =
-        live &&
-        inLive.length > 0 &&
-        outLive.some((bi, order) => {
-          const fireAt = eng.waveStart + TRAVEL + order * STAGGER;
-          return t >= fireAt && t < fireAt + TRAVEL;
-        });
-      if (sync !== eng.syncOn) {
-        eng.syncOn = sync;
-        setSyncing(sync);
-      }
-
-      eng.raf = requestAnimationFrame(frame);
+    const kick = () => {
+      if (!eng.raf) eng.raf = requestAnimationFrame(frame);
     };
 
     measure(true);
     const ro = new ResizeObserver(() => measure(false));
     ro.observe(root);
+    // runs only while the scene is on screen; scroll back in and the cycle restarts fresh
     const io = new IntersectionObserver(([entry]) => {
       eng.visible = entry.isIntersecting;
+      if (eng.visible) {
+        eng.nextCycle = performance.now() + FIRST_WAVE;
+        kick();
+      } else {
+        eng.queue = [];
+        for (let i = 0; i < beamCount; i++) hide(i);
+        eng.syncTo = 0;
+        if (eng.syncOn) {
+          eng.syncOn = false;
+          setSyncing(false);
+        }
+      }
     });
     io.observe(root);
-    eng.raf = requestAnimationFrame(frame);
+    kick();
 
     return () => {
       cancelAnimationFrame(eng.raf);
+      eng.raf = 0;
       ro.disconnect();
       io.disconnect();
       mq.removeEventListener("change", onMotionChange);
       for (const g of pulseList) {
         if (g) g.style.opacity = "";
       }
-      eng.flashes.forEach((_, el) => {
-        el.style.opacity = "";
-      });
     };
   }, [beamCount, inCount, outCount]);
 
