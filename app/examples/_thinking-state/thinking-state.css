@@ -1,0 +1,290 @@
+.tk {
+  --tk-card: #ffffff;
+  --tk-ink: rgba(0, 0, 0, 0.88);
+  --tk-strong: #000000;
+  --tk-text: rgba(0, 0, 0, 0.61);
+  --tk-muted: rgba(0, 0, 0, 0.45);
+  --tk-faint: rgba(0, 0, 0, 0.27);
+  --tk-icon: rgba(0, 0, 0, 0.447);
+  --tk-line: rgba(0, 0, 0, 0.06);
+  --tk-rail: rgba(0, 0, 0, 0.08);
+  --tk-fill: rgba(0, 0, 0, 0.06);
+  --tk-wash: rgba(0, 0, 0, 0.03);
+  --tk-accent: rgba(0, 96, 226, 0.765);
+  --tk-shine: rgba(255, 255, 255, 0.82);
+  --tk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 1px -1px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --tk-shadow-pop: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 12px 28px -10px rgba(0, 0, 0, 0.16), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --tk-ring: 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+  --tk-focus: rgba(0, 96, 226, 0.7);
+  --tk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  box-sizing: border-box;
+  container-type: inline-size;
+  width: 100%;
+  max-width: 440px;
+  font-family: var(--font-sans, Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--tk-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tk *, .tk ::before, .tk ::after { box-sizing: border-box; }
+
+:where(.tk) button { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+
+:where(.tk) svg { display: block; flex: none; }
+
+.tk button:focus-visible, .tk a:focus-visible { outline: 2px solid var(--tk-focus); outline-offset: 2px; }
+
+.tk .tk__head {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 8px;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tk .tk__mark { display: grid; grid-template-columns: repeat(3, 3px); grid-auto-rows: 3px; gap: 1.5px; place-content: center; width: 16px; height: 16px; }
+
+.tk .tk__mark i { border-radius: 0.75px; background: var(--tk-accent); animation: tk-pixel 1.2s ease-in-out infinite backwards; }
+
+.tk[data-done] .tk__mark i { animation: tk-settle 420ms var(--tk-ease) backwards; }
+
+.tk .tk__title {
+  display: inline-flex;
+  min-width: 0;
+  gap: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--tk-ink);
+  transition: color 160ms ease;
+  animation: tk-in 420ms var(--tk-ease) backwards;
+}
+
+.tk .tk__head:hover .tk__title { color: var(--tk-muted); }
+
+.tk .tk__title .tk__shimmer { color: var(--tk-muted); }
+
+.tk .tk__time { font-weight: 400; font-variant-numeric: tabular-nums; color: var(--tk-faint); }
+
+.tk .tk__chevron { display: grid; place-items: center; width: 16px; height: 16px; margin-left: -4px; color: var(--tk-icon); opacity: 0; transition: opacity 160ms ease; }
+
+.tk .tk__head:is(:hover, :focus-visible) .tk__chevron { opacity: 0.6; }
+
+.tk .tk__chevron svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; transform: rotate(-90deg); transition: transform 260ms var(--tk-ease); }
+
+.tk .tk__head[aria-expanded="true"] .tk__chevron svg { transform: none; }
+
+.tk .tk__body { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 360ms var(--tk-ease), opacity 260ms ease; }
+
+.tk .tk__body[data-open="false"] { grid-template-rows: 0fr; opacity: 0; }
+
+.tk .tk__clip { min-height: 0; overflow: visible; }
+
+.tk .tk__body[data-open="false"] .tk__clip { overflow: hidden; }
+
+.tk .tk__list { margin: 0; padding: 8px 8px 0; list-style: none; }
+
+.tk .tk__item { position: relative; display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; padding-bottom: 12px; animation: tk-in 520ms var(--tk-ease) backwards; }
+
+.tk .tk__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 7.5px;
+  top: 22px;
+  bottom: 2px;
+  width: 1px;
+  background: var(--tk-rail);
+  transform-origin: top;
+  animation: tk-line 520ms var(--tk-ease) backwards;
+}
+
+.tk .tk__node { display: grid; place-items: center; width: 16px; height: 20px; }
+
+.tk .tk__globe { width: 16px; height: 16px; fill: none; stroke: var(--tk-icon); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.tk .tk__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--tk-faint); transition: background-color 300ms ease, border-radius 300ms ease; }
+
+.tk .tk__item[data-active] .tk__dot { width: 6px; height: 6px; border-radius: 1.5px; background: var(--tk-accent); animation: tk-pulse 1s ease-in-out infinite; }
+
+.tk .tk__check { width: 16px; height: 16px; animation: tk-pop 460ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
+
+.tk .tk__check circle { fill: var(--tk-accent); }
+
+.tk .tk__check path { fill: none; stroke: #ffffff; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 9; stroke-dashoffset: 9; animation: tk-draw 360ms var(--tk-ease) 180ms forwards; }
+
+.tk .tk__content { min-width: 0; }
+
+.tk .tk__label { position: relative; display: inline-block; max-width: 100%; overflow-wrap: anywhere; white-space: pre-line; text-align: start; color: var(--tk-text); transition: color 300ms ease; }
+
+.tk .tk__item[data-active] .tk__label { color: var(--tk-muted); }
+
+.tk .tk__item[data-kind="done"] .tk__label { font-weight: 500; color: var(--tk-ink); }
+
+.tk .tk__sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding: 1px 0 2px; }
+
+.tk .tk__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: 26px;
+  padding: 0 8px 0 6px;
+  border-radius: 6px;
+  background: var(--tk-card);
+  box-shadow: var(--tk-shadow);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--tk-ink);
+  text-decoration: none;
+  animation: tk-chip 420ms var(--tk-ease) backwards;
+}
+
+.tk a.tk__source, .tk .tk__more { position: relative; cursor: pointer; transition: background-color 160ms ease, color 160ms ease; }
+
+.tk a.tk__source:hover { background: var(--tk-wash); }
+
+.tk .tk__more { padding: 0 8px; background: none; box-shadow: inset 0 0 0 0.5px var(--tk-line); font-size: 12px; font-weight: 500; color: var(--tk-text); }
+
+.tk .tk__more:hover { background: var(--tk-wash); color: var(--tk-ink); }
+
+.tk .tk__more[aria-expanded="true"] { background: var(--tk-fill); color: var(--tk-ink); }
+
+.tk .tk__tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  z-index: 2;
+  width: max-content;
+  max-width: min(320px, 80vw);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--tk-card);
+  box-shadow: var(--tk-shadow-pop);
+  color: var(--tk-text);
+  font-size: 12px;
+  line-height: 16px;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 140ms ease, transform 200ms var(--tk-ease);
+}
+
+.tk .tk__source:hover .tk__tip, .tk .tk__source:focus-visible .tk__tip { opacity: 1; transform: translate(-50%, 0); transition-delay: 250ms; }
+
+.tk .tk__source[data-count] { padding: 0 8px; background: none; box-shadow: inset 0 0 0 0.5px var(--tk-line); color: var(--tk-text); }
+
+.tk .tk__source-label { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.tk .tk__favicon { display: grid; place-items: center; flex: none; width: 14px; height: 14px; border-radius: 4px; overflow: hidden; box-shadow: var(--tk-ring); background: var(--tk-card); }
+
+.tk .tk__favicon img { width: 100%; height: 100%; object-fit: contain; }
+
+.tk .tk__favicon svg { width: 100%; height: 100%; }
+
+.tk .tk__shimmer { position: relative; }
+
+.tk .tk__shimmer::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  white-space: inherit;
+  overflow-wrap: inherit;
+  color: transparent;
+  background: linear-gradient(90deg, transparent 38%, var(--tk-shine) 50%, transparent 62%) 100% 0 / 300% 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: tk-sweep 1.6s linear infinite;
+  pointer-events: none;
+}
+
+@container (max-width: 360px) {
+  .tk .tk__head { padding: 0 8px; }
+  .tk .tk__list { padding: 8px 8px 0; }
+}
+
+@media (pointer: coarse) {
+  .tk .tk__head { height: 52px; }
+  .tk .tk__source { height: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tk *, .tk ::before, .tk ::after { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  .tk .tk__shimmer::after { display: none; }
+  .tk .tk__check path { stroke-dashoffset: 0; }
+}
+
+:where(.dark, [data-theme="dark"]) .tk {
+  --tk-card: #1c1c1e;
+  --tk-ink: rgba(255, 255, 255, 0.9);
+  --tk-strong: #ffffff;
+  --tk-text: rgba(255, 255, 255, 0.62);
+  --tk-muted: rgba(255, 255, 255, 0.46);
+  --tk-faint: rgba(255, 255, 255, 0.3);
+  --tk-icon: rgba(255, 255, 255, 0.5);
+  --tk-line: rgba(255, 255, 255, 0.08);
+  --tk-rail: rgba(255, 255, 255, 0.1);
+  --tk-fill: rgba(255, 255, 255, 0.08);
+  --tk-wash: rgba(255, 255, 255, 0.04);
+  --tk-accent: #4fb0fe;
+  --tk-shine: #ffffff;
+  --tk-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --tk-shadow-pop: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 12px 28px -10px rgba(0, 0, 0, 0.6);
+  --tk-ring: 0 0 0 0.5px rgba(255, 255, 255, 0.14);
+  --tk-focus: rgba(77, 141, 255, 0.8);
+}
+
+:where(.dark, [data-theme="dark"]) .tk .tk__tip { background: #232326; }
+
+@keyframes tk-in {
+  from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes tk-line {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes tk-chip {
+  from { opacity: 0; transform: translateY(4px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes tk-pulse {
+  50% { transform: scale(0.7); opacity: 0.45; }
+}
+
+@keyframes tk-pixel {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes tk-settle {
+  from { opacity: 0.2; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes tk-pop {
+  0% { transform: scale(0.5); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes tk-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes tk-sweep {
+  from { background-position: 100% 0; }
+  to { background-position: 0% 0; }
+}

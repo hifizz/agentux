@@ -5,8 +5,10 @@ import { AgentCheckpointsPreview } from "@/components/gallery/AgentCheckpointsPr
 import { AgentTrailPreview } from "@/components/gallery/AgentTrailPreview";
 import { CommandMenuPreview } from "@/components/gallery/CommandMenuPreview";
 import { DelegateBoardPreview } from "@/components/gallery/DelegateBoardPreview";
+import { IntegrationBeamPreview } from "@/components/gallery/IntegrationBeamPreview";
 import { ModelMenuPreview } from "@/components/gallery/ModelMenuPreview";
 import { RunningNowPreview } from "@/components/gallery/RunningNowPreview";
+import { ThinkingStatePreview } from "@/components/gallery/ThinkingStatePreview";
 import ComposerPreview from "@/components/gallery/ComposerPreview";
 import { ActionsPreview, AgentMessagePreview, MarkdownPreview, PlanPreview, SearchPreview, ShadowScrollPreview, ShimmerTextPreview, StreamingPreview, SwarmPreview, ThinkingBlockPreview, ToolOutputPreview, WorkLogPreview } from "@/components/gallery/MessagePreviews";
 import { BottomTrayPreview, ContextPreview, DirectoryPreview, EffortPreview, ModelPreview, PermissionPreview, PromptInputPreview, QueueSteerPreview, RepoPreview, StatesPreview, TopTrayPreview } from "@/components/gallery/ComposerPartPreviews";
@@ -1127,12 +1129,65 @@ export const modelMenu = {
   source: "Recreated from the behavior of a reference model menu. Colors and spacing are the reference values.",
 } satisfies Example;
 
+export const thinkingState = {
+  name: "Thinking State",
+  href: "/examples/thinking-state/",
+  category: "Chat · Status",
+  description: "An AI working panel with a live timer, searched sources and thinking steps that appear one by one.",
+  preview: ThinkingStatePreview,
+  interaction:
+    "Steps appear one at a time beside a shimmering title and live timer; source chips pop in and extra sources hide behind +N more. Hover or tab through sources for tooltips, press the header or Enter/Space to fold only the steps, and when finished the mark settles, the header becomes Worked for Ns and a check row appears. With loop it restarts after four seconds unless the sources were expanded.",
+  parts: [
+    { name: "ThinkingState", file: "_thinking-state/thinking-state.tsx", description: "Playback, live timer, collapsible header, timeline rows, source chips, tooltips, overflow control and looping." },
+    { name: "Think model", file: "_thinking-state/think-model.ts", description: "Step normalization, exact pause and chip-stagger timing, elapsed-time formatting and restart fingerprints." },
+    { name: "Thinking types", file: "_thinking-state/types.ts", description: "ThinkingStep and ThinkingSource types." },
+    { name: "useThinkingScript", file: "_thinking-state/use-thinking-script.ts", description: "Replay-run state for the demo." },
+    { name: "thinking-state.css", file: "_thinking-state/thinking-state.css", description: "Reference colors and spacing as tokens on .tk, with dark theme, container query, touch sizing and reduced-motion handling." },
+  ],
+  props: [
+    { name: "steps", type: "ThinkingStep[]", description: "Search and thinking steps revealed in order. Sources can link out and show tooltips; moreSources hide behind a +N more chip.", required: true },
+    { name: "doneLabel", type: "string", description: "Label of the final row. Defaults to \"Finished thinking\"." },
+    { name: "stepMs", type: "number", description: "Pause between two steps, in milliseconds. Defaults to 1300." },
+    { name: "loop", type: "boolean", description: "Starts over four seconds after finishing." },
+    { name: "collapseOnDone", type: "boolean", description: "Folds the steps away once finished while keeping the header visible." },
+    { name: "onDone", type: "(seconds: number) => void", description: "Called once all steps are done, with the rounded elapsed seconds." },
+    { name: "className", type: "string", description: "Extra class on the root." },
+  ],
+  source: "Recreated from the behavior of a reference thinking-state panel. Colors and spacing are the reference values.",
+} satisfies Example;
+
+export const integrationBeam = {
+  name: "Integration Beam",
+  href: "/examples/integration-beam/",
+  category: "Illustrations · Scenes",
+  description: "Your product between the tools it connects – light pulses flow along curved beams, hover to focus a tool, click to pause it.",
+  preview: IntegrationBeamPreview,
+  interaction:
+    "Pulses leave the connected left tools 280 ms apart, ride their beams for 1.5 s and, as they land, the hub glows and the wave continues out to the right tools; the chip under the hub slides between Syncing… and N connected. Hover or tab to a tool to bring its beam forward and show its name; click or Enter/Space pauses it (dashed beam, gray tile) and announces the new count. Below 460 px of container width the senders stack above the hub with vertical beams.",
+  parts: [
+    { name: "IntegrationBeam", file: "_integration-beam/integration-beam.tsx", description: "Scene shell: measured SVG beam layer with per-beam gradient pulses, tool tiles with rings and tooltips, the dark hub tile with status chip, and the live-region announcements." },
+    { name: "Beam model", file: "_integration-beam/beam-model.ts", description: "Wave timing constants, cubic beam geometry and morphing, pulse/flash easings and label templating." },
+    { name: "Beam types", file: "_integration-beam/types.ts", description: "BeamTool, BeamCenter and the label table." },
+    { name: "integration-beam.css", file: "_integration-beam/integration-beam.css", description: "All colors and spacing as tokens on .ib, with a dark theme, container query for the stacked layout and reduced-motion handling." },
+  ],
+  props: [
+    { name: "left", type: "BeamTool[]", description: "Tools that send data in, on the left or above the hub on narrow widths. Logo fills a 28 × 28 box.", required: true },
+    { name: "right", type: "BeamTool[]", description: "Tools that receive data, on the right or below the hub on narrow widths.", required: true },
+    { name: "center", type: "{ name, logo? }", description: "Your product on the dark hub tile. The logo is drawn white into a 36 × 36 box (currentColor); a neutral rings mark when left out." },
+    { name: "label", type: "string", description: "Accessible name of the scene. Defaults to '{center} connected to {tool names}'." },
+    { name: "labels", type: "Partial<IbLabels>", description: "Overrides for every string the scene renders." },
+    { name: "className", type: "string", description: "Extra class on the root, e.g. for width or margins." },
+  ],
+  source: "Recreated from the behavior of a reference integration scene. Colors and spacing are the reference values.",
+} satisfies Example;
+
 export const examples: Example[] = [
   promptComposer, promptInput, permissionPicker, modelPicker, modelMenu, effortPicker, contextUsage, topTray, bottomTray, directoryPicker, repoBranchPicker, queueSteer, composerStates,
-  chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, workLog, thinkingIndicator, suggestions,
+  chatMessage, reasoning, toolSteps, approvals, askQuestion, activityCards, workLog, thinkingIndicator, suggestions, thinkingState,
   agentMessage, markdownRenderer, smoothStreaming, shimmerText, shadowScroll, messageActions, thinkingBlock, toolOutput, plan, webSearch,
   subagentSwarm, agentTree, agentCrew, delegateBoard, agentHandoff, liveSession, agentWorkbench, agentMonitor, runningNow, agentTrail, agentCheckpoints, memoryGraph, flowBuilder, commandMenu, agentFindings, reviewCenter,
   runTimeline, traceWaterfall, langfuseTrace, langfuseSession, contextWindow,
+  integrationBeam,
 ];
 
 export const exampleFamily = (item: Example) => item.category.split(" · ")[0];
